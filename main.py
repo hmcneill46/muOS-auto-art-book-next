@@ -6,7 +6,6 @@ import logging
 from math import ceil
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter
 
-
 # Create a custom logging configuration
 log_format = "%(asctime)s - %(levelname)s - %(message)s"
 log_file = 'AutoArtBookNextLog.log'
