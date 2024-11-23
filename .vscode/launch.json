@@ -16,8 +16,12 @@
                 "--slides_dir", "TestingPaths/anthonycaccese-assets/artwork-default",
                 "--logos_dir", "TestingPaths/anthonycaccese-assets/logos",
                 "--core_info_dir", "TestingPaths/infocore",
+                "--system_map_path", "muosESmap.json",
+                "--valid_muos_system_names_path", "validMuOsSystemNames.txt",
                 "--screen_height", "720",
-                "--screen_width", "720"
+                "--screen_width", "720",
+                "--icon_width_percent", "0.7",
+                "--deselected_brightness", "0.2"
             ]
         }
     ]
