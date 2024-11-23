@@ -325,7 +325,7 @@ def main():
     )
     parser.add_argument(
         "--icon_width_percent", type=float, default=0.5,
-        help="Max icon width as a percentage of screen width (default is 50%: 0.5)"
+        help="Max icon width as a percentage of screen width (default is 70%: 0.7)"
     )
     parser.add_argument(
         "--deselected_brightness", type=float, default=0.5,

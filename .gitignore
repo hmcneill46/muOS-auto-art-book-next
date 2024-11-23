@@ -165,3 +165,4 @@ cython_debug/
 TestingPaths/*
 !TestingPaths/anthonycaccese-assets/
 !TestingPaths/anthonycaccese-assets/**
+personal_run_script.sh
