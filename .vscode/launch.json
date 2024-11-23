@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                "--roms_dir", "TestingPaths/Roms",
+                "--box_art_dir", "TestingPaths/FolderBox",
+                "--slides_dir", "TestingPaths/anthonycaccese-assets/artwork-default",
+                "--logos_dir", "TestingPaths/anthonycaccese-assets/logos",
+                "--core_info_dir", "TestingPaths/infocore",
+                "--screen_height", "720",
+                "--screen_width", "720"
+            ]
+        }
+    ]
+}
