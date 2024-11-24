@@ -1,5 +1,6 @@
 import argparse
 import os
+import subprocess
 import sys
 import json
 import logging
@@ -244,16 +245,21 @@ def generateFolderImage(folder_name:str, config:Config):
 
 def get_folders(roms_dir):
     """
-    Get all folders in the ROMs directory.
+    Get all folders in the ROMs directory, retaining the ordering of the `ls` command.
 
     :param roms_dir: Path to the ROMs directory.
     :return: List of folders.
     """
     folders = []
-    for folder in os.listdir(roms_dir):
-        if os.path.isdir(os.path.join(roms_dir, folder)):
-            if (not str.startswith(folder, ".")) and (not str.startswith(folder, "_"))  :
+    try:
+        # Use the `ls` command to list the directory contents in order
+        output = subprocess.check_output(['ls', '-1', roms_dir], text=True).splitlines()
+        for folder in output:
+            folder_path = os.path.join(roms_dir, folder)
+            if os.path.isdir(folder_path) and not folder.startswith(('.', '_')):
                 folders.append(folder)
+    except subprocess.CalledProcessError as e:
+        print(f"Error while listing directory: {e}")
     return folders
 
 def get_folder_core_associations(folders, core_info_dir):
