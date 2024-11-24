@@ -82,3 +82,4 @@ Vircon32
 WASM-4
 Watara Supervision
 Wolfenstein 3D
+default

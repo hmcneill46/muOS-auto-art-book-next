@@ -14,12 +14,13 @@ CORE_INFO_DIR="/run/muos/storage/info/core"
 SYSTEM_MAP_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json"
 VALID_MUOS_SYSTEM_NAMES_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt"
 LOG_FILE_OUTPUT_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext"
+FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 
 SCREEN_WIDTH=$(GET_VAR device mux/width)
 SCREEN_HEIGHT=$(GET_VAR device mux/height)
 
 # Optional arguments
-BACKGROUND_HEX="#000000"
+BACKGROUND_HEX="#202020"
 GAP_BETWEEN_SLIDES=7
 ICON_HEIGHT_PERCENT=0.5
 ICON_WIDTH_PERCENT=0.7
@@ -43,6 +44,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
         --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
+        --font_path "$FONT_PATH" \
         --screen_height $SCREEN_HEIGHT \
         --screen_width $SCREEN_WIDTH \
         --background_hex "$BACKGROUND_HEX" \
@@ -68,6 +70,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
         --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
+        --font_path "$FONT_PATH" \
         --screen_height $SCREEN_HEIGHT \
         --screen_width $SCREEN_WIDTH \
         --background_hex "$BACKGROUND_HEX" \

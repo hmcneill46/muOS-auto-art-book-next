@@ -4,7 +4,7 @@ import subprocess
 import sys
 import json
 import logging
-from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter
+from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter, ImageFont
 
 def ceil(n):
     """
@@ -47,6 +47,7 @@ class Config(object):
         with open(self.system_map_path, "r") as file:
             self.system_map = json.load(file)
         self.valid_muos_system_names_path = args.valid_muos_system_names_path
+        self.font_path = args.font_path
         self.screen_height = args.screen_height
         self.screen_width = args.screen_width
         self.background_hex = args.background_hex
@@ -192,11 +193,14 @@ def generateFolderImage(folder_name:str, config:Config):
         new_folder_index = (current_folder_index+index)%len(config.folders)
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if muOS_system_name in config.system_map.keys():
-            current_es_system_image_name = config.system_map[current_muOS_system_name]
+        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png"))
         else:
-            current_es_system_image_name = "_default.png"
-        current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
+            if muOS_system_name in config.system_map.keys():
+                current_es_system_image_name = config.system_map[current_muOS_system_name]
+            else:
+                current_es_system_image_name = "_default.png"
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
         enhancer = ImageEnhance.Brightness(current_slide_image)
         # to reduce brightness by 50%, use factor 0.5
         current_slide_image = enhancer.enhance(config.deselected_brightness)
@@ -209,11 +213,14 @@ def generateFolderImage(folder_name:str, config:Config):
         new_folder_index = (current_folder_index-index)%len(config.folders)
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if muOS_system_name in config.system_map.keys():
-            current_es_system_image_name = config.system_map[current_muOS_system_name]
+        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png"))
         else:
-            current_es_system_image_name = "_default.png"
-        current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
+            if muOS_system_name in config.system_map.keys():
+                current_es_system_image_name = config.system_map[current_muOS_system_name]
+            else:
+                current_es_system_image_name = "_default.png"
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
 
         enhancer = ImageEnhance.Brightness(current_slide_image)
         # to reduce brightness by 50%, use factor 0.5
@@ -224,10 +231,32 @@ def generateFolderImage(folder_name:str, config:Config):
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
+    
+    logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    image.alpha_composite(logo_image, (0,0))
+
+    return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
+
+def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_width:int, rendered_image_height:int, rendered_image_multiplier:float, config:Config):
+    image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0, 0, 0, 0))
     ## draw the logo in the middle of the screen
-    logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
-    logo_image_multiplier = min(config.max_icon_height/logo_image.height, config.max_icon_width/logo_image.width)*rendered_image_multiplier
-    logo_image = logo_image.resize((int(logo_image.width*logo_image_multiplier), int(logo_image.height*logo_image_multiplier)), Image.LANCZOS)
+    if muOS_system_name != "default":
+        logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
+        logo_image_multiplier = min(config.max_icon_height/logo_image.height, config.max_icon_width/logo_image.width)*rendered_image_multiplier
+        logo_image = logo_image.resize((int(logo_image.width*logo_image_multiplier), int(logo_image.height*logo_image_multiplier)), Image.LANCZOS)
+    else:
+        # use config config.font_path to draw a text logo
+        font = ImageFont.truetype(config.font_path, 150*(rendered_image_width/1440))
+        folder_name_bbox = font.getbbox(folder_name)
+        folder_name_width = folder_name_bbox[2]-folder_name_bbox[0]
+        folder_name_height = folder_name_bbox[3]-folder_name_bbox[1]
+        logo_image = Image.new("RGBA", (folder_name_width, folder_name_height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(logo_image)
+        text_x = 0
+        text_y = -folder_name_bbox[1]
+        draw.text((text_x,text_y), folder_name, font=font, fill=(255,255,255,255))
+        
+
 
     logo_image_middle_x = int((rendered_image_width - logo_image.width) / 2)
     logo_image_middle_y = int((rendered_image_height - logo_image.height) / 2)
@@ -245,7 +274,8 @@ def generateFolderImage(folder_name:str, config:Config):
     # Composite logo
     image.alpha_composite(logo_image, (logo_image_middle_x, logo_image_middle_y))
 
-    return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
+    return image
+
 
 def get_folders(roms_dir):
     """
@@ -378,6 +408,8 @@ def main():
     parser.add_argument("--system_map_path", required=True, help="Path to the file where muOS -> ES system name mapping is stored")
     parser.add_argument("--valid_muos_system_names_path", required=True, help="Path to the file containing valid muOS system names")
     parser.add_argument("--log_file_output_dir", required=True, help="Path to the folder where your log file will be stored")
+    parser.add_argument("--font_path", required=True, help="Path to the font file")
+
     parser.add_argument("--screen_height", type=int, required=True, help="Screen height in pixels")
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
 
@@ -428,9 +460,10 @@ def main():
     log_file_output_dir_valid = validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
     system_map_valid = validate_file(args.system_map_path, "System Map File", logger)
     valid_muos_system_names_valid = validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger)
+    font_path_valid = validate_file(args.font_path, "Font File", logger)
 
     # Validation summary
-    if roms_valid and box_art_valid and slides_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid:
+    if roms_valid and box_art_valid and slides_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid and font_path_valid:
         logger.info("All directories are valid. Proceeding with the next steps...")
     else:
         logger.info(

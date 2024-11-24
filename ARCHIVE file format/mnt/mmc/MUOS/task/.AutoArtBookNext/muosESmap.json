@@ -82,5 +82,6 @@
     "Vircon32": "vircon32.png",
     "WASM-4": "wasm4.png",
     "Watara Supervision": "supervision.png",
-    "Wolfenstein 3D": "_default.png"
+    "Wolfenstein 3D": "_default.png",
+    "default": "_default.png"
   }
