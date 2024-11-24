@@ -13,17 +13,20 @@ LOGOS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/logos"
 CORE_INFO_DIR="/run/muos/storage/info/core"
 SYSTEM_MAP_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json"
 VALID_MUOS_SYSTEM_NAMES_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt"
+LOG_FILE_OUTPUT_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext"
 
 SCREEN_WIDTH=$(GET_VAR device mux/width)
 SCREEN_HEIGHT=$(GET_VAR device mux/height)
 
 # Optional arguments
 BACKGROUND_HEX="#000000"
-GAP_BETWEEN_SLIDES=10
+GAP_BETWEEN_SLIDES=7
 ICON_HEIGHT_PERCENT=0.5
 ICON_WIDTH_PERCENT=0.7
-DESELECTED_BRIGHTNESS=0.2
+DESELECTED_BRIGHTNESS=0.4
 SHADOW_STRENGTH=1
+GRADIENT_INTENSITY=235
+
 
 # Path to the script
 SCRIPT="/mnt/mmc/MUOS/task/.AutoArtBookNext/AutoArtBookNext"
@@ -39,6 +42,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
+        --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
         --screen_height $SCREEN_HEIGHT \
         --screen_width $SCREEN_WIDTH \
         --background_hex "$BACKGROUND_HEX" \
@@ -46,7 +50,8 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --icon_height_percent $ICON_HEIGHT_PERCENT \
         --icon_width_percent $ICON_WIDTH_PERCENT \
         --deselected_brightness $DESELECTED_BRIGHTNESS \
-        --shadow_strength $SHADOW_STRENGTH
+        --shadow_strength $SHADOW_STRENGTH \
+        --gradient_intensity $GRADIENT_INTENSITY
 else
     echo "Skipping SD1: $SD1_ROMS_DIR does not exist."
 fi
@@ -62,6 +67,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
+        --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
         --screen_height $SCREEN_HEIGHT \
         --screen_width $SCREEN_WIDTH \
         --background_hex "$BACKGROUND_HEX" \
@@ -69,7 +75,8 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --icon_height_percent $ICON_HEIGHT_PERCENT \
         --icon_width_percent $ICON_WIDTH_PERCENT \
         --deselected_brightness $DESELECTED_BRIGHTNESS \
-        --shadow_strength $SHADOW_STRENGTH
+        --shadow_strength $SHADOW_STRENGTH \
+        --gradient_intensity $GRADIENT_INTENSITY
 else
     echo "Skipping SD2: $SD2_ROMS_DIR does not exist."
 fi

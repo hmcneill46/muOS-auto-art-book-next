@@ -68,6 +68,8 @@ class Config(object):
         first_row = list(self.example_slide_image.getdata())[0:self.example_slide_image.width]
         alpha_threshold = 200
         self.real_slide_width = sum(1 for pixel in first_row if pixel[3] > alpha_threshold)
+
+        self.gradient_overlay_image = None
     def log_config(self):
         # Log directories
         self.logger.info("=" * 50)  # Divider line
@@ -99,7 +101,10 @@ class Config(object):
     def log_associations(self):
         for folder in self.folder_console_associations.keys():
             self.logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
-
+    def get_gradient_overlay_image(self, width, height, start_color, end_color, gradient_height_percent):
+        if self.gradient_overlay_image is None:
+            self.gradient_overlay_image = generateGradientImage(width, height, start_color, end_color, gradient_height_percent)
+        return self.gradient_overlay_image
 def generateGradientImage(width, height, start_color, end_color, gradient_height_percent):
     """
     Generate a smooth vertical gradient image using PIL.
@@ -215,9 +220,8 @@ def generateFolderImage(folder_name:str, config:Config):
         current_slide_image = enhancer.enhance(config.deselected_brightness)
         image.alpha_composite(current_slide_image, (image_middle_x-index*change_in_x, 0))
         index += 1
-
-    gradient = generateGradientImage(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
-    gradient.save("gradient.png")
+    
+    gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
     ## draw the logo in the middle of the screen
