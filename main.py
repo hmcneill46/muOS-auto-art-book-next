@@ -3,29 +3,40 @@ import os
 import sys
 import json
 import logging
-from math import ceil
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter
 
-# Create a custom logging configuration
-log_format = "%(asctime)s - %(levelname)s - %(message)s"
-log_file = 'AutoArtBookNextLog.log'
+def ceil(n):
+    """
+    Returns the smallest integer greater than or equal to n.
+    :param n: Number to round up.
+    :return: Rounded up integer.
+    """
+    return int(n) if n == int(n) else int(n) + 1
 
-# Configure the root logger
-logging.basicConfig(
-    level=logging.DEBUG,
-    format=log_format,
-    handlers=[
-        logging.FileHandler(log_file, encoding='utf-8'),
-        logging.StreamHandler(sys.stdout)  # Send logs to the console
-    ]
-)
-
-# Get the logger instance
-logger = logging.getLogger(__name__)
-
+def setup_logger(log_file_output_dir, log_file_name="AutoArtBookNextLog.log"):
+    # Ensure the output directory exists
+    os.makedirs(log_file_output_dir, exist_ok=True)
+    
+    # Define the full path to the log file
+    log_file_path = os.path.join(log_file_output_dir, log_file_name)
+    
+    # Create a custom logging configuration
+    log_format = "%(asctime)s - %(levelname)s - %(message)s"
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format=log_format,
+        handlers=[
+            logging.FileHandler(log_file_path, encoding="utf-8"),
+            logging.StreamHandler(sys.stdout),  # Send logs to the console
+        ],
+    )
+    
+    # Return the logger instance
+    return logging.getLogger(__name__)
 
 class Config(object):
-    def __init__(self, args):
+    def __init__(self, args, logger):
+        self.logger = logger
         self.roms_dir = args.roms_dir
         self.box_art_dir = args.box_art_dir
         self.slides_dir = args.slides_dir
@@ -56,35 +67,35 @@ class Config(object):
         self.real_slide_width = sum(1 for pixel in first_row if pixel[3] > alpha_threshold)
     def log_config(self):
         # Log directories
-        logger.info("=" * 50)  # Divider line
-        logger.info("Directories:")
-        logger.info("=" * 50)
-        logger.info(f"ROMs Directory: {self.roms_dir}")
-        logger.info(f"Box Art Directory: {self.box_art_dir}")
-        logger.info(f"System Image Slides Directory: {self.slides_dir}")
-        logger.info(f"System Image Logos Directory: {self.logos_dir}")
-        logger.info(f"Folder Core Association Directory: {self.core_info_dir}")
+        self.logger.info("=" * 50)  # Divider line
+        self.logger.info("Directories:")
+        self.logger.info("=" * 50)
+        self.logger.info(f"ROMs Directory: {self.roms_dir}")
+        self.logger.info(f"Box Art Directory: {self.box_art_dir}")
+        self.logger.info(f"System Image Slides Directory: {self.slides_dir}")
+        self.logger.info(f"System Image Logos Directory: {self.logos_dir}")
+        self.logger.info(f"Folder Core Association Directory: {self.core_info_dir}")
 
-        logger.info("=" * 50)  # Divider line
-        logger.info("Device Settings:")
-        logger.info("=" * 50)
+        self.logger.info("=" * 50)  # Divider line
+        self.logger.info("Device Settings:")
+        self.logger.info("=" * 50)
 
-        logger.info(f"Screen Width: {self.screen_width}")
-        logger.info(f"Screen Height: {self.screen_height}")
+        self.logger.info(f"Screen Width: {self.screen_width}")
+        self.logger.info(f"Screen Height: {self.screen_height}")
 
         # Log results
-        logger.info("=" * 50)  # Divider line
-        logger.info("Optional settings:")
-        logger.info("=" * 50)
-        logger.info(f"  Background color: {self.background_hex}")
-        logger.info(f"  Gap between slides: {self.gap_between_slides}px")
-        logger.info(f"  Icon height max percent of screen height: {self.icon_height_percent*100}%")
-        logger.info(f"  Icon width max percent of screen width: {self.icon_width_percent*100}%")
-        logger.info(f"  Calculated max icon height: {self.max_icon_height}px")
-        logger.info(f"  Calculated max icon width: {self.max_icon_width}px")
+        self.logger.info("=" * 50)  # Divider line
+        self.logger.info("Optional settings:")
+        self.logger.info("=" * 50)
+        self.logger.info(f"  Background color: {self.background_hex}")
+        self.logger.info(f"  Gap between slides: {self.gap_between_slides}px")
+        self.logger.info(f"  Icon height max percent of screen height: {self.icon_height_percent*100}%")
+        self.logger.info(f"  Icon width max percent of screen width: {self.icon_width_percent*100}%")
+        self.logger.info(f"  Calculated max icon height: {self.max_icon_height}px")
+        self.logger.info(f"  Calculated max icon width: {self.max_icon_width}px")
     def log_associations(self):
         for folder in self.folder_console_associations.keys():
-            logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
+            self.logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
 
 def generateFolderImage(folder_name:str, config:Config):
     """
@@ -220,7 +231,7 @@ def get_folder_core_associations(folders, core_info_dir):
             folder_core_associations[folder] = "default"
     return folder_core_associations
 
-def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir):
+def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir, logger):
     """
     Verifies that the JSON file has a mapping for each system image slide.
 
@@ -262,7 +273,7 @@ def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir
     logger.info(f"[OK] JSON file has a mapping for each system image slide.")
     return True
 
-def validate_directory(path, description):
+def validate_directory(path, description, logger):
     """
     Validates whether the provided path is a valid directory.
 
@@ -277,7 +288,7 @@ def validate_directory(path, description):
         logger.error(f"[ERROR] {description}: '{path}' is not a valid directory.")
         return False
 
-def validate_file(path, description):
+def validate_file(path, description, logger):
     """
     Validates whether the provided path is a valid file.
 
@@ -306,6 +317,7 @@ def main():
     parser.add_argument("--core_info_dir", required=True, help="Path to the folder where folder core associations are stored")
     parser.add_argument("--system_map_path", required=True, help="Path to the file where muOS -> ES system name mapping is stored")
     parser.add_argument("--valid_muos_system_names_path", required=True, help="Path to the file containing valid muOS system names")
+    parser.add_argument("--log_file_output_dir", required=True, help="Path to the folder where your log file will be stored")
     parser.add_argument("--screen_height", type=int, required=True, help="Screen height in pixels")
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
 
@@ -337,21 +349,24 @@ def main():
 
     args = parser.parse_args()
 
+    logger = setup_logger(args.log_file_output_dir)
+
     logger.info("=" * 50)  # Divider line
     logger.info("Checking if given directories are valid")
     logger.info("=" * 50)
 
     # Validate directories
-    roms_valid = validate_directory(args.roms_dir, "ROMs Directory")
-    box_art_valid = validate_directory(args.box_art_dir, "Box Art Directory")
-    slides_valid = validate_directory(args.slides_dir, "System Image Slides Directory")
-    logos_valid = validate_directory(args.logos_dir, "System Image Logos Directory")
-    core_info_valid = validate_directory(args.core_info_dir, "Folder Core Association Directory")
-    system_map_valid = validate_file(args.system_map_path, "System Map File")
-    valid_muos_system_names_valid = validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File")
+    roms_valid = validate_directory(args.roms_dir, "ROMs Directory", logger)
+    box_art_valid = validate_directory(args.box_art_dir, "Box Art Directory", logger)
+    slides_valid = validate_directory(args.slides_dir, "System Image Slides Directory", logger)
+    logos_valid = validate_directory(args.logos_dir, "System Image Logos Directory", logger)
+    core_info_valid = validate_directory(args.core_info_dir, "Folder Core Association Directory", logger)
+    log_file_output_dir_valid = validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
+    system_map_valid = validate_file(args.system_map_path, "System Map File", logger)
+    valid_muos_system_names_valid = validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger)
 
     # Validation summary
-    if roms_valid and box_art_valid and slides_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid:
+    if roms_valid and box_art_valid and slides_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid:
         logger.info("All directories are valid. Proceeding with the next steps...")
     else:
         logger.info(
@@ -360,7 +375,7 @@ def main():
         sys.exit(1)  # Exit with an error code if any directory is invalid
 
     # Log configuration
-    config = Config(args)
+    config = Config(args, logger)
     config.log_config()
 
     logger.info("=" * 50)  # Divider line
@@ -371,7 +386,7 @@ def main():
     logger.info("=" * 50)  # Divider line
     logger.info("Checking JSON mapping")
     logger.info("=" * 50)
-    verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.slides_dir)
+    verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.slides_dir, logger)
 
     for folder in config.folders:
         generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))

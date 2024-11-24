@@ -18,6 +18,7 @@
                 "--core_info_dir", "TestingPaths/infocore",
                 "--system_map_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json",
                 "--valid_muos_system_names_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt",
+                "--log_file_output_dir", "log",
                 "--screen_height", "720",
                 "--screen_width", "720",
                 "--icon_width_percent", "0.7",
