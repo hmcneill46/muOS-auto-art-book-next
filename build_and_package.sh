@@ -8,6 +8,7 @@ FINAL_DIR="$ARCHIVE_DIR/$OUTPUT_NAME"
 BUILD_DIR="AM-Builds"
 VERSION_FILE="$BUILD_DIR/version.txt"
 ZIP_NAME=""
+BINARY_NAME=""
 
 # Ensure the build directory exists
 mkdir -p "$BUILD_DIR"
@@ -26,8 +27,9 @@ BUILD=$((BUILD + 1))
 NEW_VERSION="$MAJOR.$MINOR.$BUILD"
 echo "$NEW_VERSION" > "$VERSION_FILE"
 
-# Set the ZIP name with the version
+# Set the ZIP name and binary name with the version
 ZIP_NAME="AutoArtBookNext-AM[v$NEW_VERSION].zip"
+BINARY_NAME="AutoArtBookNext-Binary[v$NEW_VERSION]"
 
 echo "Building version $NEW_VERSION..."
 
@@ -52,8 +54,14 @@ cd "ARCHIVE file format" || exit
 zip -r "../$BUILD_DIR/$ZIP_NAME" mnt
 cd ..
 
-# Step 5: Clean up
+# Step 5: Move the binary to the build directory with versioned name
+echo "Moving and renaming the binary to $BUILD_DIR/$BINARY_NAME..."
+mv -f "$FINAL_DIR" "$BUILD_DIR/$BINARY_NAME"
+
+# Step 6: Clean up
 echo "Cleaning up temporary files..."
 rm -rf build dist __pycache__ "$OUTPUT_NAME.spec"
 
-echo "Build and packaging complete! Saved as $BUILD_DIR/$ZIP_NAME"
+echo "Build and packaging complete!"
+echo "Saved as: $BUILD_DIR/$ZIP_NAME"
+echo "Binary saved as: $BUILD_DIR/$BINARY_NAME"
