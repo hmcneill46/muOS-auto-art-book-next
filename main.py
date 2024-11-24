@@ -56,6 +56,8 @@ class Config(object):
         self.max_icon_width = (args.screen_width * args.icon_width_percent) 
         self.deselected_brightness = args.deselected_brightness
         self.shadow_strength = args.shadow_strength
+        self.gradient_intensity = args.gradient_intensity
+
         self.folders = get_folders(self.roms_dir)
         self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
         self.example_slide_image = Image.open(os.path.join(self.slides_dir, f"_default.png")).convert("RGBA")
@@ -96,6 +98,50 @@ class Config(object):
     def log_associations(self):
         for folder in self.folder_console_associations.keys():
             self.logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
+
+def generateGradientImage(width, height, start_color, end_color, gradient_height_percent):
+    """
+    Generate a smooth vertical gradient image using PIL.
+    
+    Parameters:
+        width (int): The width of the image.
+        height (int): The height of the image.
+        start_color (tuple): RGBA tuple for the color at the top of the gradient.
+        end_color (tuple): RGBA tuple for the color at the bottom of the gradient.
+        gradient_height_percent (float): The percentage of the image height that the gradient covers (0.0 to 1.0).
+    
+    Returns:
+        Image: A PIL Image object containing the gradient.
+    """
+    # Create a new image with an RGBA mode
+    gradient = Image.new("RGBA", (width, height))
+    gradient_height = int(height * gradient_height_percent)
+
+    # Calculate the color difference for the gradient
+    delta_r = end_color[0] - start_color[0]
+    delta_g = end_color[1] - start_color[1]
+    delta_b = end_color[2] - start_color[2]
+    delta_a = end_color[3] - start_color[3]
+
+    for y in range(height):
+        if y < gradient_height:
+            # Calculate the interpolation factor
+            t = y / gradient_height
+            # Interpolate the color
+            r = int(start_color[0] + t * delta_r)
+            g = int(start_color[1] + t * delta_g)
+            b = int(start_color[2] + t * delta_b)
+            a = int(start_color[3] + t * delta_a)
+        else:
+            # Use the end color for the rest of the image
+            r, g, b, a = end_color
+
+        # Draw a horizontal line with the calculated color
+        for x in range(width):
+            gradient.putpixel((x, y), (r, g, b, a))
+
+    return gradient
+
 
 def generateFolderImage(folder_name:str, config:Config):
     """
@@ -168,6 +214,10 @@ def generateFolderImage(folder_name:str, config:Config):
         current_slide_image = enhancer.enhance(config.deselected_brightness)
         image.alpha_composite(current_slide_image, (image_middle_x-index*change_in_x, 0))
         index += 1
+
+    gradient = generateGradientImage(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
+    gradient.save("gradient.png")
+    image.alpha_composite(gradient,(0,0))
 
     ## draw the logo in the middle of the screen
     logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
@@ -327,24 +377,28 @@ def main():
         help="Background color in hex format (default: #000000)"
     )
     parser.add_argument(
-        "--gap_between_slides", type=int, default=10,
-        help="Gap between slides in pixels (default: 10)"
+        "--gap_between_slides", type=int, default=7,
+        help="Gap between slides in pixels (default: 7)"
     )
     parser.add_argument(
         "--icon_height_percent", type=float, default=0.5,
         help="Max icon height as a percentage of screen height (default is 50%: 0.5 )"
     )
     parser.add_argument(
-        "--icon_width_percent", type=float, default=0.5,
+        "--icon_width_percent", type=float, default=0.7,
         help="Max icon width as a percentage of screen width (default is 70%: 0.7)"
     )
     parser.add_argument(
-        "--deselected_brightness", type=float, default=0.5,
-        help="How close to full brightness are the deselected folders (default is 20%: 0.2)"
+        "--deselected_brightness", type=float, default=0.4,
+        help="How close to full brightness are the deselected folders (default is 40%: 0.4)"
     )
     parser.add_argument(
         "--shadow_strength", type=int, default=1,
         help="How strong do you want the drop shadow to be? (default is 1: int[0-5])"
+    )
+    parser.add_argument(
+        "--gradient_intensity", type=int, default=235,
+        help="The intensity of the gradient overlaid (default is 235: 0-255)"
     )
 
     args = parser.parse_args()

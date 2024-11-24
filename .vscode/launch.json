@@ -19,10 +19,16 @@
                 "--system_map_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json",
                 "--valid_muos_system_names_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt",
                 "--log_file_output_dir", "log",
-                "--screen_height", "720",
-                "--screen_width", "720",
+                "--screen_width", "640",
+                "--screen_height", "480",
+
+                "--background_hex","#202020",
+                "--gap_between_slides","7",
+                "--icon_height_percent","0.5",
                 "--icon_width_percent", "0.7",
-                "--deselected_brightness", "0.2"
+                "--deselected_brightness", "0.4",
+                "--shadow_strength","1",
+                "--gradient_intensity","235"
             ]
         }
     ]
