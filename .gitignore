@@ -166,4 +166,9 @@ TestingPaths/*
 !TestingPaths/anthonycaccese-assets/
 !TestingPaths/anthonycaccese-assets/**
 personal_run_script.sh
+
+AM-Builds/*
+!AM-Builds/version.txt
+ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/AutoArtBookNext
+
 .DS_Store
