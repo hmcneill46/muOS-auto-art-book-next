@@ -83,3 +83,4 @@ WASM-4
 Watara Supervision
 Wolfenstein 3D
 default
+es_systems/ngp

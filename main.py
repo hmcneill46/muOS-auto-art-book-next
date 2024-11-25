@@ -105,9 +105,9 @@ class Config(object):
             self.logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
     def get_gradient_overlay_image(self, width, height, start_color, end_color, gradient_height_percent):
         if self.gradient_overlay_image is None:
-            self.gradient_overlay_image = generateGradientImage(width, height, start_color, end_color, gradient_height_percent)
+            self.gradient_overlay_image = generateGradientImage(width, height, start_color, end_color, gradient_height_percent, self)
         return self.gradient_overlay_image
-def generateGradientImage(width, height, start_color, end_color, gradient_height_percent):
+def generateGradientImage(width, height, start_color, end_color, gradient_height_percent,config:Config):
     """
     Generate a smooth vertical gradient image using PIL.
     
@@ -121,6 +121,7 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
     Returns:
         Image: A PIL Image object containing the gradient.
     """
+    config.logger.info(f"Generating Gradient Image")
     # Create a new image with an RGBA mode
     gradient = Image.new("RGBA", (width, height))
     gradient_height = int(height * gradient_height_percent)
@@ -158,6 +159,7 @@ def generateFolderImage(folder_name:str, config:Config):
     :param config: Configuration object.
     :return: Image object.
     """
+    config.logger.info(f"Generating Image for {folder_name}")
     height_multiplier = config.slide_height/config.screen_height
     width_multiplier = config.slide_width/config.screen_width
     rendered_image_multiplier = max(height_multiplier, width_multiplier)
@@ -256,7 +258,7 @@ def check_for_ngp(s):
 def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_width:int, rendered_image_height:int, rendered_image_multiplier:float, config:Config):
     image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0, 0, 0, 0))
     ## draw the logo in the middle of the screen
-    print(muOS_system_name)
+    config.logger.info(f"Generating logo for {folder_name}")
     if muOS_system_name != "default":
         logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
         logo_image_multiplier = min(config.max_icon_height/logo_image.height, config.max_icon_width/logo_image.width)*rendered_image_multiplier
