@@ -14,6 +14,14 @@ def ceil(n):
     :return: Rounded up integer.
     """
     return int(n) if n == int(n) else int(n) + 1
+def floor(n):
+    """
+    Returns the largest integer less than or equal to n.
+    :param n: Number to round down.
+    :return: Rounded down integer.
+    """
+    return int(n) if n >= 0 or n == int(n) else int(n) - 1
+
 
 def setup_logger(log_file_output_dir, log_file_name="AutoArtBookNextLog.log"):
     # Ensure the output directory exists
@@ -72,6 +80,8 @@ class Config(object):
         self.real_slide_width = sum(1 for pixel in first_row if pixel[3] > alpha_threshold)
 
         self.gradient_overlay_image = None
+        self.special_cases = {r'^ngp$': 'es_systems/ngp',
+                              r'neo.*?geo.*?pocket(?!.*?colou?r)': 'es_systems/ngp'}
     def log_config(self):
         # Log directories
         self.logger.info("=" * 50)  # Divider line
@@ -175,8 +185,10 @@ def generateFolderImage(folder_name:str, config:Config):
     muOS_system_name = config.folder_console_associations[folder_name.lower()]
 
     # draw the correct slide image in the middle of the screen
-    if os.path.exists(os.path.join(config.slides_dir, f"{folder_name}.png")):
-        slide_image = Image.open(os.path.join(config.slides_dir, f"{folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+    if os.path.exists(os.path.join(config.slides_dir, f"{folder_name.lower()}.png")):
+        slide_image = Image.open(os.path.join(config.slides_dir, f"{folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+    elif os.path.exists(os.path.join(config.slides_dir, f"auto-{folder_name.lower()}.png")):
+        slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
     else:
         es_system_image_name = get_es_system_name(folder_name, muOS_system_name, config)
         slide_image = Image.open(os.path.join(config.slides_dir, f"{es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
@@ -192,8 +204,10 @@ def generateFolderImage(folder_name:str, config:Config):
         new_folder_index = (current_folder_index+index)%len(config.folders)
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+        elif os.path.exists(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
         else:
             current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
             current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
@@ -209,8 +223,10 @@ def generateFolderImage(folder_name:str, config:Config):
         new_folder_index = (current_folder_index-index)%len(config.folders)
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+        elif os.path.exists(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")):
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
         else:
             current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
             current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
@@ -224,8 +240,9 @@ def generateFolderImage(folder_name:str, config:Config):
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
-    if check_for_ngp(folder_name):
-        logo_image = generateLogoImage(folder_name, "es_systems/ngp", rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    if check_for_special_case(folder_name, config.special_cases) != None:
+        special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
+        logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
     else:
         logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
     image.alpha_composite(logo_image, (0,0))
@@ -234,26 +251,29 @@ def generateFolderImage(folder_name:str, config:Config):
 
 def get_es_system_name(folder_name:str, muOS_system_name:str, config:Config):
     # Special case for Neo Geo Pocket
-    if check_for_ngp(folder_name):
-        muOS_system_name = "es_systems/ngp"
+    if check_for_special_case(folder_name, config.special_cases) != None:
+        muOS_system_name = check_for_special_case(folder_name, config.special_cases)
     if muOS_system_name in config.system_map.keys():
         return config.system_map[muOS_system_name]
     else:
         return "_default.png"
 
-def check_for_ngp(s):
-    if s == "ngp":
-        return True
-    # Define the regular expression
-    pattern = (
-        r'(?i)'       # Case insensitive
-        r'neo.*?'     # Match "neo" followed by any characters (non-greedy)
-        r'geo.*?'     # Match "geo" after "neo"
-        r'pocket'     # Match "pocket" after "geo"
-        r'(?!.*?colou?r)'  # Ensure "color" or "colour" does not appear anywhere
-    )
-    # Check if the string matches the pattern
-    return bool(re.search(pattern, s))
+def check_for_special_case(folder_name, special_cases):
+    """
+    Checks if a string matches any special case pattern and returns the associated output.
+    
+    Args:
+        folder_name (str): The input string to check.
+        special_cases (dict): A dictionary where keys are regex patterns and values are output strings.
+    
+    Returns:
+        str or None: The associated output string if a match is found; otherwise, None.
+    """
+    for pattern in special_cases.keys():
+        if re.search(pattern, folder_name, re.IGNORECASE):  # Case insensitive search
+            return special_cases[pattern]
+    return None
+
 
 def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_width:int, rendered_image_height:int, rendered_image_multiplier:float, config:Config):
     image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0, 0, 0, 0))
@@ -269,14 +289,57 @@ def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_widt
         folder_name_bbox = font.getbbox(folder_name)
         folder_name_width = folder_name_bbox[2]-folder_name_bbox[0]
         folder_name_height = folder_name_bbox[3]-folder_name_bbox[1]
-        logo_image = Image.new("RGBA", (folder_name_width, folder_name_height), (0, 0, 0, 0))
+
+        text_to_draw = []
+        max_chars = floor(len(folder_name)*((config.max_icon_width*rendered_image_multiplier)/(folder_name_width)))
+        if len(folder_name) > max_chars:
+            words_in_folder_name = folder_name.split(" ")
+            set_of_words = []
+            index=0
+            while True:
+                if index >= len(words_in_folder_name):
+                    break
+                set_of_words.append(words_in_folder_name[index])
+                sub_index = index+1
+                while True:
+                    if sub_index >= len(words_in_folder_name):
+                        break
+                    if len(set_of_words[index]+" "+words_in_folder_name[sub_index]) > max_chars:
+                        break
+                    set_of_words[index] += " "+words_in_folder_name[sub_index]
+                    words_in_folder_name.remove(words_in_folder_name[sub_index])
+                index += 1
+            for word in set_of_words:
+                if len(word) > max_chars:
+                    for i in range(0, len(word), max_chars):
+                        if i+max_chars > len(word):
+                            text_to_draw.append(word[i:])
+                            break
+                        else:
+                            text_to_draw.append(word[i:i+max_chars])
+                else:
+                    text_to_draw.append(word)
+        else:
+            text_to_draw = [folder_name]
+        text_widths = []
+        ascent, descent = font.getmetrics()
+        text_height = ascent + descent
+        for text in text_to_draw:
+            text_widths.append(font.getbbox(text)[2]-font.getbbox(text)[0])
+        space_between_text = int(-30*(rendered_image_width/1440))
+        total_text_height = text_height*len(text_to_draw)+ (len(text_to_draw)-1)*space_between_text
+
+        logo_image = Image.new("RGBA", (max(text_widths), total_text_height), (0, 0, 0, 0))
         draw = ImageDraw.Draw(logo_image)
-        text_x = 0
-        text_y = -folder_name_bbox[1]
-        draw.text((text_x,text_y), folder_name, font=font, fill=(255,255,255,255))
+
+        for n in range(len(text_to_draw)):
+            if n == 0:
+                text_y = 0
+            else:
+                text_y = text_y + text_height + space_between_text
+            text_x = (max(text_widths)-text_widths[n])/2
+            draw.text((text_x,text_y), text_to_draw[n], font=font, fill=(255,255,255,255))
         
-
-
     logo_image_middle_x = int((rendered_image_width - logo_image.width) / 2)
     logo_image_middle_y = int((rendered_image_height - logo_image.height) / 2)
 
@@ -508,6 +571,5 @@ def main():
         generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
         logger.info(f"Successfully generated image for folder: {folder}")
     
-
 if __name__ == "__main__":
     main()
