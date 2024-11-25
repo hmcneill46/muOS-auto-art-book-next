@@ -4,6 +4,7 @@ import subprocess
 import sys
 import json
 import logging
+import re
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter, ImageFont
 
 def ceil(n):
@@ -173,14 +174,10 @@ def generateFolderImage(folder_name:str, config:Config):
 
     # draw the correct slide image in the middle of the screen
     if os.path.exists(os.path.join(config.slides_dir, f"{folder_name}.png")):
-        slide_image = Image.open(os.path.join(config.slides_dir, f"{folder_name}.png"))
+        slide_image = Image.open(os.path.join(config.slides_dir, f"{folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
     else:
-        if muOS_system_name in config.system_map.keys():
-            es_system_image_name = config.system_map[muOS_system_name]
-        else:
-            es_system_image_name = "_default.png"
-    
-        slide_image = Image.open(os.path.join(config.slides_dir, f"{es_system_image_name}"))
+        es_system_image_name = get_es_system_name(folder_name, muOS_system_name, config)
+        slide_image = Image.open(os.path.join(config.slides_dir, f"{es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
     image_middle_x = int((rendered_image_width - slide_image.width) / 2)
     image.alpha_composite(slide_image, (image_middle_x, 0))
     slides_left = slides_per_screen-1
@@ -194,13 +191,10 @@ def generateFolderImage(folder_name:str, config:Config):
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
         if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png"))
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
         else:
-            if muOS_system_name in config.system_map.keys():
-                current_es_system_image_name = config.system_map[current_muOS_system_name]
-            else:
-                current_es_system_image_name = "_default.png"
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
+            current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
         enhancer = ImageEnhance.Brightness(current_slide_image)
         # to reduce brightness by 50%, use factor 0.5
         current_slide_image = enhancer.enhance(config.deselected_brightness)
@@ -214,13 +208,10 @@ def generateFolderImage(folder_name:str, config:Config):
         current_folder_name = config.folders[new_folder_index]
         current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
         if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png"))
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
         else:
-            if muOS_system_name in config.system_map.keys():
-                current_es_system_image_name = config.system_map[current_muOS_system_name]
-            else:
-                current_es_system_image_name = "_default.png"
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}"))
+            current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
+            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
 
         enhancer = ImageEnhance.Brightness(current_slide_image)
         # to reduce brightness by 50%, use factor 0.5
@@ -231,15 +222,41 @@ def generateFolderImage(folder_name:str, config:Config):
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
-    
-    logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    if check_for_ngp(folder_name):
+        logo_image = generateLogoImage(folder_name, "es_systems/ngp", rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    else:
+        logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
     image.alpha_composite(logo_image, (0,0))
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
+def get_es_system_name(folder_name:str, muOS_system_name:str, config:Config):
+    # Special case for Neo Geo Pocket
+    if check_for_ngp(folder_name):
+        muOS_system_name = "es_systems/ngp"
+    if muOS_system_name in config.system_map.keys():
+        return config.system_map[muOS_system_name]
+    else:
+        return "_default.png"
+
+def check_for_ngp(s):
+    if s == "ngp":
+        return True
+    # Define the regular expression
+    pattern = (
+        r'(?i)'       # Case insensitive
+        r'neo.*?'     # Match "neo" followed by any characters (non-greedy)
+        r'geo.*?'     # Match "geo" after "neo"
+        r'pocket'     # Match "pocket" after "geo"
+        r'(?!.*?colou?r)'  # Ensure "color" or "colour" does not appear anywhere
+    )
+    # Check if the string matches the pattern
+    return bool(re.search(pattern, s))
+
 def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_width:int, rendered_image_height:int, rendered_image_multiplier:float, config:Config):
     image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0, 0, 0, 0))
     ## draw the logo in the middle of the screen
+    print(muOS_system_name)
     if muOS_system_name != "default":
         logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
         logo_image_multiplier = min(config.max_icon_height/logo_image.height, config.max_icon_width/logo_image.width)*rendered_image_multiplier

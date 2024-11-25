@@ -83,5 +83,6 @@
     "WASM-4": "wasm4.png",
     "Watara Supervision": "supervision.png",
     "Wolfenstein 3D": "_default.png",
-    "default": "_default.png"
+    "default": "_default.png",
+    "es_systems/ngp": "ngp.png"
   }
