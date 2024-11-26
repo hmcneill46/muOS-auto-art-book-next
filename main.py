@@ -580,6 +580,20 @@ def main():
     for folder in config.folders:
         generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
         logger.info(f"Successfully generated image for folder: {folder}")
+    if False:
+        config.update_folders(["auto-allgames",
+                        "auto-favorites",
+                        "auto-lastplayed",
+                        "library",
+                        "apfm1000",
+                        "tools",
+                        "auto-simulation",
+                        "sufami"])
+        config.box_art_dir = os.path.join(config.box_art_dir, "muxlaunch")
+        for folder in config.folders:
+            generateFolderImage(folder, config, hide_logo=True).save(os.path.join(config.box_art_dir, f"{folder}.png"))
+            logger.info(f"Successfully generated image for folder: {folder}")
+    
     
 if __name__ == "__main__":
     main()
