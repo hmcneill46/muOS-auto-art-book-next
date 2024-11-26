@@ -49,7 +49,7 @@ class Config(object):
         self.logger = logger
         self.roms_dir = args.roms_dir
         self.box_art_dir = args.box_art_dir
-        self.slides_dir = args.slides_dir
+        self.panels_dir = args.panels_dir
         self.logos_dir = args.logos_dir
         self.core_info_dir = args.core_info_dir
         self.system_map_path = args.system_map_path
@@ -60,7 +60,7 @@ class Config(object):
         self.screen_height = args.screen_height
         self.screen_width = args.screen_width
         self.background_hex = args.background_hex
-        self.gap_between_slides = args.gap_between_slides
+        self.gap_between_panels = args.gap_between_panels
         self.icon_height_percent = args.icon_height_percent
         self.icon_width_percent = args.icon_width_percent
         self.max_icon_height = (args.screen_height * args.icon_height_percent)
@@ -71,13 +71,13 @@ class Config(object):
 
         self.folders = get_folders(self.roms_dir)
         self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
-        self.example_slide_image = Image.open(os.path.join(self.slides_dir, f"_default.png")).convert("RGBA")
-        self.slide_height = self.example_slide_image.height
-        self.slide_width = self.example_slide_image.width
+        self.example_panel_image = Image.open(os.path.join(self.panels_dir, f"_default.png")).convert("RGBA")
+        self.panel_height = self.example_panel_image.height
+        self.panel_width = self.example_panel_image.width
 
-        first_row = list(self.example_slide_image.getdata())[0:self.example_slide_image.width]
+        first_row = list(self.example_panel_image.getdata())[0:self.example_panel_image.width]
         alpha_threshold = 200
-        self.real_slide_width = sum(1 for pixel in first_row if pixel[3] > alpha_threshold)
+        self.real_panel_width = sum(1 for pixel in first_row if pixel[3] > alpha_threshold)
 
         self.gradient_overlay_image = None
         self.special_cases = {r'^ngp$': 'es_systems/ngp',
@@ -89,7 +89,7 @@ class Config(object):
         self.logger.info("=" * 50)
         self.logger.info(f"ROMs Directory: {self.roms_dir}")
         self.logger.info(f"Box Art Directory: {self.box_art_dir}")
-        self.logger.info(f"System Image Slides Directory: {self.slides_dir}")
+        self.logger.info(f"System Image Panels Directory: {self.panels_dir}")
         self.logger.info(f"System Image Logos Directory: {self.logos_dir}")
         self.logger.info(f"Folder Core Association Directory: {self.core_info_dir}")
 
@@ -105,7 +105,7 @@ class Config(object):
         self.logger.info("Optional settings:")
         self.logger.info("=" * 50)
         self.logger.info(f"  Background color: {self.background_hex}")
-        self.logger.info(f"  Gap between slides: {self.gap_between_slides}px")
+        self.logger.info(f"  Gap between panels: {self.gap_between_panels}px")
         self.logger.info(f"  Icon height max percent of screen height: {self.icon_height_percent*100}%")
         self.logger.info(f"  Icon width max percent of screen width: {self.icon_width_percent*100}%")
         self.logger.info(f"  Calculated max icon height: {self.max_icon_height}px")
@@ -166,7 +166,7 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
     return gradient
 
 
-def generateFolderImage(folder_name:str, config:Config, hide_logo=False):
+def generateFolderImage(folder_name:str, config:Config):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -174,85 +174,135 @@ def generateFolderImage(folder_name:str, config:Config, hide_logo=False):
     :return: Image object.
     """
     config.logger.info(f"Generating Image for {folder_name}")
-    height_multiplier = config.slide_height/config.screen_height
-    width_multiplier = config.slide_width/config.screen_width
+    height_multiplier = config.panel_height/config.screen_height
+    width_multiplier = config.panel_width/config.screen_width
     rendered_image_multiplier = max(height_multiplier, width_multiplier)
     rendered_image_width, rendered_image_height = int(config.screen_width*rendered_image_multiplier), int(config.screen_height*rendered_image_multiplier)
     image = Image.new("RGBA", (rendered_image_width, rendered_image_height), config.background_hex)
-    draw = ImageDraw.Draw(image)
-
-
-    change_in_x = int(config.real_slide_width+(config.gap_between_slides*(rendered_image_multiplier)))
-
-    slides_per_screen = ceil(rendered_image_width/change_in_x)+1
 
     muOS_system_name = config.folder_console_associations[folder_name.lower()]
 
-    # draw the correct slide image in the middle of the screen
-    if os.path.exists(os.path.join(config.slides_dir, f"{folder_name.lower()}.png")):
-        slide_image = Image.open(os.path.join(config.slides_dir, f"{folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-    elif os.path.exists(os.path.join(config.slides_dir, f"auto-{folder_name.lower()}.png")):
-        slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-    else:
-        es_system_image_name = get_es_system_name(folder_name, muOS_system_name, config)
-        slide_image = Image.open(os.path.join(config.slides_dir, f"{es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-    image_middle_x = int((rendered_image_width - slide_image.width) / 2)
-    image.alpha_composite(slide_image, (image_middle_x, 0))
-    slides_left = slides_per_screen-1
-    slides_to_the_left = ceil(slides_left/2)
-    slides_to_the_right = ceil(slides_left/2)
-    index=1
-    while index <= slides_to_the_left:
-        # draw the correct slide image in the middle of the screen
-        current_folder_index = config.folders.index(folder_name)
-        new_folder_index = (current_folder_index+index)%len(config.folders)
-        current_folder_name = config.folders[new_folder_index]
-        current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-        elif os.path.exists(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+    all_es_item_names = []
+    for working_folder_name in config.folders:
+        working_muOS_system_name = config.folder_console_associations[working_folder_name.lower()]
+        # draw the correct panel image in the middle of the screen
+        if os.path.exists(os.path.join(config.panels_dir, f"{working_folder_name.lower()}.png")):
+            working_es_system_image_name = f"{working_folder_name.lower()}.png"
+        elif os.path.exists(os.path.join(config.panels_dir, f"auto-{working_folder_name.lower()}.png")):
+            working_es_system_image_name= f"auto-{working_folder_name.lower()}.png"
         else:
-            current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-        enhancer = ImageEnhance.Brightness(current_slide_image)
-        # to reduce brightness by 50%, use factor 0.5
-        current_slide_image = enhancer.enhance(config.deselected_brightness)
-        image.alpha_composite(current_slide_image, (image_middle_x+index*change_in_x, 0))
-        index += 1
-    index=1
-    while index <= slides_to_the_right:
-        # draw the correct slide image in the middle of the screen
-        current_folder_index = config.folders.index(folder_name)
-        new_folder_index = (current_folder_index-index)%len(config.folders)
-        current_folder_name = config.folders[new_folder_index]
-        current_muOS_system_name = config.folder_console_associations[current_folder_name.lower()]
-        if os.path.exists(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-        elif os.path.exists(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")):
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"auto-{current_folder_name.lower()}.png")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
-        else:
-            current_es_system_image_name = get_es_system_name(current_folder_name, current_muOS_system_name, config)
-            current_slide_image = Image.open(os.path.join(config.slides_dir, f"{current_es_system_image_name}")).resize((config.slide_width, config.slide_height), Image.LANCZOS)
+            working_es_system_image_name = get_es_system_name(working_folder_name, working_muOS_system_name, config)
+        all_es_item_names.append(working_es_system_image_name)
 
-        enhancer = ImageEnhance.Brightness(current_slide_image)
-        # to reduce brightness by 50%, use factor 0.5
-        current_slide_image = enhancer.enhance(config.deselected_brightness)
-        image.alpha_composite(current_slide_image, (image_middle_x-index*change_in_x, 0))
-        index += 1
+    combinedPanelImage = generateArtBookNextImage(config.folders.index(folder_name),
+                                                  all_es_item_names,
+                                                  rendered_image_width,
+                                                  rendered_image_height,
+                                                  rendered_image_multiplier,
+                                                  config.gap_between_panels,
+                                                  config.real_panel_width,
+                                                  config.panels_dir,
+                                                  config.panel_width,
+                                                  config.panel_height,
+                                                  config.deselected_brightness)
+    image.alpha_composite(combinedPanelImage, (0,0))
     
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
-    if not hide_logo:
-        if check_for_special_case(folder_name, config.special_cases) != None:
-            special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
-            logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
-        else:
-            logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
-        image.alpha_composite(logo_image, (0,0))
+    if check_for_special_case(folder_name, config.special_cases) != None:
+        special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
+        logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    else:
+        logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+    image.alpha_composite(logo_image, (0,0))
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
+
+def generateMenuImage(index, menu_names, es_system_images, config:Config):
+    """
+    Generate a folder image for the given folder name. In the style of Art Book Next.
+    :param folder_name: Name of the folder.
+    :param config: Configuration object.
+    :return: Image object.
+    """
+    config.logger.info(f"Generating Menu Image for {menu_names[index]}")
+    height_multiplier = config.panel_height/config.screen_height
+    width_multiplier = config.panel_width/config.screen_width
+    rendered_image_multiplier = max(height_multiplier, width_multiplier)
+    rendered_image_width, rendered_image_height = int(config.screen_width*rendered_image_multiplier), int(config.screen_height*rendered_image_multiplier)
+    image = Image.new("RGBA", (rendered_image_width, rendered_image_height), config.background_hex)
+
+    combinedPanelImage = generateArtBookNextImage(index,
+                                                  es_system_images,
+                                                  rendered_image_width,
+                                                  rendered_image_height,
+                                                  rendered_image_multiplier,
+                                                  config.gap_between_panels,
+                                                  config.real_panel_width,
+                                                  config.panels_dir,
+                                                  config.panel_width,
+                                                  config.panel_height,
+                                                  config.deselected_brightness)
+    image.alpha_composite(combinedPanelImage, (0,0))
+    
+    gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
+    image.alpha_composite(gradient,(0,0))
+
+    return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
+
+def generateArtBookNextImage(current_index,
+                             all_es_item_names,
+                             rendered_image_width,
+                             rendered_image_height,
+                             rendered_image_multiplier,
+                             gap_between_panels,
+                             real_panel_width,
+                             panels_dir,
+                             panel_width,
+                             panel_height,
+                             deselected_brightness):
+    image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0,0,0,0))
+
+    change_in_x = int(real_panel_width+(gap_between_panels*(rendered_image_multiplier)))
+
+    panels_per_screen = ceil(rendered_image_width/change_in_x)+1
+
+    current_es_item_name = all_es_item_names[current_index]
+    panel_image = Image.open(os.path.join(panels_dir, f"{current_es_item_name}")).resize((panel_width, panel_height), Image.LANCZOS)
+
+    image_middle_x = int((rendered_image_width - panel_image.width) / 2)
+    image.alpha_composite(panel_image, (image_middle_x, 0))
+    panels_left = panels_per_screen-1
+    panels_to_the_left = ceil(panels_left/2)
+    panels_to_the_right = ceil(panels_left/2)
+    index=1
+    while index <= panels_to_the_left:
+        # draw the correct panel image in the middle of the screen
+        working_item_index = (current_index+index)%len(all_es_item_names)
+
+        working_es_item_name = all_es_item_names[working_item_index]
+        working_panel_image = Image.open(os.path.join(panels_dir, f"{working_es_item_name}")).resize((panel_width, panel_height), Image.LANCZOS)
+        enhancer = ImageEnhance.Brightness(working_panel_image)
+        # to reduce brightness by 50%, use factor 0.5
+        working_panel_image = enhancer.enhance(deselected_brightness)
+        image.alpha_composite(working_panel_image, (image_middle_x+index*change_in_x, 0))
+        index += 1
+    index=1
+    while index <= panels_to_the_right:
+        # draw the correct panel image in the middle of the screen
+        working_item_index = (current_index-index)%len(all_es_item_names)
+
+        working_es_item_name = all_es_item_names[working_item_index]
+        working_panel_image = Image.open(os.path.join(panels_dir, f"{working_es_item_name}")).resize((panel_width, panel_height), Image.LANCZOS)
+
+        enhancer = ImageEnhance.Brightness(working_panel_image)
+        # to reduce brightness by 50%, use factor 0.5
+        working_panel_image = enhancer.enhance(deselected_brightness)
+        image.alpha_composite(working_panel_image, (image_middle_x-index*change_in_x, 0))
+        index += 1
+    return(image)
+
 
 def get_es_system_name(folder_name:str, muOS_system_name:str, config:Config):
     # Special case for Neo Geo Pocket
@@ -413,14 +463,14 @@ def get_folder_core_associations(folders, core_info_dir):
             folder_core_associations[folder] = "default"
     return folder_core_associations
 
-def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir, logger):
+def verify_json_mapping(json_file_path, valid_muos_system_names_path, panels_dir, logger):
     """
-    Verifies that the JSON file has a mapping for each system image slide.
+    Verifies that the JSON file has a mapping for each system image panel.
 
     :param json_file_path: Path to the JSON file.
     :param valid_muos_system_names_path: Path to the file containing valid MUOS system names.
-    :param slides_dir: Path to the system image slides directory.
-    :return: True if the JSON file has a mapping for each system image slide, False otherwise.
+    :param panels_dir: Path to the system image panels directory.
+    :return: True if the JSON file has a mapping for each system image panel, False otherwise.
     """
     with open(json_file_path, "r") as f:
         json_data = json.load(f)
@@ -429,10 +479,10 @@ def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir
     with open(valid_muos_system_names_path, "r") as f:
         valid_muos_system_names = f.read().splitlines()
 
-    # Get system image slides
-    slides = os.listdir(slides_dir)
+    # Get system image panels
+    panels = os.listdir(panels_dir)
 
-    # Check if the JSON file has a mapping for each system image slide
+    # Check if the JSON file has a mapping for each system image panel
     for valid_muos_system_name in valid_muos_system_names:
         if valid_muos_system_name not in json_data.keys():
             logger.info(f"[ERROR] No mapping found for system name: {valid_muos_system_name}")
@@ -446,13 +496,13 @@ def verify_json_mapping(json_file_path, valid_muos_system_names_path, slides_dir
         else:
             logger.info(f"[OK] JSON file has a valid system name: {json_muos_system_name}")
     for es_system_names in json_data.values():
-        if es_system_names not in slides:
-            logger.error(f"[ERROR] No slide found for system name: {es_system_names}")
+        if es_system_names not in panels:
+            logger.error(f"[ERROR] No panel found for system name: {es_system_names}")
             return False
         else:
-            logger.info(f"[OK] JSON file has a slide for system name: {es_system_names}")
+            logger.info(f"[OK] JSON file has a panel for system name: {es_system_names}")
 
-    logger.info(f"[OK] JSON file has a mapping for each system image slide.")
+    logger.info(f"[OK] JSON file has a mapping for each system image panel.")
     return True
 
 def validate_directory(path, description, logger):
@@ -494,7 +544,7 @@ def main():
     # Required arguments
     parser.add_argument("--roms_dir", required=True, help="Path to the ROMs directory")
     parser.add_argument("--box_art_dir", required=True, help="Path to the box art directory")
-    parser.add_argument("--slides_dir", required=True, help="Path to the system image slides directory")
+    parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
     parser.add_argument("--logos_dir", required=True, help="Path to the system image logos directory")
     parser.add_argument("--core_info_dir", required=True, help="Path to the folder where folder core associations are stored")
     parser.add_argument("--system_map_path", required=True, help="Path to the file where muOS -> ES system name mapping is stored")
@@ -511,8 +561,8 @@ def main():
         help="Background color in hex format (default: #000000)"
     )
     parser.add_argument(
-        "--gap_between_slides", type=int, default=7,
-        help="Gap between slides in pixels (default: 7)"
+        "--gap_between_panels", type=int, default=7,
+        help="Gap between panels in pixels (default: 7)"
     )
     parser.add_argument(
         "--icon_height_percent", type=float, default=0.5,
@@ -546,7 +596,7 @@ def main():
     # Validate directories
     roms_valid = validate_directory(args.roms_dir, "ROMs Directory", logger)
     box_art_valid = validate_directory(args.box_art_dir, "Box Art Directory", logger)
-    slides_valid = validate_directory(args.slides_dir, "System Image Slides Directory", logger)
+    panels_valid = validate_directory(args.panels_dir, "System Image Panels Directory", logger)
     logos_valid = validate_directory(args.logos_dir, "System Image Logos Directory", logger)
     core_info_valid = validate_directory(args.core_info_dir, "Folder Core Association Directory", logger)
     log_file_output_dir_valid = validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
@@ -555,7 +605,7 @@ def main():
     font_path_valid = validate_file(args.font_path, "Font File", logger)
 
     # Validation summary
-    if roms_valid and box_art_valid and slides_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid and font_path_valid:
+    if roms_valid and box_art_valid and panels_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid and font_path_valid:
         logger.info("All directories are valid. Proceeding with the next steps...")
     else:
         logger.info(
@@ -575,24 +625,26 @@ def main():
     logger.info("=" * 50)  # Divider line
     logger.info("Checking JSON mapping")
     logger.info("=" * 50)
-    verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.slides_dir, logger)
+    verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.panels_dir, logger)
 
     for folder in config.folders:
         generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
         logger.info(f"Successfully generated image for folder: {folder}")
     if False:
-        config.update_folders(["auto-allgames",
-                        "auto-favorites",
-                        "auto-lastplayed",
-                        "library",
-                        "apfm1000",
-                        "tools",
-                        "auto-simulation",
-                        "sufami"])
-        config.box_art_dir = os.path.join(config.box_art_dir, "muxlaunch")
-        for folder in config.folders:
-            generateFolderImage(folder, config, hide_logo=True).save(os.path.join(config.box_art_dir, f"{folder}.png"))
-            logger.info(f"Successfully generated image for folder: {folder}")
+        test_output_dir = os.path.join(config.box_art_dir,"muxlaunch")
+        muxlaunch_images = {"explore":"auto-allgames.png",
+                        "favourite":"auto-favorites.png",
+                        "history":"auto-lastplayed.png",
+                        "apps":"library.png",
+                        "info":"apfm1000.png",
+                        "config":"tools.png",
+                        "reboot":"auto-simulation.png",
+                        "shutdown":"sufami.png"}
+        muxlaunch_items = [x for x in muxlaunch_images.keys()]
+        es_system_images = [y for y in muxlaunch_images.values()]
+        for index in range(len(muxlaunch_items)):
+            generateMenuImage(index,muxlaunch_items,es_system_images,config).save(os.path.join(test_output_dir,f"{muxlaunch_items[index]}.png"))
+            logger.info(f"Successfully generated image for system: {muxlaunch_items[index]}")
     
     
 if __name__ == "__main__":

@@ -13,7 +13,7 @@
             "args": [
                 "--roms_dir", "TestingPaths/Roms",
                 "--box_art_dir", "TestingPaths/FolderBox",
-                "--slides_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default",
+                "--panels_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default",
                 "--logos_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/logos",
                 "--core_info_dir", "TestingPaths/infocore",
                 "--system_map_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json",
@@ -25,7 +25,7 @@
                 "--screen_height", "480",
 
                 "--background_hex","#202020",
-                "--gap_between_slides","7",
+                "--gap_between_panels","7",
                 "--icon_height_percent","0.5",
                 "--icon_width_percent", "0.7",
                 "--deselected_brightness", "0.4",
