@@ -626,11 +626,11 @@ def main():
     logger.info("Checking JSON mapping")
     logger.info("=" * 50)
     verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.panels_dir, logger)
-
-    for folder in config.folders:
-        generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
-        logger.info(f"Successfully generated image for folder: {folder}")
-    if False:
+    if "generating folder box art":
+        for folder in config.folders:
+            generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
+            logger.info(f"Successfully generated image for folder: {folder}")
+    if not "generating muxlaunch photos":
         test_output_dir = os.path.join(config.box_art_dir,"muxlaunch")
         muxlaunch_images = {"explore":"auto-allgames.png",
                         "favourite":"auto-favorites.png",
