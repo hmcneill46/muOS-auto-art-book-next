@@ -117,6 +117,10 @@ class Config(object):
         if self.gradient_overlay_image is None:
             self.gradient_overlay_image = generateGradientImage(width, height, start_color, end_color, gradient_height_percent, self)
         return self.gradient_overlay_image
+    def update_folders(self, folders):
+        self.folders = folders
+        self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
+
 def generateGradientImage(width, height, start_color, end_color, gradient_height_percent,config:Config):
     """
     Generate a smooth vertical gradient image using PIL.
@@ -162,7 +166,7 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
     return gradient
 
 
-def generateFolderImage(folder_name:str, config:Config):
+def generateFolderImage(folder_name:str, config:Config, hide_logo=False):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -240,12 +244,13 @@ def generateFolderImage(folder_name:str, config:Config):
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
-    if check_for_special_case(folder_name, config.special_cases) != None:
-        special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
-        logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
-    else:
-        logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
-    image.alpha_composite(logo_image, (0,0))
+    if not hide_logo:
+        if check_for_special_case(folder_name, config.special_cases) != None:
+            special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
+            logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+        else:
+            logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+        image.alpha_composite(logo_image, (0,0))
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
@@ -285,7 +290,12 @@ def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_widt
         logo_image = logo_image.resize((int(logo_image.width*logo_image_multiplier), int(logo_image.height*logo_image_multiplier)), Image.LANCZOS)
     else:
         # use config config.font_path to draw a text logo
-        font = ImageFont.truetype(config.font_path, 150*(rendered_image_width/1440))
+        font_size_w = 150*(rendered_image_width/1440)
+        font_size_h = 150*(rendered_image_height/810)
+        font_size = min(font_size_w, font_size_h)
+
+        font = ImageFont.truetype(config.font_path, font_size)
+
         folder_name_bbox = font.getbbox(folder_name)
         folder_name_width = folder_name_bbox[2]-folder_name_bbox[0]
         folder_name_height = folder_name_bbox[3]-folder_name_bbox[1]
