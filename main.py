@@ -299,7 +299,7 @@ def fillTempThemeFolder(theme_folder_dir, config:Config):
             preview_size = (int(config.screen_width*0.45), int(config.screen_height*0.45))
             if config.screen_width == 720 and config.screen_height == 720:
                 preview_size = (340, 340)
-            logo = generateLogoImage("Content Explorer",
+            logo = generateLogoImage("Explore Content",
                                      "default",
                                      preview_size[0],
                                      preview_size[1],
