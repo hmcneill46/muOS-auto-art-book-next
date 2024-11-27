@@ -11,18 +11,23 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
+                "--mode", "both",
+
+                "--screen_width", "640",
+                "--screen_height", "480",
+
+                "--panels_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default",
+                "--log_file_output_dir", "log",
+
                 "--roms_dir", "TestingPaths/Roms",
                 "--box_art_dir", "TestingPaths/FolderBox",
-                "--panels_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default",
                 "--logos_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/logos",
                 "--core_info_dir", "TestingPaths/infocore",
                 "--system_map_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json",
                 "--valid_muos_system_names_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt",
-                "--log_file_output_dir", "log",
                 "--font_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf",
                 
-                "--screen_width", "640",
-                "--screen_height", "480",
+                "--theme_output_dir", "/Users/harrymcneill/Documents/muOS-auto-art-book-next/TestingPaths/themes",
 
                 "--background_hex","#202020",
                 "--gap_between_panels","7",

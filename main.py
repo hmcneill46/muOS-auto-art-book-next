@@ -541,19 +541,54 @@ def main():
         description="Validate directories and configure optional settings."
     )
 
-    # Required arguments
-    parser.add_argument("--roms_dir", required=True, help="Path to the ROMs directory")
-    parser.add_argument("--box_art_dir", required=True, help="Path to the box art directory")
-    parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
-    parser.add_argument("--logos_dir", required=True, help="Path to the system image logos directory")
-    parser.add_argument("--core_info_dir", required=True, help="Path to the folder where folder core associations are stored")
-    parser.add_argument("--system_map_path", required=True, help="Path to the file where muOS -> ES system name mapping is stored")
-    parser.add_argument("--valid_muos_system_names_path", required=True, help="Path to the file containing valid muOS system names")
-    parser.add_argument("--log_file_output_dir", required=True, help="Path to the folder where your log file will be stored")
-    parser.add_argument("--font_path", required=True, help="Path to the font file")
+    # Mode argument
+    parser.add_argument(
+        "--mode",
+        choices=["box_art", "theme", "both"],
+        required=True,
+        help="Choose what to generate: 'box_art', 'theme', or 'both'."
+    )
 
+    # Required arguments
     parser.add_argument("--screen_height", type=int, required=True, help="Screen height in pixels")
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
+    parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
+    parser.add_argument("--log_file_output_dir", required=True, help="Path to the folder where your log file will be stored")
+
+    parser.add_argument(
+        "--roms_dir",
+        help="Path to the ROMs directory (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--box_art_dir",
+        help="Path to the box art directory (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--logos_dir",
+        help="Path to the system image logos directory (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--core_info_dir",
+        help="Path to the folder where folder core associations are stored (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--system_map_path",
+        help="Path to the file where muOS -> ES system name mapping is stored (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--valid_muos_system_names_path",
+        help="Path to the file containing valid muOS system names (required if mode includes 'box_art')"
+    )
+    parser.add_argument(
+        "--font_path",
+        help="Path to the font file (required if mode includes 'box_art')"
+    )
+
+    # Conditionally required argument
+    parser.add_argument(
+        "--theme_output_dir",
+        help="Path to the output directory for themes (required if mode includes 'theme')."
+    )
 
     # Optional arguments with defaults
     parser.add_argument(
@@ -566,15 +601,15 @@ def main():
     )
     parser.add_argument(
         "--icon_height_percent", type=float, default=0.5,
-        help="Max icon height as a percentage of screen height (default is 50%: 0.5 )"
+        help="Max icon height as a percentage of screen height (default is 50%%: 0.5 )"
     )
     parser.add_argument(
         "--icon_width_percent", type=float, default=0.7,
-        help="Max icon width as a percentage of screen width (default is 70%: 0.7)"
+        help="Max icon width as a percentage of screen width (default is 70%%: 0.7)"
     )
     parser.add_argument(
         "--deselected_brightness", type=float, default=0.4,
-        help="How close to full brightness are the deselected folders (default is 40%: 0.4)"
+        help="How close to full brightness are the deselected folders (default is 40%%: 0.4)"
     )
     parser.add_argument(
         "--shadow_strength", type=int, default=1,
@@ -587,6 +622,26 @@ def main():
 
     args = parser.parse_args()
 
+    if args.mode in ["theme", "both"] and not args.theme_output_dir:
+        parser.error("--theme_output_dir is required when mode is 'theme' or 'both'.")
+
+    # Validate conditional argument
+    if args.mode in ["box_art", "both"] and not args.theme_output_dir:
+        parser.error("--roms_dir is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.box_art_dir:
+        parser.error("--box_art_dir is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.logos_dir:
+        parser.error("--logos_dir is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.core_info_dir:
+        parser.error("--core_info_dir is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.system_map_path:
+        parser.error("--system_map_path is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.valid_muos_system_names_path:
+        parser.error("--valid_muos_system_names_path is required when mode is 'box_art' or 'both'.")
+    if args.mode in ["box_art", "both"] and not args.font_path:
+        parser.error("--font_path is required when mode is 'box_art' or 'both'.")
+    
+
     logger = setup_logger(args.log_file_output_dir)
 
     logger.info("=" * 50)  # Divider line
@@ -594,57 +649,66 @@ def main():
     logger.info("=" * 50)
 
     # Validate directories
-    roms_valid = validate_directory(args.roms_dir, "ROMs Directory", logger)
-    box_art_valid = validate_directory(args.box_art_dir, "Box Art Directory", logger)
-    panels_valid = validate_directory(args.panels_dir, "System Image Panels Directory", logger)
-    logos_valid = validate_directory(args.logos_dir, "System Image Logos Directory", logger)
-    core_info_valid = validate_directory(args.core_info_dir, "Folder Core Association Directory", logger)
-    log_file_output_dir_valid = validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
-    system_map_valid = validate_file(args.system_map_path, "System Map File", logger)
-    valid_muos_system_names_valid = validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger)
-    font_path_valid = validate_file(args.font_path, "Font File", logger)
+    required_validations = [
+        validate_directory(args.panels_dir, "System Image Panels Directory", logger),
+        validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
+    ]
 
-    # Validation summary
-    if roms_valid and box_art_valid and panels_valid and logos_valid and core_info_valid and system_map_valid and valid_muos_system_names_valid and log_file_output_dir_valid and font_path_valid:
-        logger.info("All directories are valid. Proceeding with the next steps...")
-    else:
-        logger.info(
-            "One or more directories are invalid. Please check the paths and try again."
-        )
-        sys.exit(1)  # Exit with an error code if any directory is invalid
+    box_art_validations = [
+        validate_directory(args.roms_dir, "ROMs Directory", logger),
+        validate_directory(args.box_art_dir, "Box Art Directory", logger),
+        validate_directory(args.logos_dir, "System Image Logos Directory", logger),
+        validate_directory(args.core_info_dir, "Folder Core Association Directory", logger),
+        validate_file(args.system_map_path, "System Map File", logger),
+        validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger),
+        validate_file(args.font_path, "Font File", logger),
+    ]
 
-    # Log configuration
+    theme_validations = [
+        validate_directory(args.theme_output_dir, "Themes Directory", logger)
+    ]
+
+    if not all(required_validations):
+        logger.error("One or more required directories are invalid. Please check the paths and try again.")
+        sys.exit(1)
+    
+    if not all(box_art_validations) and args.mode in ["box_art", "both"]:
+        logger.error("One or more rquired directories for box_art are invalid. Please check the paths and try again.")
+        sys.exit(1)
+    
+    if not all(theme_validations) and args.mode in ["theme", "both"]:
+        logger.error("One or more rquired directories for theme generation are invalid. Please check the paths and try again.")
+        sys.exit(1)
+
+    logger.info("All directories are valid. Proceeding with the next steps...")
     config = Config(args, logger)
     config.log_config()
 
-    logger.info("=" * 50)  # Divider line
-    logger.info("Folder Console Associations:")
-    logger.info("=" * 50)
-    config.log_associations()
-
-    logger.info("=" * 50)  # Divider line
-    logger.info("Checking JSON mapping")
-    logger.info("=" * 50)
-    verify_json_mapping(config.system_map_path,config.valid_muos_system_names_path,config.panels_dir, logger)
-    if "generating folder box art":
+    if args.mode in ["box_art", "both"]:
+        logger.info("Generating folder box art...")
         for folder in config.folders:
             generateFolderImage(folder, config).save(os.path.join(config.box_art_dir, f"{folder}.png"))
             logger.info(f"Successfully generated image for folder: {folder}")
-    if not "generating muxlaunch photos":
-        test_output_dir = os.path.join(config.box_art_dir,"muxlaunch")
-        muxlaunch_images = {"explore":"auto-allgames.png",
-                        "favourite":"auto-favorites.png",
-                        "history":"auto-lastplayed.png",
-                        "apps":"library.png",
-                        "info":"apfm1000.png",
-                        "config":"tools.png",
-                        "reboot":"auto-simulation.png",
-                        "shutdown":"sufami.png"}
-        muxlaunch_items = [x for x in muxlaunch_images.keys()]
-        es_system_images = [y for y in muxlaunch_images.values()]
-        for index in range(len(muxlaunch_items)):
-            generateMenuImage(index,muxlaunch_items,es_system_images,config).save(os.path.join(test_output_dir,f"{muxlaunch_items[index]}.png"))
-            logger.info(f"Successfully generated image for system: {muxlaunch_items[index]}")
+
+    if args.mode in ["theme", "both"]:
+        logger.info("Generating theme images...")
+        theme_output_dir = args.theme_output_dir
+        os.makedirs(theme_output_dir, exist_ok=True)
+        muxlaunch_images = {
+            "explore": "auto-allgames.png",
+            "favourite": "auto-favorites.png",
+            "history": "auto-lastplayed.png",
+            "apps": "library.png",
+            "info": "apfm1000.png",
+            "config": "tools.png",
+            "reboot": "auto-simulation.png",
+            "shutdown": "sufami.png"
+        }
+        for index, (item, image) in enumerate(muxlaunch_images.items()):
+            generateMenuImage(index, list(muxlaunch_images.keys()), list(muxlaunch_images.values()), config).save(
+                os.path.join(theme_output_dir, f"{item}.png")
+            )
+            logger.info(f"Successfully generated theme image for system: {item}")
     
     
 if __name__ == "__main__":
