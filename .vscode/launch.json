@@ -17,7 +17,7 @@
                 "--screen_height", "480",
 
                 "--panels_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default",
-                "--log_file_output_dir", "log",
+                "--working_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext",
 
                 "--roms_dir", "TestingPaths/Roms",
                 "--box_art_dir", "TestingPaths/FolderBox",
@@ -28,6 +28,8 @@
                 "--font_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf",
                 
                 "--theme_output_dir", "/Users/harrymcneill/Documents/muOS-auto-art-book-next/TestingPaths/themes",
+                "--theme_shell_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell",
+                "--theme_name", "AutoArtBookNext",
 
                 "--background_hex","#202020",
                 "--gap_between_panels","7",

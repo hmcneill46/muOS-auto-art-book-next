@@ -5,19 +5,28 @@
 . /opt/muos/script/var/func.sh
 
 # Required arguments
+MODE="both"
+
+SCREEN_WIDTH=$(GET_VAR device mux/width)
+SCREEN_HEIGHT=$(GET_VAR device mux/height)
+
+PANELS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default"
+WORKING_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext"
+
+# Folder Box Art Required arguments
 SD1_ROMS_DIR="/mnt/mmc/ROMS"
 SD2_ROMS_DIR="/mnt/sdcard/ROMS"
 BOX_ART_DIR="/run/muos/storage/info/catalogue/Folder/box"
-PANELS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default"
 LOGOS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/logos"
 CORE_INFO_DIR="/run/muos/storage/info/core"
 SYSTEM_MAP_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json"
 VALID_MUOS_SYSTEM_NAMES_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt"
-LOG_FILE_OUTPUT_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext"
 FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 
-SCREEN_WIDTH=$(GET_VAR device mux/width)
-SCREEN_HEIGHT=$(GET_VAR device mux/height)
+# Theme Required arguments
+THEME_OUTPUT_DIR="/run/muos/storage/theme"
+THEME_SHELL_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell"
+THEME_NAME="AutArtBookNext"
 
 # Optional arguments
 BACKGROUND_HEX="#202020"
@@ -36,17 +45,21 @@ SCRIPT="/mnt/mmc/MUOS/task/.AutoArtBookNext/AutoArtBookNext"
 if [ -d "$SD1_ROMS_DIR" ]; then
     echo "Running script for SD1..."
     $SCRIPT \
+        --mode "$MODE" \
+        --screen_height $SCREEN_HEIGHT \
+        --screen_width $SCREEN_WIDTH \
+        --panels_dir "$PANELS_DIR" \
+        --working_dir "$WORKING_DIR" \
         --roms_dir "$SD1_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
-        --panels_dir "$PANELS_DIR" \
         --logos_dir "$LOGOS_DIR" \
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
-        --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
         --font_path "$FONT_PATH" \
-        --screen_height $SCREEN_HEIGHT \
-        --screen_width $SCREEN_WIDTH \
+        --theme_output_dir "$THEME_OUTPUT_DIR" \
+        --theme_shell_dir "$THEME_SHELL_DIR" \
+        --theme_name "$THEME_NAME" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
@@ -62,17 +75,21 @@ fi
 if [ -d "$SD2_ROMS_DIR" ]; then
     echo "Running script for SD2..."
     $SCRIPT \
+        --mode "$MODE" \
+        --screen_height $SCREEN_HEIGHT \
+        --screen_width $SCREEN_WIDTH \
+        --panels_dir "$PANELS_DIR" \
+        --working_dir "$WORKING_DIR" \
         --roms_dir "$SD2_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
-        --panels_dir "$PANELS_DIR" \
         --logos_dir "$LOGOS_DIR" \
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
-        --log_file_output_dir "$LOG_FILE_OUTPUT_DIR" \
         --font_path "$FONT_PATH" \
-        --screen_height $SCREEN_HEIGHT \
-        --screen_width $SCREEN_WIDTH \
+        --theme_output_dir "$THEME_OUTPUT_DIR" \
+        --theme_shell_dir "$THEME_SHELL_DIR" \
+        --theme_name "$THEME_NAME" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \

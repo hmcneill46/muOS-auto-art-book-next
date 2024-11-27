@@ -5,6 +5,7 @@ import sys
 import json
 import logging
 import re
+import shutil
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter, ImageFont
 
 def ceil(n):
@@ -250,6 +251,38 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
     image.alpha_composite(gradient,(0,0))
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
+
+def fillTempThemeFolder(theme_folder_dir, config:Config):
+    """
+    Generate a folder image for the given folder name. In the style of Art Book Next.
+    :param folder_name: Name of the folder.
+    :param config: Configuration object.
+    :return: Image object.
+    """
+    config.logger.info(f"Generating Theme Images")
+
+    muxlaunch_images = {
+            "explore": "auto-allgames.png",
+            "favourite": "auto-favorites.png",
+            "history": "auto-lastplayed.png",
+            "apps": "library.png",
+            "info": "apfm1000.png",
+            "config": "tools.png",
+            "reboot": "auto-simulation.png",
+            "shutdown": "sufami.png"
+        }
+    muxlaunch_image_dir = os.path.join(theme_folder_dir, "image", "static", "muxlaunch")
+    os.makedirs(muxlaunch_image_dir, exist_ok=True)
+    for index, (item, image) in enumerate(muxlaunch_images.items()):
+        current_theme_image = generateMenuImage(index, list(muxlaunch_images.keys()), list(muxlaunch_images.values()), config)
+        current_theme_image.save(os.path.join(muxlaunch_image_dir, f"{item}.png"))
+        if index == 0:
+            preview_size = (int(config.screen_width*0.45), int(config.screen_height*0.45))
+            if config.screen_width == 720 and config.screen_height == 720:
+                preview_size = (340, 340)
+            current_theme_image.resize(preview_size, Image.LANCZOS)
+            current_theme_image.save(os.path.join(theme_folder_dir, "preview.png"))
+        config.logger.info(f"Successfully generated theme image for system: {item}")
 
 def generateArtBookNextImage(current_index,
                              all_es_item_names,
@@ -553,7 +586,7 @@ def main():
     parser.add_argument("--screen_height", type=int, required=True, help="Screen height in pixels")
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
     parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
-    parser.add_argument("--log_file_output_dir", required=True, help="Path to the folder where your log file will be stored")
+    parser.add_argument("--working_dir", required=True, help="Path to the folder where your the script will use to store temporary files and folders")
 
     parser.add_argument(
         "--roms_dir",
@@ -586,7 +619,17 @@ def main():
 
     # Conditionally required argument
     parser.add_argument(
+        "--theme_shell_dir",
+        help="Path to the theme shell directory (required if mode includes 'theme')."
+    )
+
+    parser.add_argument(
         "--theme_output_dir",
+        help="Path to the output directory for themes (required if mode includes 'theme')."
+    )
+
+    parser.add_argument(
+        "--theme_name",
         help="Path to the output directory for themes (required if mode includes 'theme')."
     )
 
@@ -624,6 +667,10 @@ def main():
 
     if args.mode in ["theme", "both"] and not args.theme_output_dir:
         parser.error("--theme_output_dir is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.theme_shell_dir:
+        parser.error("--theme_shell_dir is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.theme_name:
+        parser.error("--theme_name is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
     if args.mode in ["box_art", "both"] and not args.theme_output_dir:
@@ -642,7 +689,7 @@ def main():
         parser.error("--font_path is required when mode is 'box_art' or 'both'.")
     
 
-    logger = setup_logger(args.log_file_output_dir)
+    logger = setup_logger(args.working_dir)
 
     logger.info("=" * 50)  # Divider line
     logger.info("Checking if given directories are valid")
@@ -651,7 +698,7 @@ def main():
     # Validate directories
     required_validations = [
         validate_directory(args.panels_dir, "System Image Panels Directory", logger),
-        validate_directory(args.log_file_output_dir, "Log File Output Directory", logger)
+        validate_directory(args.working_dir, "Log File Output Directory", logger)
     ]
 
     box_art_validations = [
@@ -665,7 +712,8 @@ def main():
     ]
 
     theme_validations = [
-        validate_directory(args.theme_output_dir, "Themes Directory", logger)
+        validate_directory(args.theme_output_dir, "Themes Directory", logger),
+        validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger)
     ]
 
     if not all(required_validations):
@@ -691,25 +739,18 @@ def main():
             logger.info(f"Successfully generated image for folder: {folder}")
 
     if args.mode in ["theme", "both"]:
-        logger.info("Generating theme images...")
+        temp_theme_folder = os.path.join(args.working_dir, ".temp_theme_folder")
+        if os.path.exists(temp_theme_folder):
+            shutil.rmtree(temp_theme_folder)
+        shutil.copytree(args.theme_shell_dir, temp_theme_folder)
+        
+        fillTempThemeFolder(temp_theme_folder, config)
+        
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
-        muxlaunch_images = {
-            "explore": "auto-allgames.png",
-            "favourite": "auto-favorites.png",
-            "history": "auto-lastplayed.png",
-            "apps": "library.png",
-            "info": "apfm1000.png",
-            "config": "tools.png",
-            "reboot": "auto-simulation.png",
-            "shutdown": "sufami.png"
-        }
-        for index, (item, image) in enumerate(muxlaunch_images.items()):
-            generateMenuImage(index, list(muxlaunch_images.keys()), list(muxlaunch_images.values()), config).save(
-                os.path.join(theme_output_dir, f"{item}.png")
-            )
-            logger.info(f"Successfully generated theme image for system: {item}")
-    
+
+        shutil.make_archive(os.path.join(theme_output_dir, args.theme_name), 'zip', temp_theme_folder)
+        shutil.rmtree(temp_theme_folder)
     
 if __name__ == "__main__":
     main()
