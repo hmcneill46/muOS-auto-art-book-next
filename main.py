@@ -64,8 +64,8 @@ class Config(object):
         self.gap_between_panels = args.gap_between_panels
         self.icon_height_percent = args.icon_height_percent
         self.icon_width_percent = args.icon_width_percent
-        self.max_icon_height = (args.screen_height * args.icon_height_percent)
-        self.max_icon_width = (args.screen_width * args.icon_width_percent) 
+        self.max_icon_height = (self.screen_height * self.icon_height_percent)
+        self.max_icon_width = (self.screen_width * self.icon_width_percent) 
         self.deselected_brightness = args.deselected_brightness
         self.shadow_strength = args.shadow_strength
         self.gradient_intensity = args.gradient_intensity
@@ -213,9 +213,27 @@ def generateFolderImage(folder_name:str, config:Config):
 
     if check_for_special_case(folder_name, config.special_cases) != None:
         special_muOS_system_name = check_for_special_case(folder_name, config.special_cases)
-        logo_image = generateLogoImage(folder_name, special_muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+        logo_image = generateLogoImage(folder_name,
+                                       special_muOS_system_name,
+                                       rendered_image_width,
+                                       rendered_image_height,
+                                       config.logger,
+                                       config.logos_dir,
+                                       int(config.max_icon_height*rendered_image_multiplier),
+                                       int(config.max_icon_width*rendered_image_multiplier),
+                                       config.font_path,
+                                       config.shadow_strength)
     else:
-        logo_image = generateLogoImage(folder_name, muOS_system_name, rendered_image_width, rendered_image_height, rendered_image_multiplier, config)
+        logo_image = generateLogoImage(folder_name,
+                                       muOS_system_name,
+                                       rendered_image_width,
+                                       rendered_image_height,
+                                       config.logger,
+                                       config.logos_dir,
+                                       int(config.max_icon_height*rendered_image_multiplier),
+                                       int(config.max_icon_width*rendered_image_multiplier),
+                                       config.font_path,
+                                       config.shadow_strength)
     image.alpha_composite(logo_image, (0,0))
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
@@ -280,7 +298,18 @@ def fillTempThemeFolder(theme_folder_dir, config:Config):
             preview_size = (int(config.screen_width*0.45), int(config.screen_height*0.45))
             if config.screen_width == 720 and config.screen_height == 720:
                 preview_size = (340, 340)
-            current_theme_image.resize(preview_size, Image.LANCZOS)
+            logo = generateLogoImage("Content Explorer",
+                                     "default",
+                                     preview_size[0],
+                                     preview_size[1],
+                                     config.logger,
+                                     config.logos_dir,
+                                     preview_size[1]*config.icon_height_percent,
+                                     preview_size[0]*config.icon_width_percent,
+                                     config.font_path,
+                                     config.shadow_strength)
+            current_theme_image = current_theme_image.resize(preview_size, Image.LANCZOS)
+            current_theme_image.alpha_composite(logo, (0,0))
             current_theme_image.save(os.path.join(theme_folder_dir, "preview.png"))
         config.logger.info(f"Successfully generated theme image for system: {item}")
 
@@ -363,28 +392,37 @@ def check_for_special_case(folder_name, special_cases):
     return None
 
 
-def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_width:int, rendered_image_height:int, rendered_image_multiplier:float, config:Config):
-    image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0, 0, 0, 0))
+def generateLogoImage(folder_name:str,
+                      muOS_system_name:str,
+                      image_width:int,
+                      image_height:int,
+                      logger,
+                      logos_dir,
+                      max_icon_height,
+                      max_icon_width,
+                      font_path,
+                      shadow_strength):
+    image = Image.new("RGBA", (image_width, image_height), (0, 0, 0, 0))
     ## draw the logo in the middle of the screen
-    config.logger.info(f"Generating logo for {folder_name}")
+    logger.info(f"Generating logo for {folder_name}")
     if muOS_system_name != "default":
-        logo_image = Image.open(os.path.join(config.logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
-        logo_image_multiplier = min(config.max_icon_height/logo_image.height, config.max_icon_width/logo_image.width)*rendered_image_multiplier
+        logo_image = Image.open(os.path.join(logos_dir, f"{muOS_system_name}.png")).convert("RGBA")
+        logo_image_multiplier = min(max_icon_height/logo_image.height, max_icon_width/logo_image.width)
         logo_image = logo_image.resize((int(logo_image.width*logo_image_multiplier), int(logo_image.height*logo_image_multiplier)), Image.LANCZOS)
     else:
-        # use config config.font_path to draw a text logo
-        font_size_w = 150*(rendered_image_width/1440)
-        font_size_h = 150*(rendered_image_height/810)
+        # use config font_path to draw a text logo
+        font_size_w = 150*(image_width/1440)
+        font_size_h = 150*(image_height/810)
         font_size = min(font_size_w, font_size_h)
 
-        font = ImageFont.truetype(config.font_path, font_size)
+        font = ImageFont.truetype(font_path, font_size)
 
         folder_name_bbox = font.getbbox(folder_name)
         folder_name_width = folder_name_bbox[2]-folder_name_bbox[0]
         folder_name_height = folder_name_bbox[3]-folder_name_bbox[1]
 
         text_to_draw = []
-        max_chars = floor(len(folder_name)*((config.max_icon_width*rendered_image_multiplier)/(folder_name_width)))
+        max_chars = floor(len(folder_name)*((max_icon_width)/(folder_name_width)))
         if len(folder_name) > max_chars:
             words_in_folder_name = folder_name.split(" ")
             set_of_words = []
@@ -419,7 +457,7 @@ def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_widt
         text_height = ascent + descent
         for text in text_to_draw:
             text_widths.append(font.getbbox(text)[2]-font.getbbox(text)[0])
-        space_between_text = int(-30*(rendered_image_width/1440))
+        space_between_text = int(-30*(image_width/1440))
         total_text_height = text_height*len(text_to_draw)+ (len(text_to_draw)-1)*space_between_text
 
         logo_image = Image.new("RGBA", (max(text_widths), total_text_height), (0, 0, 0, 0))
@@ -433,8 +471,8 @@ def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_widt
             text_x = (max(text_widths)-text_widths[n])/2
             draw.text((text_x,text_y), text_to_draw[n], font=font, fill=(255,255,255,255))
         
-    logo_image_middle_x = int((rendered_image_width - logo_image.width) / 2)
-    logo_image_middle_y = int((rendered_image_height - logo_image.height) / 2)
+    logo_image_middle_x = int((image_width - logo_image.width) / 2)
+    logo_image_middle_y = int((image_height - logo_image.height) / 2)
 
     # Prepare shadow
     shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))  # Transparent canvas
@@ -443,7 +481,7 @@ def generateLogoImage(folder_name:str, muOS_system_name:str, rendered_image_widt
     shadow_logo = shadow_logo.convert("RGBA")  # Ensure RGBA mode
     shadow.paste(shadow_logo, (logo_image_middle_x, logo_image_middle_y), alpha_channel)  # Use alpha_channel as mask for transparency
     shadow = shadow.filter(ImageFilter.GaussianBlur(radius=20))
-    for n in range(config.shadow_strength):
+    for n in range(shadow_strength):
         image.alpha_composite(shadow, (0,0))
 
     # Composite logo
