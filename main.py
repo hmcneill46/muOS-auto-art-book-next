@@ -208,7 +208,8 @@ def generateFolderImage(folder_name:str, config:Config):
                                                   config.deselected_brightness)
     image.alpha_composite(combinedPanelImage, (0,0))
     
-    gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
+    if config.gradient_intensity > 0:
+        gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
     if check_for_special_case(folder_name, config.special_cases) != None:
