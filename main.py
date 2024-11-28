@@ -138,17 +138,17 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
     """
     config.logger.info(f"Generating Gradient Image")
     # Create a new image with an RGBA mode
-    gradient = Image.new("RGBA", (width, height))
-    gradient_height = int(height * gradient_height_percent)
+    gradient = Image.new("RGBA", (width, height), end_color)
+    if start_color != end_color:
+        gradient_height = int(height * gradient_height_percent)
 
-    # Calculate the color difference for the gradient
-    delta_r = end_color[0] - start_color[0]
-    delta_g = end_color[1] - start_color[1]
-    delta_b = end_color[2] - start_color[2]
-    delta_a = end_color[3] - start_color[3]
+        # Calculate the color difference for the gradient
+        delta_r = end_color[0] - start_color[0]
+        delta_g = end_color[1] - start_color[1]
+        delta_b = end_color[2] - start_color[2]
+        delta_a = end_color[3] - start_color[3]
 
-    for y in range(height):
-        if y < gradient_height:
+        for y in range(gradient_height):
             # Calculate the interpolation factor
             t = y / gradient_height
             # Interpolate the color
@@ -156,13 +156,10 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
             g = int(start_color[1] + t * delta_g)
             b = int(start_color[2] + t * delta_b)
             a = int(start_color[3] + t * delta_a)
-        else:
-            # Use the end color for the rest of the image
-            r, g, b, a = end_color
 
-        # Draw a horizontal line with the calculated color
-        for x in range(width):
-            gradient.putpixel((x, y), (r, g, b, a))
+            # Draw a horizontal line with the calculated color
+            for x in range(width):
+                gradient.putpixel((x, y), (r, g, b, a))
 
     return gradient
 
@@ -208,8 +205,7 @@ def generateFolderImage(folder_name:str, config:Config):
                                                   config.deselected_brightness)
     image.alpha_composite(combinedPanelImage, (0,0))
     
-    if config.gradient_intensity > 0:
-        gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
+    gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
     image.alpha_composite(gradient,(0,0))
 
     if check_for_special_case(folder_name, config.special_cases) != None:
@@ -271,7 +267,7 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
-def fillTempThemeFolder(theme_folder_dir, config:Config):
+def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, config:Config):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -313,6 +309,53 @@ def fillTempThemeFolder(theme_folder_dir, config:Config):
             current_theme_image.alpha_composite(logo, (0,0))
             current_theme_image.save(os.path.join(theme_folder_dir, "preview.png"))
         config.logger.info(f"Successfully generated theme image for system: {item}")
+    fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
+    
+def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
+
+    stringsToReplace = []
+
+    # Read the template file and search for all instances of strings enclosed in {}
+    with open(template_scheme_file_path, 'r') as file:
+        content = file.read()
+        # Find all occurrences of patterns like {some_string}
+        matches = re.findall(r'\{[^}]+\}', content)
+        # Convert matches to a set to keep only unique values, then back to a list
+        stringsToReplace = list(set(matches))
+
+    replacementStringMap = {}
+
+    replacementStringMap["default"] = {}
+    for n in stringsToReplace:
+        replacementStringMap["default"][n] = None
+
+    # Set up default colours that should be the same everywhere
+    replacementStringMap["default"]["{accent_hex}"] = None
+    replacementStringMap["default"]["{base_hex}"] = None
+    replacementStringMap["default"]["{blend_hex}"] = None
+    replacementStringMap["default"]["{muted_hex}"] = None
+    replacementStringMap["default"]["{battery_charging_hex}"] = None
+    
+    missingValues = []
+
+    for n in replacementStringMap["default"].keys():
+        if replacementStringMap["default"][n] == None:
+            missingValues.append(n)
+    if missingValues:
+        missingValuesString = ""
+        for n in missingValues:
+            missingValuesString += n+"\n"
+        raise ValueError(f"Replacement string(s) \n{missingValuesString} not set")
+    
+    ## Overrides:
+    replacementStringMap["muxlaunch"] = {}
+    replacementStringMap["muxlaunch"]["{bubble_alpha}"] = 0
+        
+    for fileName in replacementStringMap.keys():
+        shutil.copy2(template_scheme_file_path,os.path.join(template_scheme_file_path,f"{fileName}.txt"))
+        for stringToBeReplaced in replacementStringMap["default"].keys():
+            replacement = replacementStringMap[fileName].get(stringToBeReplaced,replacementStringMap["default"][stringToBeReplaced])
+            replace_in_file(os.path.join(template_scheme_file_path,f"{fileName}.txt"), stringToBeReplaced, str(replacement))
 
 def generateArtBookNextImage(current_index,
                              all_es_item_names,
@@ -365,6 +408,20 @@ def generateArtBookNextImage(current_index,
         image.alpha_composite(working_panel_image, (image_middle_x-index*change_in_x, 0))
         index += 1
     return(image)
+
+def replace_in_file(file_path, search_string, replace_string):
+    # Read the content of the file in binary mode
+    with open(file_path, 'rb') as file:
+        file_contents = file.read()
+    
+    # Replace the occurrences of the search_string with replace_string in binary data
+    search_bytes = search_string.encode()
+    replace_bytes = replace_string.encode()
+    new_contents = file_contents.replace(search_bytes, replace_bytes)
+    
+    # Write the new content back to the file in binary mode
+    with open(file_path, 'wb') as file:
+        file.write(new_contents)
 
 
 def get_es_system_name(folder_name:str, muOS_system_name:str, config:Config):
@@ -672,6 +729,11 @@ def main():
         help="Path to the output directory for themes (required if mode includes 'theme')."
     )
 
+    parser.add_argument(
+        "--template_scheme_path",
+        help="Path of the template scheme file for themes (required if mode includes 'theme')."
+    )
+
     # Optional arguments with defaults
     parser.add_argument(
         "--background_hex", default="#000000",
@@ -710,6 +772,8 @@ def main():
         parser.error("--theme_shell_dir is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.theme_name:
         parser.error("--theme_name is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.template_scheme_path:
+        parser.error("--template_scheme_path is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
     if args.mode in ["box_art", "both"] and not args.theme_output_dir:
@@ -783,7 +847,7 @@ def main():
             shutil.rmtree(temp_theme_folder)
         shutil.copytree(args.theme_shell_dir, temp_theme_folder)
         
-        fillTempThemeFolder(temp_theme_folder, config)
+        fillTempThemeFolder(temp_theme_folder, args.template_scheme_path ,config)
         
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
