@@ -62,7 +62,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --theme_output_dir "$THEME_OUTPUT_DIR" \
         --theme_shell_dir "$THEME_SHELL_DIR" \
         --theme_name "$THEME_NAME" \
-        --template_scheme_file_path "$TEMPLATE_SCHEME_FILE_PATH" \
+        --template_scheme_file_path "$TEMPLATE_SCHEME_PATH" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
@@ -93,7 +93,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --theme_output_dir "$THEME_OUTPUT_DIR" \
         --theme_shell_dir "$THEME_SHELL_DIR" \
         --theme_name "$THEME_NAME" \
-        --template_scheme_file_path "$TEMPLATE_SCHEME_FILE_PATH" \
+        --template_scheme_file_path "$TEMPLATE_SCHEME_PATH" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
@@ -111,7 +111,7 @@ echo "Sync Filesystem"
 sync
 
 echo "All Done!"
-sleep 10
+sleep 2
 
 pkill -CONT muxtask
 exit 0
