@@ -27,8 +27,8 @@ FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 THEME_OUTPUT_DIR="/run/muos/storage/theme"
 THEME_SHELL_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell"
 THEME_NAME="AutoArtBookNext"
-LV_FONT_CONV_BIN="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv"
 TEMPLATE_SCHEME_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/TemplateSchemeFile.txt"
+LV_FONT_CONV_BIN="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv"
 
 # Optional arguments
 BACKGROUND_HEX="#202020"
@@ -63,6 +63,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --theme_shell_dir "$THEME_SHELL_DIR" \
         --theme_name "$THEME_NAME" \
         --template_scheme_path "$TEMPLATE_SCHEME_PATH" \
+        --lv_font_conv_path "$LV_FONT_CONV_BIN" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
@@ -94,6 +95,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --theme_shell_dir "$THEME_SHELL_DIR" \
         --theme_name "$THEME_NAME" \
         --template_scheme_path "$TEMPLATE_SCHEME_PATH" \
+        --lv_font_conv_path "$LV_FONT_CONV_BIN" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
