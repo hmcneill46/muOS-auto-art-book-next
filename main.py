@@ -349,13 +349,12 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     
     ## Overrides:
     replacementStringMap["muxlaunch"] = {}
-    replacementStringMap["muxlaunch"]["{bubble_alpha}"] = 0
         
     for fileName in replacementStringMap.keys():
-        shutil.copy2(template_scheme_file_path,os.path.join(template_scheme_file_path,f"{fileName}.txt"))
+        shutil.copy2(template_scheme_file_path,os.path.join(scheme_files_dir,f"{fileName}.txt"))
         for stringToBeReplaced in replacementStringMap["default"].keys():
             replacement = replacementStringMap[fileName].get(stringToBeReplaced,replacementStringMap["default"][stringToBeReplaced])
-            replace_in_file(os.path.join(template_scheme_file_path,f"{fileName}.txt"), stringToBeReplaced, str(replacement))
+            replace_in_file(os.path.join(scheme_files_dir,f"{fileName}.txt"), stringToBeReplaced, str(replacement))
 
 def generateArtBookNextImage(current_index,
                              all_es_item_names,
@@ -663,6 +662,22 @@ def validate_file(path, description, logger):
     else:
         logger.error(f"[ERROR] {description}: '{path}' is not a valid file.")
         return False
+    
+def check_lv_font_conv(lv_font_conv_path):
+    """
+    Checks if the lv_font_conv tool is available.
+    
+    :param lv_font_conv_path: Path to the lv_font_conv binary or "lv_font_conv" if it's in PATH.
+    :return: True if lv_font_conv is found and executable, False otherwise.
+    """
+    try:
+        # Check if the command is callable
+        result = subprocess.run([lv_font_conv_path, "--help"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # If the tool is callable and returns help or no error
+        return result.returncode == 0
+    except Exception as e:
+        print(f"Unexpected error occurred: {e}")
+        return False
 
 def main():
     # Define and parse arguments
@@ -823,7 +838,8 @@ def main():
 
     theme_validations = [
         validate_directory(args.theme_output_dir, "Themes Directory", logger),
-        validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger)
+        validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger),
+        validate_file(args.template_scheme_path, "Template Scheme File", logger)
     ]
 
     if not all(required_validations):
@@ -836,6 +852,9 @@ def main():
     
     if not all(theme_validations) and args.mode in ["theme", "both"]:
         logger.error("One or more rquired directories for theme generation are invalid. Please check the paths and try again.")
+        sys.exit(1)
+    if not check_lv_font_conv(args.lv_font_conv_path):
+        logger.error("lv_font_conv is not installed or the path is incorrect.")
         sys.exit(1)
 
     logger.info("All directories are valid. Proceeding with the next steps...")
