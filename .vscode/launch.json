@@ -31,6 +31,7 @@
                 "--theme_shell_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell",
                 "--theme_name", "AutoArtBookNext",
                 "--template_scheme_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/TemplateSchemeFile.txt",
+                "--lv_font_conv_path", "lv_font_conv",
 
                 "--background_hex","#202020",
                 "--gap_between_panels","7",

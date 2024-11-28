@@ -734,6 +734,11 @@ def main():
         help="Path of the template scheme file for themes (required if mode includes 'theme')."
     )
 
+    parser.add_argument(
+        "--lv_font_conv_path",
+        help="Path of where lv_font_conv program is (required if mode includes 'theme')."
+    )
+
     # Optional arguments with defaults
     parser.add_argument(
         "--background_hex", default="#000000",
@@ -774,6 +779,8 @@ def main():
         parser.error("--theme_name is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.template_scheme_path:
         parser.error("--template_scheme_path is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.lv_font_conv_path:
+        parser.error("--lv_font_conv_path is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
     if args.mode in ["box_art", "both"] and not args.theme_output_dir:
