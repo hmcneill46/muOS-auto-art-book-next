@@ -27,6 +27,7 @@ FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 THEME_OUTPUT_DIR="/run/muos/storage/theme"
 THEME_SHELL_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell"
 THEME_NAME="AutoArtBookNext"
+LV_FONT_CONV_BIN="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv"
 
 # Optional arguments
 BACKGROUND_HEX="#202020"
@@ -100,6 +101,8 @@ if [ -d "$SD2_ROMS_DIR" ]; then
 else
     echo "Skipping SD2: $SD2_ROMS_DIR does not exist."
 fi
+
+$LV_FONT_CONV_BIN -h
 
 echo "Sync Filesystem"
 sync
