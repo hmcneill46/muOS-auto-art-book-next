@@ -51,7 +51,7 @@ def save_cache(cache, cache_file):
         json.dump(cache, f, indent=4)
 
 
-def check_supported_ranges(font_path, ranges, cache_file):
+def check_supported_ranges(font_path, ranges, cache_file, lv_font_conv_binary):
     """Check supported ranges for the font, using cache if available."""
     cache = load_cache(cache_file)
     font_hash = calculate_file_hash(font_path)
@@ -67,7 +67,7 @@ def check_supported_ranges(font_path, ranges, cache_file):
     for unicode_range, block_name in ranges.items():
         try:
             command = [
-                "lv_font_conv",
+                lv_font_conv_binary,
                 "--bpp", "4",
                 "--size", "20",  # Arbitrary size for testing ranges
                 "--font", font_path,
@@ -91,6 +91,22 @@ def check_supported_ranges(font_path, ranges, cache_file):
 
     return supported_ranges
 
+def check_lv_font_conv(lv_font_conv_path):
+    """
+    Checks if the lv_font_conv tool is available.
+    
+    :param lv_font_conv_path: Path to the lv_font_conv binary or "lv_font_conv" if it's in PATH.
+    :return: True if lv_font_conv is found and executable, False otherwise.
+    """
+    try:
+        # Check if the command is callable
+        result = subprocess.run([lv_font_conv_path, "--help"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # If the tool is callable and returns help or no error
+        return result.returncode == 0
+    except Exception as e:
+        print(f"Unexpected error occurred: {e}")
+        return False
+
 
 def main():
     parser = argparse.ArgumentParser(description="Automate font binary generation.")
@@ -100,6 +116,7 @@ def main():
     parser.add_argument("--step_size", type=int, default=1, help="Step size for the loop (default is 1).")
     parser.add_argument("--ranges_file", default="ranges.txt", type=str, help="Path to the ranges.txt file.")
     parser.add_argument("--cache_file", type=str, default="font_ranges_cache.json", help="Path to the cache file.")
+    parser.add_argument("--lv_font_conv_binary", type=str, default="lv_font_conv", help="Path to the font file (e.g., FallingSkyBdObl.otf).")
     args = parser.parse_args()
 
     # Parse the ranges file
@@ -118,8 +135,13 @@ def main():
     # Ensure output directory exists
     os.makedirs(args.output_dir, exist_ok=True)
 
+    # Check if lv_font_conv is available
+    if not check_lv_font_conv(args.lv_font_conv_binary):
+        print("lv_font_conv tool not found or not executable.")
+        return
+
     # Check which ranges are supported
-    supported_ranges = check_supported_ranges(args.font_path, ranges, args.cache_file)
+    supported_ranges = check_supported_ranges(args.font_path, ranges, args.cache_file, args.lv_font_conv_binary)
     if not supported_ranges:
         print("No supported ranges found for the font.")
         return
@@ -133,7 +155,7 @@ def main():
     while size <= size_max:
         output_file = os.path.join(args.output_dir, f"{font_name}-{size}.bin")
         command = [
-            "lv_font_conv",
+            args.lv_font_conv_binary,
             "--bpp", "4",
             "--size", f"{size}",
             "--font", args.font_path,
