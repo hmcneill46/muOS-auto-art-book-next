@@ -374,8 +374,7 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     content_item_height = floor((config.screen_height-aprox_header_height_inc_gap-footer_height)/content_item_count)
     content_height = content_item_count*content_item_height
     header_height_inc_gap = config.screen_height-content_height-footer_height
-    print(header_height_inc_gap)
-
+    
     # Set up default colours that should be the same everywhere
     replacementStringMap["default"]["{accent_hex}"] = accent_hex
     replacementStringMap["default"]["{base_hex}"] = base_hex
