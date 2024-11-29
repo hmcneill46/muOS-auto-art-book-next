@@ -311,6 +311,51 @@ def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, config:Conf
         config.logger.info(f"Successfully generated theme image for system: {item}")
     fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
 
+    os.makedirs(os.path.join(theme_folder_dir,"image","wall"), exist_ok=True)
+
+    defaultimage = generatePilImageDefaultScreen(config.background_hex[1:],config.screen_width,config.screen_height)
+    defaultimage.save(os.path.join(theme_folder_dir,"image","wall","default.png"), format='PNG')
+
+    chargingimage = generatePilImageBootScreen(config.background_hex[1:],
+                                               "ffffff",
+                                               "Charging...",
+                                               config.screen_width,
+                                               config.screen_height,
+                                               config.font_path)
+    chargingimage.save(os.path.join(theme_folder_dir,"image","wall","muxcharge.png"), format='PNG')
+
+    loadingimage = generatePilImageBootScreen(config.background_hex[1:],
+                                              "ffffff",
+                                              "Loading...",
+                                              config.screen_width,
+                                              config.screen_height,
+                                              config.font_path)
+    loadingimage.save(os.path.join(theme_folder_dir,"image","wall","muxstart.png"), format='PNG')
+
+    shutdownimage = generatePilImageBootScreen(config.background_hex[1:],
+                                               "ffffff",
+                                               "Shutting Down...",
+                                               config.screen_width,
+                                               config.screen_height,
+                                               config.font_path)
+    shutdownimage.save(os.path.join(theme_folder_dir,"image","shutdown.png"), format='PNG')
+
+    rebootimage = generatePilImageBootScreen(config.background_hex[1:],
+                                             "ffffff",
+                                             "Rebooting...",
+                                             config.screen_width,
+                                             config.screen_height,
+                                             config.font_path)
+    rebootimage.save(os.path.join(theme_folder_dir,"image","reboot.png"), format='PNG')
+
+    bootlogoimage = generatePilImageBootScreen(config.background_hex[1:],
+                                               "ffffff",
+                                               "muOS",
+                                               config.screen_width,
+                                               config.screen_height,
+                                               config.font_path)
+    bootlogoimage.save(os.path.join(theme_folder_dir,"image","bootlogo.bmp"), format='BMP')
+
 def percentage_colour(hex1, hex2, percentage):
     # Convert hex colours to RGB
     rgb1 = hex_to_rgb(hex1)
@@ -375,6 +420,9 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     content_item_height = floor((config.screen_height-aprox_header_height_inc_gap-footer_height)/content_item_count)
     content_height = content_item_count*content_item_height
     header_height_inc_gap = config.screen_height-content_height-footer_height
+
+    header_icon_padding = 5
+    clock_padding = 5
     
     # Set up default colours that should be the same everywhere
     replacementStringMap["default"]["{accent_hex}"] = accent_hex
@@ -427,6 +475,11 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
 
     # Header settings
     replacementStringMap["default"]["{header_height}"] = header_height_inc_gap-2
+    replacementStringMap["default"]["{header_text_alpha}"] = 0
+    replacementStringMap["default"]["{status_padding_left}"] = header_icon_padding
+    replacementStringMap["default"]["{status_padding_right}"] = header_icon_padding
+    replacementStringMap["default"]["{date_padding_left}"] = clock_padding
+    replacementStringMap["default"]["{date_padding_right}"] = clock_padding
 
     # Content settings
     content_alignment_map = {"Left": 0, "Centre": 1, "Right": 2}
@@ -476,6 +529,14 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     
     ## Overrides:
     replacementStringMap["muxlaunch"] = {}
+
+    replacementStringMap["muxplore"] = {}
+
+    replacementStringMap["muxgov"] = {}
+
+    replacementStringMap["muassign"] = {}
+
+    replacementStringMap["muxsearch"] = {}
         
     for fileName in replacementStringMap.keys():
         shutil.copy2(template_scheme_file_path,os.path.join(scheme_files_dir,f"{fileName}.txt"))
@@ -534,6 +595,49 @@ def generateArtBookNextImage(current_index,
         image.alpha_composite(working_panel_image, (image_middle_x-index*change_in_x, 0))
         index += 1
     return(image)
+
+
+def generatePilImageBootScreen(base_hex, accent_hex, display_text, screen_width, screen_height, font_path, icon_path=None):
+    base_rgb = hex_to_rgb(base_hex)
+    image = Image.new("RGBA", (screen_width, screen_height), base_rgb)
+    draw = ImageDraw.Draw(image)
+    
+    screen_x_middle, screen_y_middle = int(screen_width/2), int(screen_height/2)
+
+    from_middle_padding = 0
+    
+    if icon_path != None:
+        if os.path.exists(icon_path):
+            from_middle_padding = 50
+            logo_image = Image.open(icon_path).convert("RGBA")
+            logo_alpha_channel = logo_image.split()[3]
+            logoColoured = ImageOps.colorize(logo_alpha_channel, black=accent_hex, white=accent_hex)
+            logoColoured = logoColoured.resize((int((logoColoured.size[0]/5)),int((logoColoured.size[1]/5))), Image.LANCZOS)
+            
+            logo_y_location = int(screen_y_middle-logoColoured.size[1]/2-from_middle_padding)
+            logo_x_location = int(screen_x_middle-logoColoured.size[0]/2)
+
+            image.paste(logoColoured,(logo_x_location,logo_y_location),logoColoured)
+            
+    font_size = int(57.6)
+    font = ImageFont.truetype(font_path, font_size)
+
+    textBbox = font.getbbox(display_text)
+
+    textWidth = int(textBbox[2] - textBbox[0])
+    textHeight = int(textBbox[3]-textBbox[1])
+    y_location = int(screen_y_middle-textHeight/2-textBbox[1]+from_middle_padding)
+    x_location = int(screen_x_middle - textWidth/2)
+
+    draw.text((x_location,y_location), display_text, font=font, fill=f"#{accent_hex}")
+
+    
+    return (image)
+
+def generatePilImageDefaultScreen(base_hex, screen_width, screen_height):
+    base_rgb = hex_to_rgb(base_hex)
+    image = Image.new("RGBA", (screen_width, screen_height), base_rgb)
+    return (image)
 
 def replace_in_file(file_path, search_string, replace_string):
     # Read the content of the file in binary mode
