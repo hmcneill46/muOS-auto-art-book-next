@@ -1005,6 +1005,9 @@ def main():
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
 
+        if os.path.exists(os.path.join(theme_output_dir, f"{args.theme_name}.zip")):
+            os.remove(os.path.join(theme_output_dir, f"{args.theme_name}.zip"))
+
         shutil.make_archive(os.path.join(theme_output_dir, args.theme_name), 'zip', temp_theme_folder)
         shutil.rmtree(temp_theme_folder)
     
