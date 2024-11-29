@@ -432,7 +432,7 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     content_alignment_map = {"Left": 0, "Centre": 1, "Right": 2}
     replacementStringMap["default"]["{content_alignment}"] = content_alignment_map["Left"]
     replacementStringMap["default"]["{content_height}"] = content_height
-    replacementStringMap["default"]["{content_item_height}"] = content_item_height
+    replacementStringMap["default"]["{content_item_height}"] = content_item_height-2
     replacementStringMap["default"]["{content_width}"] = config.screen_width
     replacementStringMap["default"]["{content_item_count}"] = content_item_count
     replacementStringMap["default"]["{content_padding_top}"] = (header_height_inc_gap)-header_height_inc_gap
