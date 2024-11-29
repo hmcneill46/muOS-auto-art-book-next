@@ -341,7 +341,7 @@ def round_to_nearest_odd(number):
     return int(high_odd) if abs(number - high_odd) < abs(number-low_odd) else int(low_odd)
 
 def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
-    os.mkdir(scheme_files_dir)
+    os.makedirs(scheme_files_dir, exist_ok=True)
 
     stringsToReplace = []
 
