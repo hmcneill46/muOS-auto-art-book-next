@@ -1,0 +1,1690 @@
+{{Unicode blocks/row |plane=BMP |planelink=yes
+ |range=U+0000..U+007F
+ |name=[[Basic Latin (Unicode block)|Basic Latin]]{{efn |name=Basic_Latin|1=Called "C0 Controls and Basic Latin" in [[ISO/IEC 10646]]}} |cp=128 |char=128
+ |contains=[[Latin script|Latin]] (52 characters), [[Script (Unicode)#Special script property values|Common]] (76 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0080..U+00FF
+ |name=[[Latin-1 Supplement]]{{efn |name=Latin1_Supplement|1=Called "C1 Controls and Latin-1 Supplement" in [[ISO/IEC 10646]]}} |cp=128 |char=128
+ |contains=Latin (64 characters), Common (64 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0100..U+017F
+ |name=[[Latin Extended-A]] |cp=128 |char=128
+ |contains=Latin
+}}
+{{Unicode blocks/row
+ |range=U+0180..U+024F
+ |name=[[Latin Extended-B]] |cp=208 |char=208
+ |contains=Latin
+}}
+{{Unicode blocks/row
+ |range=U+0250..U+02AF
+ |name=[[IPA Extensions]] |cp=96 |char=96
+ |contains=Latin
+}}
+{{Unicode blocks/row
+ |range=U+02B0..U+02FF
+ |name=[[Spacing Modifier Letters]] |cp=80 |char=80
+ |contains=[[Bopomofo]] (2 characters), Latin (14 characters), Common (64 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0300..U+036F
+ |name=[[Combining Diacritical Marks]] |cp=112 |char=112
+ |contains=[[Script (Unicode)#Special script property values|Inherited]]
+}}
+{{Unicode blocks/row
+ |range=U+0370..U+03FF
+ |name=[[Greek and Coptic]] |cp=144 |char=135
+ |contains=[[Coptic script|Coptic]] (14 characters), [[Greek alphabet|Greek]] (117 characters), Common (4 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0400..U+04FF
+ |name=[[Cyrillic (Unicode block)|Cyrillic]] |cp=256 |char=256
+ |contains=[[Cyrillic script|Cyrillic]] (254 characters), Inherited (2 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0500..U+052F
+ |name=[[Cyrillic Supplement]] |cp=48 |char=48
+ |contains=Cyrillic
+}}
+{{Unicode blocks/row
+ |range=U+0530..U+058F
+ |name=[[Armenian (Unicode block)|Armenian]] |cp=96 |char=91
+ |contains=[[Armenian alphabet|Armenian]]
+}}
+{{Unicode blocks/row
+ |range=U+0590..U+05FF
+ |name=[[Hebrew (Unicode block)|Hebrew]] |cp=112 |char=88
+ |contains=[[Hebrew alphabet|Hebrew]]
+}}
+{{Unicode blocks/row
+ |range=U+0600..U+06FF
+ |name=[[Arabic (Unicode block)|Arabic]] |cp=256 |char=256
+ |contains=[[Arabic script|Arabic]] (238 characters), Common (6 characters), Inherited (12 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0700..U+074F
+ |name=[[Syriac (Unicode block)|Syriac]] |cp=80 |char=77
+ |contains=[[Syriac alphabet|Syriac]]
+}}
+{{Unicode blocks/row
+ |range=U+0750..U+077F
+ |name=[[Arabic Supplement]] |cp=48 |char=48
+ |contains=Arabic
+}}
+{{Unicode blocks/row
+ |range=U+0780..U+07BF
+ |name=[[Thaana (Unicode block)|Thaana]] |cp=64 |char=50
+ |contains=[[Thaana]]
+}}
+{{Unicode blocks/row
+ |range=U+07C0..U+07FF
+ |name=[[NKo (Unicode block)|NKo]] |cp=64 |char=62
+ |contains=[[N'Ko script|N’Ko]]
+}}
+{{Unicode blocks/row
+ |range=U+0800..U+083F
+ |name=[[Samaritan (Unicode block)|Samaritan]] |cp=64 |char=61
+ |contains=[[Samaritan alphabet|Samaritan]]
+}}
+{{Unicode blocks/row
+ |range=U+0840..U+085F
+ |name=[[Mandaic (Unicode block)|Mandaic]] |cp=32 |char=29
+ |contains=[[Mandaic alphabet|Mandaic]]
+}}
+{{Unicode blocks/row
+ |range=U+0860..U+086F
+ |name=[[Syriac Supplement]] |cp=16 |char=11
+ |contains=Syriac
+}}
+{{Unicode blocks/row
+ |range=U+0870..U+089F
+ |name=[[Arabic Extended-B]] |cp=48 |char=42
+ |contains=Arabic
+}}
+{{Unicode blocks/row
+ |range=U+08A0..U+08FF
+ |name=[[Arabic Extended-A]] |cp=96 |char=96
+ |contains=Arabic (95 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+0900..U+097F
+ |name=[[Devanagari (Unicode block)|Devanagari]] |cp=128 |char=128
+ |contains=[[Devanagari]] (122 characters), Common (2 characters), Inherited (4 characters)
+}}
+{{Unicode blocks/row
+ |range=U+0980..U+09FF
+ |name=[[Bengali (Unicode block)|Bengali]] |cp=128 |char=96
+ |contains=[[Bengali–Assamese script|Bengali]]
+}}
+{{Unicode blocks/row
+ |range=U+0A00..U+0A7F
+ |name=[[Gurmukhi (Unicode block)|Gurmukhi]] |cp=128 |char=80
+ |contains=[[Gurmukhi]]
+}}
+{{Unicode blocks/row
+ |range=U+0A80..U+0AFF
+ |name=[[Gujarati (Unicode block)|Gujarati]] |cp=128 |char=91
+ |contains=[[Gujarati script|Gujarati]]
+}}
+{{Unicode blocks/row
+ |range=U+0B00..U+0B7F
+ |name=[[Oriya (Unicode block)|Oriya]] |cp=128 |char=91
+ |contains=[[Odia script|Oriya]]
+}}
+{{Unicode blocks/row
+ |range=U+0B80..U+0BFF
+ |name=[[Tamil (Unicode block)|Tamil]] |cp=128 |char=72
+ |contains=[[Tamil script|Tamil]]
+}}
+{{Unicode blocks/row
+ |range=U+0C00..U+0C7F
+ |name=[[Telugu (Unicode block)|Telugu]] |cp=128 |char=100
+ |contains=[[Telugu script|Telugu]]
+}}
+{{Unicode blocks/row
+ |range=U+0C80..U+0CFF
+ |name=[[Kannada (Unicode block)|Kannada]] |cp=128 |char=91
+ |contains=[[Kannada script|Kannada]]
+}}
+{{Unicode blocks/row
+ |range=U+0D00..U+0D7F
+ |name=[[Malayalam (Unicode block)|Malayalam]] |cp=128 |char=118
+ |contains=[[Malayalam script|Malayalam]]
+}}
+{{Unicode blocks/row
+ |range=U+0D80..U+0DFF
+ |name=[[Sinhala (Unicode block)|Sinhala]] |cp=128 |char=91
+ |contains=[[Sinhala script|Sinhala]]
+}}
+{{Unicode blocks/row
+ |range=U+0E00..U+0E7F
+ |name=[[Thai (Unicode block)|Thai]] |cp=128 |char=87
+ |contains=[[Thai script|Thai]] (86 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+0E80..U+0EFF
+ |name=[[Lao (Unicode block)|Lao]] |cp=128 |char=83
+ |contains=[[Lao script|Lao]]
+}}
+{{Unicode blocks/row
+ |range=U+0F00..U+0FFF
+ |name=[[Tibetan (Unicode block)|Tibetan]] |cp=256 |char=211
+ |contains=[[Tibetan script|Tibetan]] (207 characters), Common (4 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1000..U+109F
+ |name=[[Myanmar (Unicode block)|Myanmar]] |cp=160 |char=160
+ |contains=[[Mon–Burmese script|Myanmar]]
+}}
+{{Unicode blocks/row
+ |range=U+10A0..U+10FF
+ |name=[[Georgian (Unicode block)|Georgian]] |cp=96 |char=88
+ |contains=[[Georgian scripts|Georgian]] (87 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+1100..U+11FF
+ |name=[[Hangul Jamo (Unicode block)|Hangul Jamo]] |cp=256 |char=256
+ |contains=[[Hangul]]
+}}
+{{Unicode blocks/row
+ |range=U+1200..U+137F
+ |name=[[Ethiopic (Unicode block)|Ethiopic]] |cp=384 |char=358
+ |contains=[[Geʽez script|Ethiopic]]
+}}
+{{Unicode blocks/row
+ |range=U+1380..U+139F
+ |name=[[Ethiopic Supplement]] |cp=32 |char=26
+ |contains=Ethiopic
+}}
+{{Unicode blocks/row
+ |range=U+13A0..U+13FF
+ |name=[[Cherokee (Unicode block)|Cherokee]] |cp=96 |char=92
+ |contains=[[Cherokee syllabary|Cherokee]]
+}}
+{{Unicode blocks/row
+ |range=U+1400..U+167F
+ |name=[[Unified Canadian Aboriginal Syllabics (Unicode block)|Unified Canadian Aboriginal Syllabics]] |cp=640 |char=640
+ |contains=[[Canadian Aboriginal syllabics|Canadian Aboriginal]]
+}}
+{{Unicode blocks/row
+ |range=U+1680..U+169F
+ |name=[[Ogham (Unicode block)|Ogham]] |cp=32 |char=29
+ |contains=[[Ogham]]
+}}
+{{Unicode blocks/row
+ |range=U+16A0..U+16FF
+ |name=[[Runic (Unicode block)|Runic]] |cp=96 |char=89
+ |contains=[[Runes|Runic]] (86 characters), Common (3 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1700..U+171F
+ |name=[[Tagalog (Unicode block)|Tagalog]] |cp=32 |char=23
+ |contains=[[Baybayin|Tagalog]]
+}}
+{{Unicode blocks/row
+ |range=U+1720..U+173F
+ |name=[[Hanunoo (Unicode block)|Hanunoo]] |cp=32 |char=23
+ |contains=[[Hanunuo script|Hanunoo]] (21 characters), Common (2 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1740..U+175F
+ |name=[[Buhid (Unicode block)|Buhid]] |cp=32 |char=20
+ |contains=[[Buhid script|Buhid]]
+}}
+{{Unicode blocks/row
+ |range=U+1760..U+177F
+ |name=[[Tagbanwa (Unicode block)|Tagbanwa]] |cp=32 |char=18
+ |contains=[[Tagbanwa script|Tagbanwa]]
+}}
+{{Unicode blocks/row
+ |range=U+1780..U+17FF
+ |name=[[Khmer (Unicode block)|Khmer]] |cp=128 |char=114
+ |contains=[[Khmer script|Khmer]]
+}}
+{{Unicode blocks/row
+ |range=U+1800..U+18AF
+ |name=[[Mongolian (Unicode block)|Mongolian]] |cp=176 |char=158
+ |contains=[[Mongolian script|Mongolian]] (155 characters), Common (3 characters)
+}}
+{{Unicode blocks/row
+ |range=U+18B0..U+18FF
+ |name=[[Unified Canadian Aboriginal Syllabics Extended]] |cp=80 |char=70
+ |contains=Canadian Aboriginal
+}}
+{{Unicode blocks/row
+ |range=U+1900..U+194F
+ |name=[[Limbu (Unicode block)|Limbu]] |cp=80 |char=68
+ |contains=[[Limbu script|Limbu]]
+}}
+{{Unicode blocks/row
+ |range=U+1950..U+197F
+ |name=[[Tai Le (Unicode block)|Tai Le]] |cp=48 |char=35
+ |contains=[[Tai Le script|Tai Le]]
+}}
+{{Unicode blocks/row
+ |range=U+1980..U+19DF
+ |name=[[New Tai Lue (Unicode block)|New Tai Lue]] |cp=96 |char=83
+ |contains=[[New Tai Lue alphabet|New Tai Lue]]
+}}
+{{Unicode blocks/row
+ |range=U+19E0..U+19FF
+ |name=[[Khmer Symbols]] |cp=32 |char=32
+ |contains=Khmer
+}}
+{{Unicode blocks/row
+ |range=U+1A00..U+1A1F
+ |name=[[Buginese (Unicode block)|Buginese]] |cp=32 |char=30
+ |contains=[[Lontara script|Buginese]]
+}}
+{{Unicode blocks/row
+ |range=U+1A20..U+1AAF
+ |name=[[Tai Tham (Unicode block)|Tai Tham]] |cp=144 |char=127
+ |contains=[[Tai Tham script|Tai Tham]]
+}}
+{{Unicode blocks/row
+ |range=U+1AB0..U+1AFF
+ |name=[[Combining Diacritical Marks Extended]] |cp=80 |char=31
+ |contains=Inherited
+}}
+{{Unicode blocks/row
+ |range=U+1B00..U+1B7F
+ |name=[[Balinese (Unicode block)|Balinese]] |cp=128 |char=127
+ |contains=[[Balinese script|Balinese]]
+}}
+{{Unicode blocks/row
+ |range=U+1B80..U+1BBF
+ |name=[[Sundanese (Unicode block)|Sundanese]] |cp=64 |char=64
+ |contains=[[Sundanese script|Sundanese]]
+}}
+{{Unicode blocks/row
+ |range=U+1BC0..U+1BFF
+ |name=[[Batak (Unicode block)|Batak]] |cp=64 |char=56
+ |contains=[[Batak script|Batak]]
+}}
+{{Unicode blocks/row
+ |range=U+1C00..U+1C4F
+ |name=[[Lepcha (Unicode block)|Lepcha]] |cp=80 |char=74
+ |contains=[[Lepcha script|Lepcha]]
+}}
+{{Unicode blocks/row
+ |range=U+1C50..U+1C7F
+ |name=[[Ol Chiki (Unicode block)|Ol Chiki]] |cp=48 |char=48
+ |contains=[[Ol Chiki script|Ol Chiki]]
+}}
+{{Unicode blocks/row
+ |range=U+1C80..U+1C8F
+ |name=[[Cyrillic Extended-C]] |cp=16 |char=11
+ |contains=Cyrillic
+}}
+{{Unicode blocks/row
+ |range=U+1C90..U+1CBF
+ |name=[[Georgian Extended]] |cp=48 |char=46
+ |contains=Georgian
+}}
+{{Unicode blocks/row
+ |range=U+1CC0..U+1CCF
+ |name=[[Sundanese Supplement]] |cp=16 |char=8
+ |contains=Sundanese
+}}
+{{Unicode blocks/row
+ |range=U+1CD0..U+1CFF
+ |name=[[Vedic Extensions]] |cp=48 |char=43
+ |contains=Common (16 characters), Inherited (27 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1D00..U+1D7F
+ |name=[[Phonetic Extensions]] |cp=128 |char=128
+ |contains=Cyrillic (2 characters), Greek (15 characters), Latin (111 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1D80..U+1DBF
+ |name=[[Phonetic Extensions Supplement]] |cp=64 |char=64
+ |contains=Greek (1 character), Latin (63 characters)
+}}
+{{Unicode blocks/row
+ |range=U+1DC0..U+1DFF
+ |name=[[Combining Diacritical Marks Supplement]] |cp=64 |char=64
+ |contains=Inherited
+}}
+{{Unicode blocks/row
+ |range=U+1E00..U+1EFF
+ |name=[[Latin Extended Additional]] |cp=256 |char=256
+ |contains=Latin
+}}
+{{Unicode blocks/row
+ |range=U+1F00..U+1FFF
+ |name=[[Greek Extended]] |cp=256 |char=233
+ |contains=[[Greek alphabet|Greek]]
+}}
+{{Unicode blocks/row
+ |range=U+2000..U+206F
+ |name=[[General Punctuation]] |cp=112 |char=111
+ |contains=Common (109 characters), Inherited (2 characters)
+}}
+{{Unicode blocks/row
+ |range=U+2070..U+209F
+ |name=[[Superscripts and Subscripts]] |cp=48 |char=42
+ |contains=Latin (15 characters), Common (27 characters)
+}}
+{{Unicode blocks/row
+ |range=U+20A0..U+20CF
+ |name=[[Currency Symbols (Unicode block)|Currency Symbols]] |cp=48 |char=33
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+20D0..U+20FF
+ |name=[[Combining Diacritical Marks for Symbols]] |cp=48 |char=33
+ |contains=Inherited
+}}
+{{Unicode blocks/row
+ |range=U+2100..U+214F
+ |name=[[Letterlike Symbols]] |cp=80 |char=80
+ |contains=Greek (1 character), Latin (4 characters), Common (75 characters)
+}}
+{{Unicode blocks/row
+ |range=U+2150..U+218F
+ |name=[[Number Forms]] |cp=64 |char=60
+ |contains=Latin (41 characters), Common (19 characters)
+}}
+{{Unicode blocks/row
+ |range=U+2190..U+21FF
+ |name=[[Arrows (Unicode block)|Arrows]] |cp=112 |char=112
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2200..U+22FF
+ |name=[[Mathematical Operators (Unicode block)|Mathematical Operators]] |cp=256 |char=256
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2300..U+23FF
+ |name=[[Miscellaneous Technical]] |cp=256 |char=256
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2400..U+243F
+ |name=[[Control Pictures]] |cp=64 |char=42
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2440..U+245F
+ |name=[[Optical Character Recognition (Unicode block)|Optical Character Recognition]] |cp=32 |char=11
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2460..U+24FF
+ |name=[[Enclosed Alphanumerics]] |cp=160 |char=160
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2500..U+257F
+ |name=[[Box Drawing]] |cp=128 |char=128
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2580..U+259F
+ |name=[[Block Elements]] |cp=32 |char=32
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+25A0..U+25FF
+ |name=[[Geometric Shapes (Unicode block)|Geometric Shapes]] |cp=96 |char=96
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2600..U+26FF
+ |name=[[Miscellaneous Symbols]] |cp=256 |char=256
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2700..U+27BF
+ |name=[[Dingbats (Unicode block)|Dingbats]] |cp=192 |char=192
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+27C0..U+27EF
+ |name=[[Miscellaneous Mathematical Symbols-A]] |cp=48 |char=48
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+27F0..U+27FF
+ |name=[[Supplemental Arrows-A]] |cp=16 |char=16
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2800..U+28FF
+ |name=[[Braille Patterns]] |cp=256 |char=256
+ |contains=[[Braille]]
+}}
+{{Unicode blocks/row
+ |range=U+2900..U+297F
+ |name=[[Supplemental Arrows-B]] |cp=128 |char=128
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2980..U+29FF
+ |name=[[Miscellaneous Mathematical Symbols-B]] |cp=128 |char=128
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2A00..U+2AFF
+ |name=[[Supplemental Mathematical Operators]] |cp=256 |char=256
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2B00..U+2BFF
+ |name=[[Miscellaneous Symbols and Arrows]] |cp=256 |char=253
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2C00..U+2C5F
+ |name=[[Glagolitic (Unicode block)|Glagolitic]] |cp=96 |char=96
+ |contains=[[Glagolitic script|Glagolitic]]
+}}
+{{Unicode blocks/row
+ |range=U+2C60..U+2C7F
+ |name=[[Latin Extended-C]] |cp=32 |char=32
+ |contains=Latin
+}}
+{{Unicode blocks/row
+ |range=U+2C80..U+2CFF
+ |name=[[Coptic (Unicode block)|Coptic]] |cp=128 |char=123
+ |contains=Coptic
+}}
+{{Unicode blocks/row
+ |range=U+2D00..U+2D2F
+ |name=[[Georgian Supplement]] |cp=48 |char=40
+ |contains=Georgian
+}}
+{{Unicode blocks/row
+ |range=U+2D30..U+2D7F
+ |name=[[Tifinagh (Unicode block)|Tifinagh]] |cp=80 |char=59
+ |contains=[[Tifinagh]]
+}}
+{{Unicode blocks/row
+ |range=U+2D80..U+2DDF
+ |name=[[Ethiopic Extended]] |cp=96 |char=79
+ |contains=Ethiopic
+}}
+{{Unicode blocks/row
+ |range=U+2DE0..U+2DFF
+ |name=[[Cyrillic Extended-A]] |cp=32 |char=32
+ |contains=Cyrillic
+}}
+{{Unicode blocks/row
+ |range=U+2E00..U+2E7F
+ |name=[[Supplemental Punctuation]] |cp=128 |char=94
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+2E80..U+2EFF
+ |name=[[CJK Radicals Supplement]] |cp=128 |char=115
+ |contains=[[Chinese characters|Han]]
+}}
+{{Unicode blocks/row
+ |range=U+2F00..U+2FDF
+ |name=[[Kangxi Radicals (Unicode block)|Kangxi Radicals]] |cp=224 |char=214
+ |contains=Han
+}}
+{{Unicode blocks/row
+ |range=U+2FF0..U+2FFF
+ |name=[[Ideographic Description Characters]] |cp=16 |char=16
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+3000..U+303F
+ |name=[[CJK Symbols and Punctuation]] |cp=64 |char=64
+ |contains=Han (15 characters), Hangul (2 characters), Common (43 characters), Inherited (4 characters)
+}}
+{{Unicode blocks/row
+ |range=U+3040..U+309F
+ |name=[[Hiragana (Unicode block)|Hiragana]] |cp=96 |char=93
+ |contains=[[Hiragana]] (89 characters), Common (2 characters), Inherited (2 characters)
+}}
+{{Unicode blocks/row
+ |range=U+30A0..U+30FF
+ |name=[[Katakana (Unicode block)|Katakana]] |cp=96 |char=96
+ |contains=[[Katakana]] (93 characters), Common (3 characters)
+}}
+{{Unicode blocks/row
+ |range=U+3100..U+312F
+ |name=[[Bopomofo (Unicode block)|Bopomofo]] |cp=48 |char=43
+ |contains=[[Bopomofo]]
+}}
+{{Unicode blocks/row
+ |range=U+3130..U+318F
+ |name=[[Hangul Compatibility Jamo]] |cp=96 |char=94
+ |contains=Hangul
+}}
+{{Unicode blocks/row
+ |range=U+3190..U+319F
+ |name=[[Kanbun (Unicode block)|Kanbun]] |cp=16 |char=16
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+31A0..U+31BF
+ |name=[[Bopomofo Extended]] |cp=32 |char=32
+ |contains=Bopomofo
+}}
+{{Unicode blocks/row
+ |range=U+31C0..U+31EF
+ |name=[[CJK Strokes (Unicode block)|CJK Strokes]] |cp=48 |char=39
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+31F0..U+31FF
+ |name=[[Katakana Phonetic Extensions]] |cp=16 |char=16
+ |contains=Katakana
+}}
+{{Unicode blocks/row
+ |range=U+3200..U+32FF
+ |name=[[Enclosed CJK Letters and Months]] |cp=256 |char=255
+ |contains=Hangul (62 characters), Katakana (47 characters), Common (146 characters)
+}}
+{{Unicode blocks/row
+ |range=U+3300..U+33FF
+ |name=[[CJK Compatibility]] |cp=256 |char=256
+ |contains=Katakana (88 characters), Common (168 characters)
+}}
+{{Unicode blocks/row
+ |range=U+3400..U+4DBF
+ |name=[[CJK Unified Ideographs Extension A]] |cp=6,592 |char=6,592
+ |contains=Han
+}}
+{{Unicode blocks/row
+ |range=U+4DC0..U+4DFF
+ |name=[[Yijing Hexagram Symbols]] |cp=64 |char=64
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+4E00..U+9FFF
+ |name=[[CJK Unified Ideographs (Unicode block)|CJK Unified Ideographs]] |cp=20,992 |char=20,992
+ |contains=Han
+}}
+{{Unicode blocks/row
+ |range=U+A000..U+A48F
+ |name=[[Yi Syllables]] |cp=1,168 |char=1,165
+ |contains=[[Yi script|Yi]]
+}}
+{{Unicode blocks/row
+ |range=U+A490..U+A4CF
+ |name=[[Yi Radicals]] |cp=64 |char=55
+ |contains=Yi
+}}
+{{Unicode blocks/row
+ |range=U+A4D0..U+A4FF
+ |name=[[Lisu (Unicode block)|Lisu]] |cp=48 |char=48
+ |contains=[[Fraser alphabet|Lisu]]
+}}
+{{Unicode blocks/row
+ |range=U+A500..U+A63F
+ |name=[[Vai (Unicode block)|Vai]] |cp=320 |char=300
+ |contains=[[Vai syllabary|Vai]]
+}}
+{{Unicode blocks/row
+ |range=U+A640..U+A69F
+ |name=[[Cyrillic Extended-B]] |cp=96 |char=96
+ |contains=Cyrillic
+}}
+{{Unicode blocks/row
+ |range=U+A6A0..U+A6FF
+ |name=[[Bamum (Unicode block)|Bamum]] |cp=96 |char=88
+ |contains=[[Bamum script|Bamum]]
+}}
+{{Unicode blocks/row
+ |range=U+A700..U+A71F
+ |name=[[Modifier Tone Letters]] |cp=32 |char=32
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+A720..U+A7FF
+ |name=[[Latin Extended-D]] |cp=224 |char=199
+ |contains=Latin (194 characters), Common (5 characters)
+}}
+{{Unicode blocks/row
+ |range=U+A800..U+A82F
+ |name=[[Syloti Nagri (Unicode block)|Syloti Nagri]] |cp=48 |char=45
+ |contains=[[Sylheti Nagari|Syloti Nagri]]
+}}
+{{Unicode blocks/row
+ |range=U+A830..U+A83F
+ |name=[[Common Indic Number Forms]] |cp=16 |char=10
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+A840..U+A87F
+ |name=[[Phags-pa (Unicode block)|Phags-pa]] |cp=64 |char=56
+ |contains=[['Phags-pa script|Phags Pa]]
+}}
+{{Unicode blocks/row
+ |range=U+A880..U+A8DF
+ |name=[[Saurashtra (Unicode block)|Saurashtra]] |cp=96 |char=82
+ |contains=[[Saurashtra script|Saurashtra]]
+}}
+{{Unicode blocks/row
+ |range=U+A8E0..U+A8FF
+ |name=[[Devanagari Extended]] |cp=32 |char=32
+ |contains=Devanagari
+}}
+{{Unicode blocks/row
+ |range=U+A900..U+A92F
+ |name=[[Kayah Li (Unicode block)|Kayah Li]] |cp=48 |char=48
+ |contains=[[Kayah Li alphabet|Kayah Li]] (47 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+A930..U+A95F
+ |name=[[Rejang (Unicode block)|Rejang]] |cp=48 |char=37
+ |contains=[[Rejang alphabet|Rejang]]
+}}
+{{Unicode blocks/row
+ |range=U+A960..U+A97F
+ |name=[[Hangul Jamo Extended-A]] |cp=32 |char=29
+ |contains=Hangul
+}}
+{{Unicode blocks/row
+ |range=U+A980..U+A9DF
+ |name=[[Javanese (Unicode block)|Javanese]] |cp=96 |char=91
+ |contains=[[Javanese script|Javanese]] (90 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+A9E0..U+A9FF
+ |name=[[Myanmar Extended-B]] |cp=32 |char=31
+ |contains=Myanmar
+}}
+{{Unicode blocks/row
+ |range=U+AA00..U+AA5F
+ |name=[[Cham (Unicode block)|Cham]] |cp=96 |char=83
+ |contains=[[Cham script|Cham]]
+}}
+{{Unicode blocks/row
+ |range=U+AA60..U+AA7F
+ |name=[[Myanmar Extended-A]] |cp=32 |char=32
+ |contains=Myanmar
+}}
+{{Unicode blocks/row
+ |range=U+AA80..U+AADF
+ |name=[[Tai Viet (Unicode block)|Tai Viet]] |cp=96 |char=72
+ |contains=[[Tai Viet script|Tai Viet]]
+}}
+{{Unicode blocks/row
+ |range=U+AAE0..U+AAFF
+ |name=[[Meetei Mayek Extensions]] |cp=32 |char=23
+ |contains=[[Meitei script|Meetei Mayek]]
+}}
+{{Unicode blocks/row
+ |range=U+AB00..U+AB2F
+ |name=[[Ethiopic Extended-A]] |cp=48 |char=32
+ |contains=Ethiopic
+}}
+{{Unicode blocks/row
+ |range=U+AB30..U+AB6F
+ |name=[[Latin Extended-E]] |cp=64 |char=60
+ |contains=Latin (56 characters), Greek (1 character), Common (3 characters)
+}}
+{{Unicode blocks/row
+ |range=U+AB70..U+ABBF
+ |name=[[Cherokee Supplement]] |cp=80 |char=80
+ |contains=Cherokee
+}}
+{{Unicode blocks/row
+ |range=U+ABC0..U+ABFF
+ |name=[[Meetei Mayek (Unicode block)|Meetei Mayek]] |cp=64 |char=56
+ |contains=Meetei Mayek
+}}
+{{Unicode blocks/row
+ |range=U+AC00..U+D7AF
+ |name=[[Hangul Syllables]] |cp=11,184 |char=11,172
+ |contains=Hangul
+}}
+{{Unicode blocks/row
+ |range=U+D7B0..U+D7FF
+ |name=[[Hangul Jamo Extended-B]] |cp=80 |char=72
+ |contains=Hangul
+}}
+{{Unicode blocks/row
+ |range=U+D800..U+DB7F
+ |name=[[Universal Character Set characters#Surrogates|High Surrogates]] |cp=896 |char=0
+ |contains=[[Script (Unicode)#Special script property values|Unknown]]
+}}
+{{Unicode blocks/row
+ |range=U+DB80..U+DBFF
+ |name=[[Universal Character Set characters#Surrogates|High Private Use Surrogates]] |cp=128 |char=0
+ |contains=Unknown
+}}
+{{Unicode blocks/row
+ |range=U+DC00..U+DFFF
+ |name=[[Universal Character Set characters#Surrogates|Low Surrogates]] |cp=1,024 |char=0
+ |contains=Unknown
+}}
+{{Unicode blocks/row
+ |range=U+E000..U+F8FF
+ |name=[[Private Use Areas|Private Use Area]] |cp=6,400 |char=6,400
+ |contains=Unknown
+}}
+{{Unicode blocks/row
+ |range=U+F900..U+FAFF
+ |name=[[CJK Compatibility Ideographs]] |cp=512 |char=472
+ |contains=Han
+}}
+{{Unicode blocks/row
+ |range=U+FB00..U+FB4F
+ |name=[[Alphabetic Presentation Forms]] |cp=80 |char=58
+ |contains=Armenian (5 characters), Hebrew (46 characters), Latin (7 characters)
+}}
+{{Unicode blocks/row
+ |range=U+FB50..U+FDFF
+ |name=[[Arabic Presentation Forms-A]] |cp=688 |char=631
+ |contains=Arabic (629 characters), Common (2 characters)
+}}
+{{Unicode blocks/row
+ |range=U+FE00..U+FE0F
+ |name=[[Variation Selectors (Unicode block)|Variation Selectors]] |cp=16 |char=16
+ |contains=Inherited
+}}
+{{Unicode blocks/row
+ |range=U+FE10..U+FE1F
+ |name=[[Vertical Forms]] |cp=16 |char=10
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+FE20..U+FE2F
+ |name=[[Combining Half Marks]] |cp=16 |char=16
+ |contains=Cyrillic (2 characters), Inherited (14 characters)
+}}
+{{Unicode blocks/row
+ |range=U+FE30..U+FE4F
+ |name=[[CJK Compatibility Forms]] |cp=32 |char=32
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+FE50..U+FE6F
+ |name=[[Small Form Variants]] |cp=32 |char=26
+ |contains=Common
+}}
+{{Unicode blocks/row
+ |range=U+FE70..U+FEFF
+ |name=[[Arabic Presentation Forms-B]] |cp=144 |char=141
+ |contains=Arabic (140 characters), Common (1 character)
+}}
+{{Unicode blocks/row
+ |range=U+FF00..U+FFEF
+ |name=[[Halfwidth and Fullwidth Forms (Unicode block)|Halfwidth and Fullwidth Forms]] |cp=240 |char=225
+ |contains=Hangul (52 characters), Katakana (55 characters), Latin (52 characters), Common (66 characters)
+}}
+{{Unicode blocks/row
+ |range=U+FFF0..U+FFFF
+ |name=[[Specials (Unicode block)|Specials]] |cp=16 |char=5
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP |planelink=yes
+ |range=U+10000..U+1007F
+ |name=[[Linear B Syllabary]] |cp=128 |char=88
+ |contains=[[Linear B]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10080..U+100FF
+ |name=[[Linear B Ideograms]] |cp=128 |char=123
+ |contains=Linear B
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10100..U+1013F
+ |name=[[Aegean Numbers (Unicode block)|Aegean Numbers]] |cp=64 |char=57
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10140..U+1018F
+ |name=[[Ancient Greek Numbers (Unicode block)|Ancient Greek Numbers]] |cp=80 |char=79
+ |contains=Greek
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10190..U+101CF
+ |name=[[Ancient Symbols (Unicode block)|Ancient Symbols]] |cp=64 |char=14
+ |contains=Greek (1 character), Common (13 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+101D0..U+101FF
+ |name=[[Phaistos Disc (Unicode block)|Phaistos Disc]] |cp=48 |char=46
+ |contains=Common (45 characters), Inherited (1 character)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10280..U+1029F
+ |name=[[Lycian (Unicode block)|Lycian]] |cp=32 |char=29
+ |contains=[[Lycian alphabet|Lycian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+102A0..U+102DF
+ |name=[[Carian (Unicode block)|Carian]] |cp=64 |char=49
+ |contains=[[Carian alphabets|Carian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+102E0..U+102FF
+ |name=[[Coptic Epact Numbers]] |cp=32 |char=28
+ |contains=Common (27 characters), Inherited (1 character)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10300..U+1032F
+ |name=[[Old Italic (Unicode block)|Old Italic]] |cp=48 |char=39
+ |contains=[[Old Italic scripts|Old Italic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10330..U+1034F
+ |name=[[Gothic (Unicode block)|Gothic]] |cp=32 |char=27
+ |contains=[[Gothic alphabet|Gothic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10350..U+1037F
+ |name=[[Old Permic (Unicode block)|Old Permic]] |cp=48 |char=43
+ |contains=[[Old Permic script|Old Permic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10380..U+1039F
+ |name=[[Ugaritic (Unicode block)|Ugaritic]] |cp=32 |char=31
+ |contains=[[Ugaritic alphabet|Ugaritic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+103A0..U+103DF
+ |name=[[Old Persian (Unicode block)|Old Persian]] |cp=64 |char=50
+ |contains=[[Old Persian cuneiform|Old Persian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10400..U+1044F
+ |name=[[Deseret (Unicode block)|Deseret]] |cp=80 |char=80
+ |contains=[[Deseret alphabet|Deseret]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10450..U+1047F
+ |name=[[Shavian (Unicode block)|Shavian]] |cp=48 |char=48
+ |contains=[[Shavian alphabet|Shavian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10480..U+104AF
+ |name=[[Osmanya (Unicode block)|Osmanya]] |cp=48 |char=40
+ |contains=[[Osmanya alphabet|Osmanya]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+104B0..U+104FF
+ |name=[[Osage (Unicode block)|Osage]] |cp=80 |char=72
+ |contains=[[Osage script|Osage]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10500..U+1052F
+ |name=[[Elbasan (Unicode block)|Elbasan]] |cp=48 |char=40
+ |contains=[[Elbasan alphabet|Elbasan]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10530..U+1056F
+ |name=[[Caucasian Albanian (Unicode block)|Caucasian Albanian]] |cp=64 |char=53
+ |contains=[[Caucasian Albanian script|Caucasian Albanian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10570..U+105BF
+ |name=[[Vithkuqi (Unicode block)|Vithkuqi]] |cp=80 |char=70
+ |contains=[[Vithkuqi script|Vithkuqi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+105C0..U+105FF
+ |name=[[Todhri (Unicode block)|Todhri]] |cp=64 |char=52
+ |contains=[[Todhri alphabet|Todhri]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10600..U+1077F
+ |name=[[Linear A (Unicode block)|Linear A]] |cp=384 |char=341
+ |contains=[[Linear A]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10780..U+107BF
+ |name=[[Latin Extended-F]] |cp=64 |char=57
+ |contains=Latin
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10800..U+1083F
+ |name=[[Cypriot Syllabary (Unicode block)|Cypriot Syllabary]] |cp=64 |char=55
+ |contains=[[Cypriot syllabary|Cypriot]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10840..U+1085F
+ |name=[[Imperial Aramaic (Unicode block)|Imperial Aramaic]] |cp=32 |char=31
+ |contains=[[Aramaic alphabet|Imperial Aramaic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10860..U+1087F
+ |name=[[Palmyrene (Unicode block)|Palmyrene]] |cp=32 |char=32
+ |contains=[[Palmyrene alphabet|Palmyrene]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10880..U+108AF
+ |name=[[Nabataean (Unicode block)|Nabataean]] |cp=48 |char=40
+ |contains=[[Nabataean alphabet|Nabataean]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+108E0..U+108FF
+ |name=[[Hatran (Unicode block)|Hatran]] |cp=32 |char=26
+ |contains=[[Hatran Aramaic#Alphabet|Hatran]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10900..U+1091F
+ |name=[[Phoenician (Unicode block)|Phoenician]] |cp=32 |char=29
+ |contains=[[Phoenician alphabet|Phoenician]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10920..U+1093F
+ |name=[[Lydian (Unicode block)|Lydian]] |cp=32 |char=27
+ |contains=[[Lydian alphabet|Lydian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10980..U+1099F
+ |name=[[Meroitic Hieroglyphs (Unicode block)|Meroitic Hieroglyphs]] |cp=32 |char=32
+ |contains=[[Meroitic script|Meroitic Hieroglyphs]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+109A0..U+109FF
+ |name=[[Meroitic Cursive (Unicode block)|Meroitic Cursive]] |cp=96 |char=90
+ |contains=[[Meroitic script|Meroitic Cursive]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10A00..U+10A5F
+ |name=[[Kharoshthi (Unicode block)|Kharoshthi]] |cp=96 |char=68
+ |contains=[[Kharosthi|Kharoshthi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10A60..U+10A7F
+ |name=[[Old South Arabian (Unicode block)|Old South Arabian]] |cp=32 |char=32
+ |contains=[[Ancient South Arabian script|Old South Arabian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10A80..U+10A9F
+ |name=[[Old North Arabian (Unicode block)|Old North Arabian]] |cp=32 |char=32
+ |contains=[[Ancient North Arabian|Old North Arabian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10AC0..U+10AFF
+ |name=[[Manichaean (Unicode block)|Manichaean]] |cp=64 |char=51
+ |contains=[[Manichaean script|Manichaean]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10B00..U+10B3F
+ |name=[[Avestan (Unicode block)|Avestan]] |cp=64 |char=61
+ |contains=[[Avestan alphabet|Avestan]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10B40..U+10B5F
+ |name=[[Inscriptional Parthian (Unicode block)|Inscriptional Parthian]] |cp=32 |char=30
+ |contains=[[Inscriptional Parthian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10B60..U+10B7F
+ |name=[[Inscriptional Pahlavi (Unicode block)|Inscriptional Pahlavi]] |cp=32 |char=27
+ |contains=[[Inscriptional Pahlavi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10B80..U+10BAF
+ |name=[[Psalter Pahlavi (Unicode block)|Psalter Pahlavi]] |cp=48 |char=29
+ |contains=[[Psalter Pahlavi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10C00..U+10C4F
+ |name=[[Old Turkic (Unicode block)|Old Turkic]] |cp=80 |char=73
+ |contains=[[Old Turkic script|Old Turkic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10C80..U+10CFF
+ |name=[[Old Hungarian (Unicode block)|Old Hungarian]] |cp=128 |char=108
+ |contains=[[Old Hungarian script|Old Hungarian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10D00..U+10D3F
+ |name=[[Hanifi Rohingya (Unicode block)|Hanifi Rohingya]] |cp=64 |char=50
+ |contains=[[Hanifi Rohingya script|Hanifi Rohingya]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10D40..U+10D8F
+ |name=[[Garay (Unicode block)|Garay]] |cp=80 |char=69
+ |contains=[[Garay alphabet|Garay]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10E60..U+10E7F
+ |name=[[Rumi Numeral Symbols]] |cp=32 |char=31
+ |contains=Arabic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10E80..U+10EBF
+ |name=[[Yezidi (Unicode block)|Yezidi]] |cp=64 |char=47
+ |contains=[[Kurdish alphabets#Yezidi|Yezidi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10EC0..U+10EFF
+ |name=[[Arabic Extended-C]] |cp=64 |char=7
+ |contains=Arabic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10F00..U+10F2F
+ |name=[[Old Sogdian (Unicode block)|Old Sogdian]] |cp=48 |char=40
+ |contains=[[Sogdian alphabet|Old Sogdian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10F30..U+10F6F
+ |name=[[Sogdian (Unicode block)|Sogdian]] |cp=64 |char=42
+ |contains=[[Sogdian alphabet|Sogdian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10F70..U+10FAF
+ |name=[[Old Uyghur (Unicode block)|Old Uyghur]] |cp=64 |char=26
+ |contains=[[Old Uyghur alphabet|Old Uyghur]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10FB0..U+10FDF
+ |name=[[Chorasmian (Unicode block)|Chorasmian]] |cp=48 |char=28
+ |contains=[[Khwarezmian language#Writing system|Chorasmian]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+10FE0..U+10FFF
+ |name=[[Elymaic (Unicode block)|Elymaic]] |cp=32 |char=23
+ |contains=[[Elymaic]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11000..U+1107F
+ |name=[[Brahmi (Unicode block)|Brahmi]] |cp=128 |char=115
+ |contains=[[Brahmi script|Brahmi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11080..U+110CF
+ |name=[[Kaithi (Unicode block)|Kaithi]] |cp=80 |char=68
+ |contains=[[Kaithi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+110D0..U+110FF
+ |name=[[Sora Sompeng (Unicode block)|Sora Sompeng]] |cp=48 |char=35
+ |contains=[[Sorang Sompeng script|Sora Sompeng]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11100..U+1114F
+ |name=[[Chakma (Unicode block)|Chakma]] |cp=80 |char=71
+ |contains=[[Chakma script|Chakma]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11150..U+1117F
+ |name=[[Mahajani (Unicode block)|Mahajani]] |cp=48 |char=39
+ |contains=[[Mahajani]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11180..U+111DF
+ |name=[[Sharada (Unicode block)|Sharada]] |cp=96 |char=96
+ |contains=[[Sharada script|Sharada]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+111E0..U+111FF
+ |name=[[Sinhala Archaic Numbers]] |cp=32 |char=20
+ |contains=Sinhala
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11200..U+1124F
+ |name=[[Khojki (Unicode block)|Khojki]] |cp=80 |char=65
+ |contains=[[Khojki script|Khojki]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11280..U+112AF
+ |name=[[Multani (Unicode block)|Multani]] |cp=48 |char=38
+ |contains=[[Multani script|Multani]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+112B0..U+112FF
+ |name=[[Khudawadi (Unicode block)|Khudawadi]] |cp=80 |char=69
+ |contains=[[Khudabadi script|Khudawadi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11300..U+1137F
+ |name=[[Grantha (Unicode block)|Grantha]] |cp=128 |char=86
+ |contains=[[Grantha script|Grantha]] (85 characters), Inherited (1 character)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11380..U+113FF
+ |name=[[Tulu-Tigalari (Unicode block)|Tulu-Tigalari]] |cp=128 |char=80
+ |contains=[[Tigalari script|Tulu Tigalari]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11400..U+1147F
+ |name=[[Newa (Unicode block)|Newa]] |cp=128 |char=97
+ |contains=[[Pracalit script|Newa]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11480..U+114DF
+ |name=[[Tirhuta (Unicode block)|Tirhuta]] |cp=96 |char=82
+ |contains=[[Tirhuta script|Tirhuta]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11580..U+115FF
+ |name=[[Siddham (Unicode block)|Siddham]] |cp=128 |char=92
+ |contains=[[Siddhaṃ script|Siddham]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11600..U+1165F
+ |name=[[Modi (Unicode block)|Modi]] |cp=96 |char=79
+ |contains=[[Modi script|Modi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11660..U+1167F
+ |name=[[Mongolian Supplement]] |cp=32 |char=13
+ |contains=Mongolian
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11680..U+116CF
+ |name=[[Takri (Unicode block)|Takri]] |cp=80 |char=68
+ |contains=[[Takri script|Takri]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+116D0..U+116FF
+ |name=[[Myanmar Extended-C]] |cp=48 |char=20
+ |contains=Myanmar
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11700..U+1174F
+ |name=[[Ahom (Unicode block)|Ahom]] |cp=80 |char=65
+ |contains=[[Ahom script|Ahom]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11800..U+1184F
+ |name=[[Dogra (Unicode block)|Dogra]] |cp=80 |char=60
+ |contains=[[Dogri script|Dogra]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+118A0..U+118FF
+ |name=[[Warang Citi (Unicode block)|Warang Citi]] |cp=96 |char=84
+ |contains=[[Warang Citi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11900..U+1195F
+ |name=[[Dives Akuru (Unicode block)|Dives Akuru]] |cp=96 |char=72
+ |contains=[[Dhives Akuru|Dives Akuru]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+119A0..U+119FF
+ |name=[[Nandinagari (Unicode block)|Nandinagari]] |cp=96 |char=65
+ |contains=[[Nandinagari]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11A00..U+11A4F
+ |name=[[Zanabazar Square (Unicode block)|Zanabazar Square]] |cp=80 |char=72
+ |contains=[[Zanabazar square script|Zanabazar Square]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11A50..U+11AAF
+ |name=[[Soyombo (Unicode block)|Soyombo]] |cp=96 |char=83
+ |contains=[[Soyombo script|Soyombo]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11AB0..U+11ABF
+ |name=[[Unified Canadian Aboriginal Syllabics Extended-A]] |cp=16 |char=16
+ |contains=Canadian Aboriginal
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11AC0..U+11AFF
+ |name=[[Pau Cin Hau (Unicode block)|Pau Cin Hau]] |cp=64 |char=57
+ |contains=[[Pau Cin Hau script|Pau Cin Hau]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11B00..U+11B5F
+ |name=[[Devanagari Extended-A]] |cp=96 |char=10
+ |contains=Devanagari
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11BC0..U+11BFF
+ |name=[[Sunuwar (Unicode block)|Sunuwar]] |cp=64 |char=44
+ |contains=[[Sunuwar script|Sunuwar]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11C00..U+11C6F
+ |name=[[Bhaiksuki (Unicode block)|Bhaiksuki]] |cp=112 |char=97
+ |contains=[[Bhaiksuki script|Bhaiksuki]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11C70..U+11CBF
+ |name=[[Marchen (Unicode block)|Marchen]] |cp=80 |char=68
+ |contains=[[Marchen script|Marchen]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11D00..U+11D5F
+ |name=[[Masaram Gondi (Unicode block)|Masaram Gondi]] |cp=96 |char=75
+ |contains=[[Gondi writing#Masaram|Masaram Gondi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11D60..U+11DAF
+ |name=[[Gunjala Gondi (Unicode block)|Gunjala Gondi]] |cp=80 |char=63
+ |contains=[[Gunjala Gondi script|Gunjala Gondi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11EE0..U+11EFF
+ |name=[[Makasar (Unicode block)|Makasar]] |cp=32 |char=25
+ |contains=[[Makasar script|Makasar]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11F00..U+11F5F
+ |name=[[Kawi (Unicode block)|Kawi]] |cp=96 |char=87
+ |contains=[[Kawi language|Kawi]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11FB0..U+11FBF
+ |name=[[Lisu Supplement]] |cp=16 |char=1
+ |contains=Lisu
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+11FC0..U+11FFF
+ |name=[[Tamil Supplement]] |cp=64 |char=51
+ |contains=Tamil
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+12000..U+123FF
+ |name=[[Cuneiform (Unicode block)|Cuneiform]] |cp=1,024 |char=922
+ |contains=[[Cuneiform script|Cuneiform]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+12400..U+1247F
+ |name=[[Cuneiform Numbers and Punctuation]] |cp=128 |char=116
+ |contains=Cuneiform
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+12480..U+1254F
+ |name=[[Early Dynastic Cuneiform]] |cp=208 |char=196
+ |contains=Cuneiform
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+12F90..U+12FFF
+ |name=[[Cypro-Minoan (Unicode block)|Cypro-Minoan]] |cp=112 |char=99
+ |contains=[[Cypro-Minoan syllabary|Cypro Minoan]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+13000..U+1342F
+ |name=[[Egyptian Hieroglyphs (Unicode block)|Egyptian Hieroglyphs]] |cp=1,072 |char=1,072
+ |contains=[[Egyptian hieroglyphs|Egyptian Hieroglyphs]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+13430..U+1345F
+ |name=[[Egyptian Hieroglyph Format Controls]] |cp=48 |char=38
+ |contains=Egyptian Hieroglyphs
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+13460..U+143FF
+ |name=[[Egyptian Hieroglyphs Extended-A]] |cp=4,000 |char=3,995
+ |contains=Egyptian Hieroglyphs
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+14400..U+1467F
+ |name=[[Anatolian Hieroglyphs (Unicode block)|Anatolian Hieroglyphs]] |cp=640 |char=583
+ |contains=[[Anatolian hieroglyphs|Anatolian Hieroglyphs]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16100..U+1613F
+ |name=[[Gurung Khema (Unicode block)|Gurung Khema]] |cp=64 |char=58
+ |contains=[[Khema script|Gurung Khema]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16800..U+16A3F
+ |name=[[Bamum Supplement]] |cp=576 |char=569
+ |contains=Bamum
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16A40..U+16A6F
+ |name=[[Mro (Unicode block)|Mro]] |cp=48 |char=43
+ |contains=[[Mru language#Script|Mro]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16A70..U+16ACF
+ |name=[[Tangsa (Unicode block)|Tangsa]] |cp=96 |char=89
+ |contains=[[Tangsa language#Orthography|Tangsa]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16AD0..U+16AFF
+ |name=[[Bassa Vah (Unicode block)|Bassa Vah]] |cp=48 |char=36
+ |contains=[[Bassa Vah alphabet|Bassa Vah]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16B00..U+16B8F
+ |name=[[Pahawh Hmong (Unicode block)|Pahawh Hmong]] |cp=144 |char=127
+ |contains=[[Pahawh Hmong]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16D40..U+16D7F
+ |name=[[Kirat Rai (Unicode block)|Kirat Rai]] |cp=64 |char=58
+ |contains=[[Kirat Rai]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16E40..U+16E9F
+ |name=[[Medefaidrin (Unicode block)|Medefaidrin]] |cp=96 |char=91
+ |contains=[[Medefaidrin]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16F00..U+16F9F
+ |name=[[Miao (Unicode block)|Miao]] |cp=160 |char=149
+ |contains=[[Pollard script|Miao]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+16FE0..U+16FFF
+ |name=[[Ideographic Symbols and Punctuation]] |cp=32 |char=7
+ |contains=Han (4 characters), Khitan Small Script (1 character), Nushu (1 character), Tangut (1 character)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+17000..U+187FF
+ |name=[[Tangut (Unicode block)|Tangut]] |cp=6,144 |char=6,136
+ |contains=[[Tangut script|Tangut]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+18800..U+18AFF
+ |name=[[Tangut Components]] |cp=768 |char=768
+ |contains=Tangut
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+18B00..U+18CFF
+ |name=[[Khitan Small Script (Unicode block)|Khitan Small Script]] |cp=512 |char=471
+ |contains=[[Khitan small script|Khitan Small Script]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+18D00..U+18D7F
+ |name=[[Tangut Supplement]] |cp=128 |char=9
+ |contains=Tangut
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1AFF0..U+1AFFF
+ |name=[[Kana Extended-B]] |cp=16 |char=13
+ |contains=Katakana
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1B000..U+1B0FF
+ |name=[[Kana Supplement]] |cp=256 |char=256
+ |contains=Hiragana (255 characters), Katakana (1 character)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1B100..U+1B12F
+ |name=[[Kana Extended-A]] |cp=48 |char=35
+ |contains=Hiragana (32 characters), Katakana (3 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1B130..U+1B16F
+ |name=[[Small Kana Extension]] |cp=64 |char=9
+ |contains=Hiragana (4 characters), Katakana (5 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1B170..U+1B2FF
+ |name=[[Nushu (Unicode block)|Nushu]] |cp=400 |char=396
+ |contains=[[Nüshu]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1BC00..U+1BC9F
+ |name=[[Duployan (Unicode block)|Duployan]] |cp=160 |char=143
+ |contains=[[Duployan shorthand|Duployan]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1BCA0..U+1BCAF
+ |name=[[Shorthand Format Controls]] |cp=16 |char=4
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1CC00..U+1CEBF
+ |name=[[Symbols for Legacy Computing Supplement]] |cp=704 |char=686
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1CF00..U+1CFCF
+ |name=[[Znamenny Musical Notation]] |cp=208 |char=185
+ |contains=Common (116 characters), Inherited (69 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D000..U+1D0FF
+ |name=[[Byzantine Musical Symbols]] |cp=256 |char=246
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D100..U+1D1FF
+ |name=[[Musical Symbols (Unicode block)|Musical Symbols]] |cp=256 |char=233
+ |contains=Common (211 characters), Inherited (22 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D200..U+1D24F
+ |name=[[Ancient Greek Musical Notation]] |cp=80 |char=70
+ |contains=Greek
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D2C0..U+1D2DF
+ |name=[[Kaktovik Numerals (Unicode block)|Kaktovik Numerals]] |cp=32 |char=20
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D2E0..U+1D2FF
+ |name=[[Mayan Numerals (Unicode block)|Mayan Numerals]] |cp=32 |char=20
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D300..U+1D35F
+ |name=[[Taixuanjing|Tai Xuan Jing Symbols]] |cp=96 |char=87
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D360..U+1D37F
+ |name=[[Counting Rod Numerals]] |cp=32 |char=25
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D400..U+1D7FF
+ |name=[[Mathematical Alphanumeric Symbols]] |cp=1,024 |char=996
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1D800..U+1DAAF
+ |name=[[Sutton SignWriting (Unicode block)|Sutton SignWriting]] |cp=688 |char=672
+ |contains=[[SignWriting]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1DF00..U+1DFFF
+ |name=[[Latin Extended-G]] |cp=256 |char=37
+ |contains=Latin
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E000..U+1E02F
+ |name=[[Glagolitic Supplement]] |cp=48 |char=38
+ |contains=Glagolitic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E030..U+1E08F
+ |name=[[Cyrillic Extended-D]] |cp=96 |char=63
+ |contains=Cyrillic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E100..U+1E14F
+ |name=[[Nyiakeng Puachue Hmong (Unicode block)|Nyiakeng Puachue Hmong]] |cp=80 |char=71
+ |contains=[[Nyiakeng Puachue Hmong]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E290..U+1E2BF
+ |name=[[Toto (Unicode block)|Toto]] |cp=48 |char=31
+ |contains=[[Toto language#Writing System|Toto]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E2C0..U+1E2FF
+ |name=[[Wancho (Unicode block)|Wancho]] |cp=64 |char=59
+ |contains=[[Wancho script|Wancho]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E4D0..U+1E4FF
+ |name=[[Nag Mundari (Unicode block)|Nag Mundari]] |cp=48 |char=42
+ |contains=[[Mundari language|Mundari]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E5D0..U+1E5FF
+ |name=[[Ol Onal (Unicode block)|Ol Onal]] |cp=48 |char=44
+ |contains=[[Ol Onal]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E7E0..U+1E7FF
+ |name=[[Ethiopic Extended-B]] |cp=32 |char=28
+ |contains=Ethiopic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E800..U+1E8DF
+ |name=[[Mende Kikakui (Unicode block)|Mende Kikakui]] |cp=224 |char=213
+ |contains=[[Mende Kikakui script|Mende Kikakui]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1E900..U+1E95F
+ |name=[[Adlam (Unicode block)|Adlam]] |cp=96 |char=88
+ |contains=[[Adlam script|Adlam]]
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1EC70..U+1ECBF
+ |name=[[Indic Siyaq Numbers]] |cp=80 |char=68
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1ED00..U+1ED4F
+ |name=[[Ottoman Siyaq Numbers]] |cp=80 |char=61
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1EE00..U+1EEFF
+ |name=[[Arabic Mathematical Alphabetic Symbols]] |cp=256 |char=143
+ |contains=Arabic
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F000..U+1F02F
+ |name=[[Mahjong Tiles (Unicode block)|Mahjong Tiles]] |cp=48 |char=44
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F030..U+1F09F
+ |name=[[Domino Tiles]] |cp=112 |char=100
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F0A0..U+1F0FF
+ |name=[[Playing Cards (Unicode block)|Playing Cards]] |cp=96 |char=82
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F100..U+1F1FF
+ |name=[[Enclosed Alphanumeric Supplement]] |cp=256 |char=200
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F200..U+1F2FF
+ |name=[[Enclosed Ideographic Supplement]] |cp=256 |char=64
+ |contains=Hiragana (1 character), Common (63 characters)
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F300..U+1F5FF
+ |name=[[Miscellaneous Symbols and Pictographs]] |cp=768 |char=768
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F600..U+1F64F
+ |name=[[Emoticons (Unicode block)|Emoticons]] |cp=80 |char=80
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F650..U+1F67F
+ |name=[[Ornamental Dingbats]] |cp=48 |char=48
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F680..U+1F6FF
+ |name=[[Transport and Map Symbols]] |cp=128 |char=118
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F700..U+1F77F
+ |name=[[Alchemical Symbols (Unicode block)|Alchemical Symbols]] |cp=128 |char=124
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F780..U+1F7FF
+ |name=[[Geometric Shapes Extended]] |cp=128 |char=103
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F800..U+1F8FF
+ |name=[[Supplemental Arrows-C]] |cp=256 |char=162
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1F900..U+1F9FF
+ |name=[[Supplemental Symbols and Pictographs]] |cp=256 |char=256
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1FA00..U+1FA6F
+ |name=[[Chess Symbols]] |cp=112 |char=98
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1FA70..U+1FAFF
+ |name=[[Symbols and Pictographs Extended-A]] |cp=144 |char=114
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SMP
+ |range=U+1FB00..U+1FBFF
+ |name=[[Symbols for Legacy Computing]] |cp=256 |char=249
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SIP |planelink=yes
+ |range=U+20000..U+2A6DF
+ |name=[[CJK Unified Ideographs Extension B]] |cp=42,720 |char=42,720
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2A700..U+2B73F
+ |name=[[CJK Unified Ideographs Extension C]] |cp=4,160 |char=4,154
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2B740..U+2B81F
+ |name=[[CJK Unified Ideographs Extension D]] |cp=224 |char=222
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2B820..U+2CEAF
+ |name=[[CJK Unified Ideographs Extension E]] |cp=5,776 |char=5,762
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2CEB0..U+2EBEF
+ |name=[[CJK Unified Ideographs Extension F]] |cp=7,488 |char=7,473
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2EBF0..U+2EE5F
+ |name=[[CJK Unified Ideographs Extension I]] |cp=624 |char=622
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SIP
+ |range=U+2F800..U+2FA1F
+ |name=[[CJK Compatibility Ideographs Supplement]] |cp=544 |char=542
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=TIP |planelink=yes
+ |range=U+30000..U+3134F
+ |name=[[CJK Unified Ideographs Extension G]] |cp=4,944 |char=4,939
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=TIP
+ |range=U+31350..U+323AF
+ |name=[[CJK Unified Ideographs Extension H]] |cp=4,192 |char=4,192
+ |contains=Han
+}}
+{{Unicode blocks/row |plane=SSP |planelink=yes
+ |range=U+E0000..U+E007F
+ |name=[[Tags (Unicode block)|Tags]] |cp=128 |char=97
+ |contains=Common
+}}
+{{Unicode blocks/row |plane=SSP
+ |range=U+E0100..U+E01EF
+ |name=[[Variation Selectors Supplement]] |cp=240 |char=240
+ |contains=Inherited
+}}
+{{Unicode blocks/row |plane=PUA-A |planelink=yes
+ |range=U+F0000..U+FFFFF
+ |name=[[Private Use Areas|Supplementary Private Use Area-A]] |cp=65,536 |char=65,534
+ |contains=Unknown
+}}
+{{Unicode blocks/row |plane=PUA-B |planelink=yes
+ |range=U+100000..U+10FFFF
+ |name=[[Private Use Areas|Supplementary Private Use Area-B]] |cp=65,536 |char=65,534
+ |contains=Unknown
+}}

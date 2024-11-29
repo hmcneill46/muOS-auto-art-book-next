@@ -6,6 +6,7 @@ import json
 import logging
 import re
 import shutil
+import hashlib
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter, ImageFont
 
 def ceil(n):
@@ -267,7 +268,7 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
-def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, config:Config):
+def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, lv_font_conv, ranges_file, cache_file, config:Config):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -355,6 +356,165 @@ def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, config:Conf
                                                config.screen_height,
                                                config.font_path)
     bootlogoimage.save(os.path.join(theme_folder_dir,"image","bootlogo.bmp"), format='BMP')
+
+    fillFontFolder(os.path.join(theme_folder_dir, "font"),
+                   config.font_path,
+                   lv_font_conv,
+                   ranges_file,
+                   cache_file,
+                   config)
+
+def fillFontFolder(font_folder_dir, font_path, lv_font_conv, ranges_file, cache_file, config:Config):
+    font_size = {}
+    font_size["header"] = {}
+    font_size["footer"] = {}
+    font_size["panel"] = {}
+
+    font_size["header"]["default"] = 20
+    font_size["footer"]["default"] = 20
+    font_size["panel"]["default"] = 20
+
+    font_size["panel"]["muxtheme"] = 18
+    font_size["panel"]["muxarchive"] = 18
+
+    scaled_font_size = min(
+        150 * (config.screen_width / 1440),
+        150 * (config.screen_height / 810),
+    )
+    font_size["panel"]["muxlaunch"] = scaled_font_size
+
+    for folder in font_size.keys():
+        for font in font_size[folder].keys():
+            font_size_int = int(font_size[folder][font])
+            font_name = f"{font}.bin"
+            output_file = os.path.join(font_folder_dir, folder, font_name)
+            generateFontBinary(font_path,
+                               lv_font_conv,
+                               font_size_int,
+                               output_file,
+                               ranges_file,
+                               cache_file,
+                               config.logger)
+    default_font_size = 20
+    font_name = f"default.bin"
+    output_file = os.path.join(font_folder_dir, font_name)
+    generateFontBinary(font_path,
+                        lv_font_conv,
+                        default_font_size,
+                        output_file,
+                        ranges_file,
+                        cache_file,
+                        config.logger)
+
+def generateFontBinary(font_path, lv_font_conv, font_size, output_path, ranges_file, cache_file, logger):
+    ranges = parse_ranges_file(ranges_file)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+    supported_ranges = check_supported_ranges(font_path, ranges, cache_file, lv_font_conv)
+    if not supported_ranges:
+        print("No supported ranges found for the font.")
+        return
+    print("Supported ranges:")
+    for unicode_range, block_name in supported_ranges.items():
+        print(f"{unicode_range} ({block_name})")
+    
+    command = [
+       lv_font_conv,
+        "--bpp", "4",
+        "--size", f"{font_size}",
+        "--font", font_path,
+        "-r", ",".join(supported_ranges.keys()),
+        "--format", "bin",
+        "--no-compress",
+        "--no-prefilter",
+        "-o", output_path,
+    ]
+    print(f"Generating binary for size {font_size} -> {output_path}")
+    try:
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error generating binary for size {font_size}: {e}")
+
+def parse_ranges_file(file_path):
+    """Parse ranges.txt and return a dictionary of ranges and block names."""
+    ranges_dict = {}
+    range_pattern = re.compile(r"range=U\+([0-9A-F]+)..U\+([0-9A-F]+)")
+    name_pattern = re.compile(r"name=\[\[([^|\]]+)")
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    blocks = content.split("{{Unicode blocks/row")
+    for block in blocks:
+        range_match = range_pattern.search(block)
+        name_match = name_pattern.search(block)
+        if range_match and name_match:
+            start = int(range_match.group(1), 16)
+            end = int(range_match.group(2), 16)
+            block_name = name_match.group(1)
+            ranges_dict[f"0x{start:04X}-0x{end:04X}"] = block_name
+
+    return ranges_dict
+
+def check_supported_ranges(font_path, ranges, cache_file, lv_font_conv_binary):
+    """Check supported ranges for the font, using cache if available."""
+    cache = load_cache(cache_file)
+    font_hash = calculate_file_hash(font_path)
+
+    # Check if the font's hash is already in the cache
+    if font_hash in cache:
+        print(f"Using cached ranges for font: {font_path}")
+        return cache[font_hash]["supported_ranges"]
+
+    # Test ranges with lv_font_conv
+    print(f"Checking supported ranges for font: {font_path}")
+    supported_ranges = {}
+    for unicode_range, block_name in ranges.items():
+        try:
+            command = [
+                lv_font_conv_binary,
+                "--bpp", "4",
+                "--size", "20",  # Arbitrary size for testing ranges
+                "--font", font_path,
+                "-r", unicode_range,
+                "--format", "bin",
+                "--no-compress",
+                "--no-prefilter",
+                "-o", os.devnull,  # Discard output
+            ]
+            subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            supported_ranges[unicode_range] = block_name
+        except subprocess.CalledProcessError:
+            print(f"Font does not support range: {unicode_range} ({block_name})")
+
+    # Save the result to the cache
+    cache[font_hash] = {
+        "font_name": os.path.basename(font_path),
+        "supported_ranges": supported_ranges,
+    }
+    save_cache(cache, cache_file)
+
+    return supported_ranges
+
+def load_cache(cache_file):
+    """Load the font ranges cache from a JSON file."""
+    if os.path.exists(cache_file):
+        with open(cache_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+def save_cache(cache, cache_file):
+    """Save the font ranges cache to a JSON file."""
+    with open(cache_file, "w", encoding="utf-8") as f:
+        json.dump(cache, f, indent=4)
+
+def calculate_file_hash(file_path):
+    """Calculate the SHA256 hash of a file."""
+    hash_sha256 = hashlib.sha256()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_sha256.update(chunk)
+    return hash_sha256.hexdigest()
 
 def percentage_colour(hex1, hex2, percentage):
     # Convert hex colours to RGB
@@ -985,6 +1145,16 @@ def main():
         help="Path of where lv_font_conv program is (required if mode includes 'theme')."
     )
 
+    parser.add_argument(
+        "--font_ranges_path",
+        help="Path to a file containing valid font ascii ranges (required if mode includes 'theme')."
+    )
+
+    parser.add_argument(
+        "--font_cache_path",
+        help="Path to where font valid ranges cache is (required if mode includes 'theme')."
+    )
+
     # Optional arguments with defaults
     parser.add_argument(
         "--background_hex", default="#000000",
@@ -1027,6 +1197,10 @@ def main():
         parser.error("--template_scheme_path is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.lv_font_conv_path:
         parser.error("--lv_font_conv_path is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.font_ranges_path:
+        parser.error("--font_ranges_path is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.font_cache_path:
+        parser.error("--font_cache_path is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
     if args.mode in ["box_art", "both"] and not args.theme_output_dir:
@@ -1070,7 +1244,9 @@ def main():
     theme_validations = [
         validate_directory(args.theme_output_dir, "Themes Directory", logger),
         validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger),
-        validate_file(args.template_scheme_path, "Template Scheme File", logger)
+        validate_file(args.template_scheme_path, "Template Scheme File", logger),
+        validate_file(args.font_ranges_path, "Font Ranges File", logger),
+        validate_file(args.font_cache_path, "Font Cache File", logger)
     ]
 
     if not all(required_validations):
@@ -1104,7 +1280,7 @@ def main():
             shutil.rmtree(temp_theme_folder)
         shutil.copytree(args.theme_shell_dir, temp_theme_folder)
         
-        fillTempThemeFolder(temp_theme_folder, args.template_scheme_path ,config)
+        fillTempThemeFolder(temp_theme_folder, args.template_scheme_path, args.lv_font_conv_path, args.font_ranges_path, args.font_cache_path, config)
         
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
