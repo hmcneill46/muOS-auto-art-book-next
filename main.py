@@ -105,7 +105,7 @@ class Config(object):
         self.logger.info("=" * 50)  # Divider line
         self.logger.info("Optional settings:")
         self.logger.info("=" * 50)
-        self.logger.info(f"  Background color: {self.background_hex}")
+        self.logger.info(f"  Background colour: {self.background_hex}")
         self.logger.info(f"  Gap between panels: {self.gap_between_panels}px")
         self.logger.info(f"  Icon height max percent of screen height: {self.icon_height_percent*100}%")
         self.logger.info(f"  Icon width max percent of screen width: {self.icon_width_percent*100}%")
@@ -114,23 +114,23 @@ class Config(object):
     def log_associations(self):
         for folder in self.folder_console_associations.keys():
             self.logger.info(f"  {folder}: {self.folder_console_associations[folder]}")
-    def get_gradient_overlay_image(self, width, height, start_color, end_color, gradient_height_percent):
+    def get_gradient_overlay_image(self, width, height, start_colour, end_colour, gradient_height_percent):
         if self.gradient_overlay_image is None:
-            self.gradient_overlay_image = generateGradientImage(width, height, start_color, end_color, gradient_height_percent, self)
+            self.gradient_overlay_image = generateGradientImage(width, height, start_colour, end_colour, gradient_height_percent, self)
         return self.gradient_overlay_image
     def update_folders(self, folders):
         self.folders = folders
         self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
 
-def generateGradientImage(width, height, start_color, end_color, gradient_height_percent,config:Config):
+def generateGradientImage(width, height, start_colour, end_colour, gradient_height_percent,config:Config):
     """
     Generate a smooth vertical gradient image using PIL.
     
     Parameters:
         width (int): The width of the image.
         height (int): The height of the image.
-        start_color (tuple): RGBA tuple for the color at the top of the gradient.
-        end_color (tuple): RGBA tuple for the color at the bottom of the gradient.
+        start_colour (tuple): RGBA tuple for the colour at the top of the gradient.
+        end_colour (tuple): RGBA tuple for the colour at the bottom of the gradient.
         gradient_height_percent (float): The percentage of the image height that the gradient covers (0.0 to 1.0).
     
     Returns:
@@ -138,26 +138,26 @@ def generateGradientImage(width, height, start_color, end_color, gradient_height
     """
     config.logger.info(f"Generating Gradient Image")
     # Create a new image with an RGBA mode
-    gradient = Image.new("RGBA", (width, height), end_color)
-    if start_color != end_color:
+    gradient = Image.new("RGBA", (width, height), end_colour)
+    if start_colour != end_colour:
         gradient_height = int(height * gradient_height_percent)
 
-        # Calculate the color difference for the gradient
-        delta_r = end_color[0] - start_color[0]
-        delta_g = end_color[1] - start_color[1]
-        delta_b = end_color[2] - start_color[2]
-        delta_a = end_color[3] - start_color[3]
+        # Calculate the colour difference for the gradient
+        delta_r = end_colour[0] - start_colour[0]
+        delta_g = end_colour[1] - start_colour[1]
+        delta_b = end_colour[2] - start_colour[2]
+        delta_a = end_colour[3] - start_colour[3]
 
         for y in range(gradient_height):
             # Calculate the interpolation factor
             t = y / gradient_height
-            # Interpolate the color
-            r = int(start_color[0] + t * delta_r)
-            g = int(start_color[1] + t * delta_g)
-            b = int(start_color[2] + t * delta_b)
-            a = int(start_color[3] + t * delta_a)
+            # Interpolate the colour
+            r = int(start_colour[0] + t * delta_r)
+            g = int(start_colour[1] + t * delta_g)
+            b = int(start_colour[2] + t * delta_b)
+            a = int(start_colour[3] + t * delta_a)
 
-            # Draw a horizontal line with the calculated color
+            # Draw a horizontal line with the calculated colour
             for x in range(width):
                 gradient.putpixel((x, y), (r, g, b, a))
 
@@ -310,7 +310,36 @@ def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, config:Conf
             current_theme_image.save(os.path.join(theme_folder_dir, "preview.png"))
         config.logger.info(f"Successfully generated theme image for system: {item}")
     fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
+
+def percentage_colour(hex1, hex2, percentage):
+    # Convert hex colours to RGB
+    rgb1 = hex_to_rgb(hex1)
+    rgb2 = hex_to_rgb(hex2)
     
+    # Calculate the interpolated colour for each component
+    interp_rgb = tuple(interpolate_colour_component(c1, c2, percentage) for c1, c2 in zip(rgb1, rgb2))
+    
+    # Convert interpolated RGB back to hex
+    return rgb_to_hex(interp_rgb)
+
+def hex_to_rgb(hex_colour,alpha = 1.0):
+    # Convert hex to RGB
+    rgb = tuple(int(hex_colour[i:i+2], 16) for i in (0, 2, 4))
+    return (rgb[0], rgb[1], rgb[2], int(alpha * 255))
+
+def rgb_to_hex(rgb_colour):
+    # Convert RGB to hex
+    return '{:02x}{:02x}{:02x}'.format(*rgb_colour)
+
+def interpolate_colour_component(c1, c2, factor):
+    # Interpolate a single colour component
+    return int(c1 + (c2 - c1) * factor)
+
+def round_to_nearest_odd(number):
+    high_odd = (number // 2) * 2 + 1
+    low_odd = high_odd - 2
+    return int(high_odd) if abs(number - high_odd) < abs(number-low_odd) else int(low_odd)
+
 def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
 
     stringsToReplace = []
@@ -329,12 +358,110 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     for n in stringsToReplace:
         replacementStringMap["default"][n] = None
 
+    ############ Set up variables ############
+    # Colours
+    accent_hex = "ffffff"
+    base_hex = config.background_hex[1:]
+    blend_hex = percentage_colour(base_hex,accent_hex,0.5)
+    muted_hex = percentage_colour(base_hex,accent_hex,0.25)
+    battery_charging_hex = "2eb774"
+    footer_background_hex = "000000"
+
+    # General
+    aprox_header_height_inc_gap = int((44/480)*config.screen_height)
+    footer_height = int((55/480)*config.screen_height)
+    content_item_count = 9 if config.screen_height == 480 else round_to_nearest_odd(9 * (config.screen_height / 480))
+    content_item_height = floor((config.screen_height-aprox_header_height_inc_gap-footer_height)/content_item_count)
+    content_height = content_item_count*content_item_height
+    header_height_inc_gap = config.screen_height-content_height-footer_height
+    print(header_height_inc_gap)
+
     # Set up default colours that should be the same everywhere
-    replacementStringMap["default"]["{accent_hex}"] = None
-    replacementStringMap["default"]["{base_hex}"] = None
-    replacementStringMap["default"]["{blend_hex}"] = None
-    replacementStringMap["default"]["{muted_hex}"] = None
-    replacementStringMap["default"]["{battery_charging_hex}"] = None
+    replacementStringMap["default"]["{accent_hex}"] = accent_hex
+    replacementStringMap["default"]["{base_hex}"] = base_hex
+    replacementStringMap["default"]["{blend_hex}"] = blend_hex
+    replacementStringMap["default"]["{muted_hex}"] = muted_hex
+    replacementStringMap["default"]["{battery_charging_hex}"] = battery_charging_hex
+
+    # Grid Settings
+    replacementStringMap["default"]["{grid_navigation_type}"] = 4
+    replacementStringMap["default"]["{grid_background}"] = base_hex
+    replacementStringMap["default"]["{grid_background_alpha}"] = 0
+    replacementStringMap["default"]["{grid_location_x}"] = 0
+    replacementStringMap["default"]["{grid_location_y}"] = 0
+    replacementStringMap["default"]["{grid_column_count}"] = 0
+    replacementStringMap["default"]["{grid_row_count}"] = 0
+    replacementStringMap["default"]["{grid_row_height}"] = 0
+    replacementStringMap["default"]["{grid_column_width}"] = 0
+    replacementStringMap["default"]["{grid_cell_width}"] = 200
+    replacementStringMap["default"]["{grid_cell_height}"] = 200
+    replacementStringMap["default"]["{grid_cell_radius}"] = 10
+    replacementStringMap["default"]["{grid_cell_border_width}"] = 0
+    replacementStringMap["default"]["{grid_cell_image_padding_top}"] = 0
+    replacementStringMap["default"]["{grid_cell_text_padding_bottom}"] = 0
+    replacementStringMap["default"]["{grid_cell_text_padding_side}"] = 0
+    replacementStringMap["default"]["{grid_cell_text_line_spacing}"] = 0
+    replacementStringMap["default"]["{grid_cell_default_background}"] = base_hex
+    replacementStringMap["default"]["{grid_cell_default_background_alpha}"] = 0
+    replacementStringMap["default"]["{grid_cell_default_border}"] = base_hex
+    replacementStringMap["default"]["{grid_cell_default_border_alpha}"] = 0
+    replacementStringMap["default"]["{grid_cell_default_image_alpha}"] = 255
+    replacementStringMap["default"]["{grid_cell_default_image_recolour}"] = accent_hex
+    replacementStringMap["default"]["{grid_cell_default_image_recolour_alpha}"] = 255
+    replacementStringMap["default"]["{grid_cell_default_text}"] = blend_hex
+    replacementStringMap["default"]["{grid_cell_default_text_alpha}"] = 0
+    replacementStringMap["default"]["{grid_cell_focus_background}"] = blend_hex
+    replacementStringMap["default"]["{grid_cell_focus_background_alpha}"] = int(255*0.133)
+    replacementStringMap["default"]["{grid_cell_focus_border}"] = blend_hex
+    replacementStringMap["default"]["{grid_cell_focus_border_alpha}"] = 0
+    replacementStringMap["default"]["{grid_cell_focus_image_alpha}"] = 255
+    replacementStringMap["default"]["{grid_cell_focus_image_recolour}"] = accent_hex
+    replacementStringMap["default"]["{grid_cell_focus_image_recolour_alpha}"] = 255
+    replacementStringMap["default"]["{grid_cell_focus_text}"] = accent_hex
+    replacementStringMap["default"]["{grid_cell_focus_text_alpha}"] = 0
+
+    # Footer settings
+    replacementStringMap["default"]["{footer_height}"] = footer_height
+    replacementStringMap["default"]["{footer_alpha}"] = 255
+    replacementStringMap["default"]["{footer_background}"] = footer_background_hex
+
+    # Header settings
+    replacementStringMap["default"]["{header_height}"] = header_height_inc_gap-2
+
+    # Content settings
+    content_alignment_map = {"Left": 0, "Centre": 1, "Right": 2}
+    replacementStringMap["default"]["{content_alignment}"] = content_alignment_map["Left"]
+    replacementStringMap["default"]["{content_height}"] = content_height
+    replacementStringMap["default"]["{content_item_height}"] = content_item_height
+    replacementStringMap["default"]["{content_width}"] = config.screen_width
+    replacementStringMap["default"]["{content_item_count}"] = content_item_count
+    replacementStringMap["default"]["{content_padding_top}"] = (header_height_inc_gap)-header_height_inc_gap
+    replacementStringMap["default"]["{content_padding_left}"] = 0
+
+    # Random Settings
+    replacementStringMap["default"]["{boot_text_y_pos}"] = int(int(config.screen_height)*(165/480))
+    replacementStringMap["default"]["{default_radius}"] = 5
+    replacementStringMap["default"]["{list_text_alpha}"] = 255
+
+    #Bar settings
+    replacementStringMap["default"]["{bar_height}"] = 42
+    replacementStringMap["default"]["{bar_progress_width}"] = int(config.screen_width) - 90
+    replacementStringMap["default"]["{bar_y_pos}"] = int(config.screen_height) - (30+footer_height)
+    replacementStringMap["default"]["{bar_width}"] = int(config.screen_width) - 25
+    replacementStringMap["default"]["{bar_progress_height}"] = 16
+
+    # Text settings
+    replacementStringMap["default"]["{selected_font_hex}"] = accent_hex
+    replacementStringMap["default"]["{deselected_font_hex}"] = blend_hex
+
+    # Glyph Settings
+    replacementStringMap["default"]["{list_glyph_alpha}"] = 0
+    replacementStringMap["default"]["{glyph_padding_left}"] = 0
+
+    # Counter Settings
+    counter_alignment_map = {"Left": 0, "Centre": 1, "Right": 2}
+    replacementStringMap["default"]["{counter_alignment}"] = counter_alignment_map["Right"]
+    replacementStringMap["default"]["{counter_padding_top}"] = header_height_inc_gap
     
     missingValues = []
 
@@ -757,7 +884,7 @@ def main():
     # Optional arguments with defaults
     parser.add_argument(
         "--background_hex", default="#000000",
-        help="Background color in hex format (default: #000000)"
+        help="Background colour in hex format (default: #000000)"
     )
     parser.add_argument(
         "--gap_between_panels", type=int, default=7,

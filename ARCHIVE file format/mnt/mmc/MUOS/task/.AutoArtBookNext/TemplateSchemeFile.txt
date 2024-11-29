@@ -59,7 +59,7 @@ PADDING_RIGHT=0
 
 [footer]
 FOOTER_HEIGHT={footer_height}
-HEADER_BACKGROUND={base_hex}
+FOOTER_BACKGROUND={footer_background}
 FOOTER_TEXT_ALPHA={footer_alpha}
 FOOTER_TEXT={accent_hex}
 FOOTER_TEXT_ALPHA={footer_alpha}
