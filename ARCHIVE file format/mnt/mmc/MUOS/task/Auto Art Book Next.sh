@@ -83,7 +83,7 @@ fi
 if [ -d "$SD2_ROMS_DIR" ]; then
     echo "Running script for SD2..."
     $SCRIPT \
-        --mode "$MODE" \
+        --mode "box_art" \
         --screen_height $SCREEN_HEIGHT \
         --screen_width $SCREEN_WIDTH \
         --panels_dir "$PANELS_DIR" \
@@ -95,13 +95,6 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
         --font_path "$FONT_PATH" \
-        --theme_output_dir "$THEME_OUTPUT_DIR" \
-        --theme_shell_dir "$THEME_SHELL_DIR" \
-        --theme_name "$THEME_NAME" \
-        --template_scheme_path "$TEMPLATE_SCHEME_PATH" \
-        --lv_font_conv_path "$LV_FONT_CONV_BIN" \
-        --font_ranges_path "$FONT_RANGES_PATH" \
-        --font_cache_path "$FONT_CACHE_PATH" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \

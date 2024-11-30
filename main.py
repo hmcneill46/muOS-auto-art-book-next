@@ -1230,7 +1230,7 @@ def main():
         parser.error("--font_cache_path is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
-    if args.mode in ["box_art", "both"] and not args.theme_output_dir:
+    if args.mode in ["box_art", "both"] and not args.roms_dir:
         parser.error("--roms_dir is required when mode is 'box_art' or 'both'.")
     if args.mode in ["box_art", "both"] and not args.box_art_dir:
         parser.error("--box_art_dir is required when mode is 'box_art' or 'both'.")
