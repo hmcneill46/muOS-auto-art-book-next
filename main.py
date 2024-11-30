@@ -650,11 +650,12 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["default"]["{content_item_count}"] = content_item_count
     replacementStringMap["default"]["{content_padding_top}"] = (header_height_inc_gap)-header_height_inc_gap
     replacementStringMap["default"]["{content_padding_left}"] = 0
+    replacementStringMap["default"]["{content_size_to_content}"] = 0
+    replacementStringMap["default"]["{navigation_type}"] = 0
 
     # Random Settings
     replacementStringMap["default"]["{boot_text_y_pos}"] = int(int(config.screen_height)*(165/480))
     replacementStringMap["default"]["{default_radius}"] = 5
-    replacementStringMap["default"]["{list_text_alpha}"] = 255
 
     #Bar settings
     replacementStringMap["default"]["{bar_height}"] = 42
@@ -666,6 +667,9 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     # Text settings
     replacementStringMap["default"]["{selected_font_hex}"] = accent_hex
     replacementStringMap["default"]["{deselected_font_hex}"] = blend_hex
+    replacementStringMap["default"]["{list_text_alpha}"] = 255
+    replacementStringMap["default"]["{font_list_pad_left}"] = 5
+    replacementStringMap["default"]["{font_list_pad_right}"] = 5
 
     # Glyph Settings
     replacementStringMap["default"]["{list_glyph_alpha}"] = 0
@@ -689,8 +693,31 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     
     ## Overrides:
     replacementStringMap["muxlaunch"] = {}
+    replacementStringMap["muxlaunch"]["{list_glyph_alpha}"] = 0
+    replacementStringMap["muxlaunch"]["{content_height}"] = config.screen_height
+    replacementStringMap["muxlaunch"]["{content_item_height}"] = config.screen_height-2
+    replacementStringMap["muxlaunch"]["{content_item_count}"] = 1
+    replacementStringMap["muxlaunch"]["{content_padding_top}"] = 0-header_height_inc_gap
+    replacementStringMap["muxlaunch"]["{navigation_type}"] = 1
+    replacementStringMap["muxlaunch"]["{content_size_to_content}"] = 1
+    replacementStringMap["muxlaunch"]["{content_alignment}"] = content_alignment_map["Centre"]
 
     replacementStringMap["muxplore"] = {}
+    replacementStringMap["muxplore"]["{grid_navigation_type}"] = 2
+    replacementStringMap["muxplore"]["{grid_location_y}"] = header_height_inc_gap
+    replacementStringMap["muxplore"]["{grid_column_count}"] = 1
+    replacementStringMap["muxplore"]["{grid_row_count}"] = content_item_count
+    replacementStringMap["muxplore"]["{grid_row_height}"] = content_item_height
+    replacementStringMap["muxplore"]["{grid_column_width}"] = config.screen_width
+    replacementStringMap["muxplore"]["{grid_cell_width}"] = config.screen_width
+    replacementStringMap["muxplore"]["{grid_cell_height}"] = content_item_height
+    replacementStringMap["muxplore"]["{grid_cell_radius}"] = 0
+    replacementStringMap["muxplore"]["{grid_cell_focus_text_alpha}"] = 255
+    replacementStringMap["muxplore"]["{grid_cell_default_text_alpha}"] = 255
+    replacementStringMap["muxplore"]["{grid_cell_focus_image_alpha}"] = 0
+    replacementStringMap["muxplore"]["{grid_cell_default_image_alpha}"] = 0
+    replacementStringMap["muxplore"]["{grid_cell_focus_background_alpha}"] = 0
+
 
     replacementStringMap["muxgov"] = {}
 

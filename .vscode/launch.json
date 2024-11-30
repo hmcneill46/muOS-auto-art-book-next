@@ -36,12 +36,12 @@
                 "--font_cache_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/font_ranges_cache.json",
 
                 "--background_hex","#202020",
-                "--gap_between_panels","7",
+                "--gap_between_panels","5",
                 "--icon_height_percent","0.5",
                 "--icon_width_percent", "0.7",
-                "--deselected_brightness", "0.4",
-                "--shadow_strength","1",
-                "--gradient_intensity","235"
+                "--deselected_brightness", "0.5",
+                "--shadow_strength","0",
+                "--gradient_intensity","0"
             ]
         }
     ]
