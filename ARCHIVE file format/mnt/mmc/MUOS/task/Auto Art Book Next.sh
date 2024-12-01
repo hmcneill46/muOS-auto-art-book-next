@@ -12,6 +12,7 @@ SCREEN_HEIGHT=$(GET_VAR device mux/height)
 
 PANELS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/artwork-default"
 WORKING_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext"
+STYLISH_FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 
 # Folder Box Art Required arguments
 SD1_ROMS_DIR="/mnt/mmc/ROMS"
@@ -21,7 +22,6 @@ LOGOS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/logos"
 CORE_INFO_DIR="/run/muos/storage/info/core"
 SYSTEM_MAP_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/muosESmap.json"
 VALID_MUOS_SYSTEM_NAMES_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/validMuOsSystemNames.txt"
-FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 
 # Theme Required arguments
 THEME_OUTPUT_DIR="/run/muos/storage/theme"
@@ -32,6 +32,7 @@ TEMPLATE_SCHEME_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/TemplateSchemeFile.txt
 LV_FONT_CONV_BIN="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/lv_font_conv_binary"
 FONT_RANGES_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/ranges.txt"
 FONT_CACHE_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/font_ranges_cache.json"
+FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBd.otf"
 
 # Optional arguments
 BACKGROUND_HEX="#202020"
@@ -55,13 +56,13 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --screen_width $SCREEN_WIDTH \
         --panels_dir "$PANELS_DIR" \
         --working_dir "$WORKING_DIR" \
+        --stylish_font_path "$STYLISH_STYLISH_FONT_PATH" \
         --roms_dir "$SD1_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
         --logos_dir "$LOGOS_DIR" \
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
-        --font_path "$FONT_PATH" \
         --theme_output_dir "$THEME_OUTPUT_DIR" \
         --theme_shell_dir "$THEME_SHELL_DIR" \
         --glyph_assets_dir "$GLYPH_ASSETS_DIR" \
@@ -70,6 +71,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --lv_font_conv_path "$LV_FONT_CONV_BIN" \
         --font_ranges_path "$FONT_RANGES_PATH" \
         --font_cache_path "$FONT_CACHE_PATH" \
+        --font_path "$FONT_PATH" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \
@@ -90,13 +92,13 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --screen_width $SCREEN_WIDTH \
         --panels_dir "$PANELS_DIR" \
         --working_dir "$WORKING_DIR" \
+        --stylish_font_path "$STYLISH_STYLISH_FONT_PATH" \
         --roms_dir "$SD2_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
         --logos_dir "$LOGOS_DIR" \
         --core_info_dir "$CORE_INFO_DIR" \
         --system_map_path "$SYSTEM_MAP_PATH" \
         --valid_muos_system_names_path "$VALID_MUOS_SYSTEM_NAMES_PATH" \
-        --font_path "$FONT_PATH" \
         --background_hex "$BACKGROUND_HEX" \
         --gap_between_panels $GAP_BETWEEN_PANELS \
         --icon_height_percent $ICON_HEIGHT_PERCENT \

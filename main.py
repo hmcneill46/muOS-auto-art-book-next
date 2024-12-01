@@ -58,6 +58,7 @@ class Config(object):
         with open(self.system_map_path, "r") as file:
             self.system_map = json.load(file)
         self.valid_muos_system_names_path = args.valid_muos_system_names_path
+        self.stylish_font_path = args.stylish_font_path
         self.font_path = args.font_path
         self.screen_height = args.screen_height
         self.screen_width = args.screen_width
@@ -219,7 +220,7 @@ def generateFolderImage(folder_name:str, config:Config):
                                        config.logos_dir,
                                        int(config.max_icon_height*rendered_image_multiplier),
                                        int(config.max_icon_width*rendered_image_multiplier),
-                                       config.font_path,
+                                       config.stylish_font_path,
                                        config.shadow_strength)
     else:
         logo_image = generateLogoImage(folder_name,
@@ -230,7 +231,7 @@ def generateFolderImage(folder_name:str, config:Config):
                                        config.logos_dir,
                                        int(config.max_icon_height*rendered_image_multiplier),
                                        int(config.max_icon_width*rendered_image_multiplier),
-                                       config.font_path,
+                                       config.stylish_font_path,
                                        config.shadow_strength)
     image.alpha_composite(logo_image, (0,0))
 
@@ -304,7 +305,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                      config.logos_dir,
                                      preview_size[1]*config.icon_height_percent,
                                      preview_size[0]*config.icon_width_percent,
-                                     config.font_path,
+                                     config.stylish_font_path,
                                      config.shadow_strength)
             current_theme_image = current_theme_image.resize(preview_size, Image.LANCZOS)
             current_theme_image.alpha_composite(logo, (0,0))
@@ -322,7 +323,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                                "Charging...",
                                                config.screen_width,
                                                config.screen_height,
-                                               config.font_path)
+                                               config.stylish_font_path)
     chargingimage.save(os.path.join(theme_folder_dir,"image","wall","muxcharge.png"), format='PNG')
 
     loadingimage = generatePilImageBootScreen(config.background_hex[1:],
@@ -330,7 +331,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                               "Loading...",
                                               config.screen_width,
                                               config.screen_height,
-                                              config.font_path)
+                                              config.stylish_font_path)
     loadingimage.save(os.path.join(theme_folder_dir,"image","wall","muxstart.png"), format='PNG')
 
     shutdownimage = generatePilImageBootScreen(config.background_hex[1:],
@@ -338,7 +339,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                                "Shutting Down...",
                                                config.screen_width,
                                                config.screen_height,
-                                               config.font_path)
+                                               config.stylish_font_path)
     shutdownimage.save(os.path.join(theme_folder_dir,"image","shutdown.png"), format='PNG')
 
     rebootimage = generatePilImageBootScreen(config.background_hex[1:],
@@ -346,7 +347,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                              "Rebooting...",
                                              config.screen_width,
                                              config.screen_height,
-                                             config.font_path)
+                                             config.stylish_font_path)
     rebootimage.save(os.path.join(theme_folder_dir,"image","reboot.png"), format='PNG')
 
     bootlogoimage = generatePilImageBootScreen(config.background_hex[1:],
@@ -354,10 +355,11 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                                                "muOS",
                                                config.screen_width,
                                                config.screen_height,
-                                               config.font_path)
+                                               config.stylish_font_path)
     bootlogoimage.save(os.path.join(theme_folder_dir,"image","bootlogo.bmp"), format='BMP')
 
     fillFontFolder(os.path.join(theme_folder_dir, "font"),
+                   config.stylish_font_path,
                    config.font_path,
                    lv_font_conv,
                    ranges_file,
@@ -389,7 +391,20 @@ def resize_fit_bbox(image:Image, max_width, max_height):
     return(image.resize((int(image.width*image_multiplier), int(image.height*image_multiplier)), Image.LANCZOS))
     
 
-def fillFontFolder(font_folder_dir, font_path, lv_font_conv, ranges_file, cache_file, config:Config):
+def fillFontFolder(font_folder_dir, stylish_font_path, font_path, lv_font_conv, ranges_file, cache_file, config:Config):
+    font_style = {}
+    font_style["header"] = {}
+    font_style["footer"] = {}
+    font_style["panel"] = {}
+
+    font_style["header"]["default"] = "normal"
+    font_style["footer"]["default"] = "normal"
+    font_style["panel"]["default"] = "normal"
+
+    font_style["panel"]["muxtheme"] = "normal"
+    font_style["panel"]["muxarchive"] = "normal"
+    font_style["panel"]["muxlaunch"] = "stylish"
+    
     font_size = {}
     font_size["header"] = {}
     font_size["footer"] = {}
@@ -413,7 +428,8 @@ def fillFontFolder(font_folder_dir, font_path, lv_font_conv, ranges_file, cache_
             font_size_int = int(font_size[folder][font])
             font_name = f"{font}.bin"
             output_file = os.path.join(font_folder_dir, folder, font_name)
-            generateFontBinary(font_path,
+            current_font_path = font_path if font_style[folder][font] == "normal" else stylish_font_path
+            generateFontBinary(current_font_path,
                                lv_font_conv,
                                font_size_int,
                                output_file,
@@ -1148,6 +1164,7 @@ def main():
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
     parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
     parser.add_argument("--working_dir", required=True, help="Path to the folder where your the script will use to store temporary files and folders")
+    parser.add_argument("--stylish_font_path", required=True, help="Path to the font file")
 
     parser.add_argument(
         "--roms_dir",
@@ -1172,10 +1189,6 @@ def main():
     parser.add_argument(
         "--valid_muos_system_names_path",
         help="Path to the file containing valid muOS system names (required if mode includes 'box_art')"
-    )
-    parser.add_argument(
-        "--font_path",
-        help="Path to the font file (required if mode includes 'box_art')"
     )
 
     # Conditionally required argument
@@ -1217,6 +1230,11 @@ def main():
     parser.add_argument(
         "--font_cache_path",
         help="Path to where font valid ranges cache is (required if mode includes 'theme')."
+    )
+
+    parser.add_argument(
+        "--font_path",
+        help="Path to a non stylish font file (required if mode includes 'theme')"
     )
 
     # Optional arguments with defaults
@@ -1267,6 +1285,8 @@ def main():
         parser.error("--font_ranges_path is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.font_cache_path:
         parser.error("--font_cache_path is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.font_path:
+        parser.error("--font_path is required when mode is 'theme' or 'both'.")
 
     # Validate conditional argument
     if args.mode in ["box_art", "both"] and not args.roms_dir:
@@ -1281,8 +1301,7 @@ def main():
         parser.error("--system_map_path is required when mode is 'box_art' or 'both'.")
     if args.mode in ["box_art", "both"] and not args.valid_muos_system_names_path:
         parser.error("--valid_muos_system_names_path is required when mode is 'box_art' or 'both'.")
-    if args.mode in ["box_art", "both"] and not args.font_path:
-        parser.error("--font_path is required when mode is 'box_art' or 'both'.")
+    
     
 
     logger = setup_logger(args.working_dir)
@@ -1305,7 +1324,7 @@ def main():
             validate_directory(args.core_info_dir, "Folder Core Association Directory", logger),
             validate_file(args.system_map_path, "System Map File", logger),
             validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger),
-            validate_file(args.font_path, "Font File", logger),
+            validate_file(args.stylish_font_path, "Stylish Font File", logger),
         ]
     else:
         box_art_validations = [True]
@@ -1317,7 +1336,8 @@ def main():
             validate_directory(args.glyph_assets_dir, "Glyph Assets Directory", logger),
             validate_file(args.template_scheme_path, "Template Scheme File", logger),
             validate_file(args.font_ranges_path, "Font Ranges File", logger),
-            validate_file(args.font_cache_path, "Font Cache File", logger)
+            validate_file(args.font_cache_path, "Font Cache File", logger),
+            validate_file(args.font_path, "Font File", logger)
         ]
     else:
         theme_validations = [True]
