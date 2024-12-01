@@ -694,7 +694,7 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
 
     status_size = get_status_size(os.path.join(parent_path, "glyph"), 5)
 
-    clock_padding = 5+status_size+header_icon_padding
+    clock_padding = header_icon_padding+status_size+header_icon_padding
     
     # Set up default colours that should be the same everywhere
     replacementStringMap["default"]["{accent_hex}"] = accent_hex
