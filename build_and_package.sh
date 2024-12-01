@@ -58,10 +58,47 @@ cd ..
 echo "Moving and renaming the binary to $BUILD_DIR/$BINARY_NAME..."
 mv -f "$FINAL_DIR" "$BUILD_DIR/$BINARY_NAME"
 
-# Step 6: Clean up
+# Step 6: Transfer ZIP to device (if possible)
+
+ZIP_PATH="$BUILD_DIR/$ZIP_NAME"
+ADB_DESTINATION="/mnt/sdcard/ARCHIVE/"
+
+echo "Attempting to transfer the ZIP file to the connected device..."
+
+if adb devices | grep -q "device$"; then
+    echo "ADB device detected. Transferring ZIP file..."
+    adb push "$ZIP_PATH" "$ADB_DESTINATION"
+    if [ $? -eq 0 ]; then
+        echo "File successfully transferred via ADB to $ADB_DESTINATION."
+    else
+        echo "ADB transfer failed."
+    fi
+else
+    echo "No ADB device detected."
+fi
+
+if command -v mtp-sendfile &> /dev/null; then
+    echo "Checking for MTP connection..."
+    mtp-detect &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "MTP device detected. Transferring ZIP file..."
+        mtp-sendfile "$ZIP_PATH" "sd2/ARCHIVE/"
+        if [ $? -eq 0 ]; then
+            echo "File successfully transferred via MTP to sd2/ARCHIVE/."
+        else
+            echo "MTP transfer failed."
+        fi
+    else
+        echo "No MTP device detected."
+    fi
+else
+    echo "mtp-sendfile command not found. Install the mtp-tools package for MTP support."
+fi
+
+# Step 7: Clean up
 echo "Cleaning up temporary files..."
 rm -rf build dist __pycache__ "$OUTPUT_NAME.spec"
 
-echo "Build and packaging complete!"
+echo "Build, packaging, and file transfer complete!"
 echo "Saved as: $BUILD_DIR/$ZIP_NAME"
 echo "Binary saved as: $BUILD_DIR/$BINARY_NAME"
