@@ -53,7 +53,7 @@ BLUETOOTH_ACTIVE_ALPHA=255
 [date]
 DATETIME_TEXT={accent_hex}
 DATETIME_ALPHA=255
-DATETIME_ALIGN=1
+DATETIME_ALIGN={datetime_align}
 PADDING_LEFT={date_padding_left}
 PADDING_RIGHT={date_padding_left}
 
