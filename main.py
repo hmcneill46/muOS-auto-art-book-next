@@ -311,7 +311,6 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
             current_theme_image.alpha_composite(logo, (0,0))
             current_theme_image.save(os.path.join(theme_folder_dir, "preview.png"))
         config.logger.info(f"Successfully generated theme image for system: {item}")
-    fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
 
     os.makedirs(os.path.join(theme_folder_dir,"image","wall"), exist_ok=True)
 
@@ -404,6 +403,8 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
     }
     fillGlyphFolder(footer_height, header_height, glyph_assets_folder, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config)
 
+    fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
+
 def fillGlyphFolder(footer_height, header_height, glyph_folder_5x, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config:Config):
     glyph_folders = os.listdir(glyph_folder_5x)
     valid_folders = ["header", "footer"]
@@ -433,6 +434,14 @@ def fillGlyphFolder(footer_height, header_height, glyph_folder_5x, output_glyph_
             os.makedirs(os.path.join(output_glyph_folder, folder), exist_ok=True)
             glyph_image.save(os.path.join(output_glyph_folder, folder, glyph))
     print(sorted(glyphs))
+
+def get_status_size(temp_glyph_folder, between_padding):
+    battery_glyph_image = Image.open(os.path.join(temp_glyph_folder, "header", "capacity_100.png"))
+    network_glyph_image = Image.open(os.path.join(temp_glyph_folder, "header", "network_normal.png"))
+    status_size = battery_glyph_image.width+between_padding+network_glyph_image.width
+    return(status_size)
+
+    
 
 def resize_fit_bbox(image:Image, max_width, max_height):
     image_multiplier = min(max_width/image.width, max_height/image.height)
@@ -671,12 +680,21 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     content_height = content_item_count*content_item_height
     rounding_excess = config.screen_height-(content_height+footer_height+header_height_inc_gap+content_from_footer_pad)
 
-    header_icon_padding = int((10/48)*config.screen_width)
-    clock_padding = int((10/640)*config.screen_width)
+    header_icon_padding = int((10/480)*config.screen_width)
 
     font_list_padding = int((10/640)*config.screen_width)
 
     glyph_width = 20
+
+    # Ensure the path ends with a slash before processing
+    normalized_path = scheme_files_dir if scheme_files_dir.endswith('/') else scheme_files_dir + '/'
+
+    # Get the parent directory
+    parent_path = os.path.dirname(normalized_path.rstrip('/'))
+
+    status_size = get_status_size(os.path.join(parent_path, "glyph"), 5)
+
+    clock_padding = header_icon_padding+status_size+header_icon_padding
     
     # Set up default colours that should be the same everywhere
     replacementStringMap["default"]["{accent_hex}"] = accent_hex
@@ -734,6 +752,8 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["default"]["{status_padding_right}"] = header_icon_padding
     replacementStringMap["default"]["{date_padding_left}"] = clock_padding
     replacementStringMap["default"]["{date_padding_right}"] = clock_padding
+    datetime_alignment_map = {"Auto":0, "Left": 1, "Centre": 2, "Right": 3}
+    replacementStringMap["default"]["{datetime_align}"] = datetime_alignment_map["Right"]
 
     # Content settings
     content_alignment_map = {"Left": 0, "Centre": 1, "Right": 2}
