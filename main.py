@@ -458,12 +458,12 @@ def fillFontFolder(font_folder_dir, stylish_font_path, font_path, lv_font_conv, 
     font_size["footer"] = {}
     font_size["panel"] = {}
 
-    font_size["header"]["default"] = 20
-    font_size["footer"]["default"] = 20
-    font_size["panel"]["default"] = 20
+    font_size["header"]["default"] = 21
+    font_size["footer"]["default"] = 21
+    font_size["panel"]["default"] = 27
 
-    font_size["panel"]["muxtheme"] = 18
-    font_size["panel"]["muxarchive"] = 18
+    font_size["panel"]["muxtheme"] = 20
+    font_size["panel"]["muxarchive"] = 20
 
     scaled_font_size = min(
         150 * (config.screen_width / 1440),
@@ -659,21 +659,22 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     base_hex = config.background_hex[1:]
     blend_hex = percentage_colour(base_hex,accent_hex,0.5)
     muted_hex = percentage_colour(base_hex,accent_hex,0.25)
-    battery_charging_hex = "2eb774"
+    battery_charging_hex = accent_hex
     footer_background_hex = "000000"
 
     # General
-    aprox_header_height_inc_gap = int((44/480)*config.screen_height)
+    header_height_inc_gap = int((60/480)*config.screen_height)+2
     footer_height = int((55/480)*config.screen_height)
+    content_from_footer_pad = int((20/480)*config.screen_height)
     content_item_count = 9 if config.screen_height == 480 else round_to_nearest_odd(9 * (config.screen_height / 480))
-    content_item_height = floor((config.screen_height-aprox_header_height_inc_gap-footer_height)/content_item_count)
+    content_item_height = floor((config.screen_height-header_height_inc_gap-footer_height-content_from_footer_pad)/content_item_count)
     content_height = content_item_count*content_item_height
-    header_height_inc_gap = config.screen_height-content_height-footer_height
+    rounding_excess = config.screen_height-(content_height+footer_height+header_height_inc_gap+content_from_footer_pad)
 
-    header_icon_padding = 5
-    clock_padding = 5
+    header_icon_padding = int((10/48)*config.screen_width)
+    clock_padding = int((10/640)*config.screen_width)
 
-    font_list_padding = 5
+    font_list_padding = int((10/640)*config.screen_width)
 
     glyph_width = 20
     
@@ -741,7 +742,7 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["default"]["{content_item_height}"] = content_item_height-2
     replacementStringMap["default"]["{content_width}"] = config.screen_width
     replacementStringMap["default"]["{content_item_count}"] = content_item_count
-    replacementStringMap["default"]["{content_padding_top}"] = (header_height_inc_gap)-header_height_inc_gap
+    replacementStringMap["default"]["{content_padding_top}"] = (header_height_inc_gap+int(rounding_excess/2))-header_height_inc_gap
     replacementStringMap["default"]["{content_padding_left}"] = 0
     replacementStringMap["default"]["{content_size_to_content}"] = 0
     replacementStringMap["default"]["{navigation_type}"] = 0
