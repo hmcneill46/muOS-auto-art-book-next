@@ -80,7 +80,8 @@ fi
 MTP_MOUNT=$(ls -d /run/user/$(id -u)/gvfs/mtp:* 2>/dev/null | head -n 1)
 if [ -n "$MTP_MOUNT" ]; then
     echo "MTP device found at $MTP_MOUNT"
-    cp /path/to/source/file "${MTP_MOUNT}/SD1/ARCHIVE/"
+    cp "$ZIP_PATH" "${MTP_MOUNT}/SD1/ARCHIVE/"
+    echo "Transfer complete."
 else
     echo "MTP device not mounted."
 fi
