@@ -26,6 +26,7 @@ FONT_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBdObl.otf"
 # Theme Required arguments
 THEME_OUTPUT_DIR="/run/muos/storage/theme"
 THEME_SHELL_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/ThemeShell"
+GLYPH_ASSETS_DIR="/mnt/mmc/MUOS/task/.AutoArtBookNext/glyph[5x]"
 THEME_NAME="AutoArtBookNext"
 TEMPLATE_SCHEME_PATH="/mnt/mmc/MUOS/task/.AutoArtBookNext/TemplateSchemeFile.txt"
 LV_FONT_CONV_BIN="/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/lv_font_conv_binary"
@@ -63,6 +64,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --font_path "$FONT_PATH" \
         --theme_output_dir "$THEME_OUTPUT_DIR" \
         --theme_shell_dir "$THEME_SHELL_DIR" \
+        --glyph_assets_dir "$GLYPH_ASSETS_DIR" \
         --theme_name "$THEME_NAME" \
         --template_scheme_path "$TEMPLATE_SCHEME_PATH" \
         --lv_font_conv_path "$LV_FONT_CONV_BIN" \

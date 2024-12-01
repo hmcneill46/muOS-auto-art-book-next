@@ -268,7 +268,7 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
-def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, lv_font_conv, ranges_file, cache_file, config:Config):
+def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_file_path, lv_font_conv, ranges_file, cache_file, config:Config):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -363,6 +363,31 @@ def fillTempThemeFolder(theme_folder_dir, template_scheme_file_path, lv_font_con
                    ranges_file,
                    cache_file,
                    config)
+    footer_height = int((55/480)*config.screen_height)
+    output_glyph_folder = os.path.join(theme_folder_dir,"glyph")
+    fillGlyphFolder(footer_height, glyph_assets_folder, output_glyph_folder, config)
+
+def fillGlyphFolder(footer_height, glyph_folder_5x, output_glyph_folder, config:Config):
+    glyph_folders = os.listdir(glyph_folder_5x)
+    valid_folders = ["header", "footer"]
+    for folder in glyph_folders:
+        if not os.path.isdir(os.path.join(glyph_folder_5x, folder)):
+            continue
+        if not folder in valid_folders:
+            continue
+        glyphs_in_folder = os.listdir(os.path.join(glyph_folder_5x, folder))
+        for glyph in glyphs_in_folder:
+            if not glyph[-4:] == ".png":
+                continue
+            glyph_image = Image.open(os.path.join(glyph_folder_5x, folder, glyph))
+            glyph_image = resize_fit_bbox(glyph_image, footer_height*0.5, footer_height*0.35)
+            os.makedirs(os.path.join(output_glyph_folder, folder), exist_ok=True)
+            glyph_image.save(os.path.join(output_glyph_folder, folder, glyph))
+
+def resize_fit_bbox(image:Image, max_width, max_height):
+    image_multiplier = min(max_width/image.width, max_height/image.height)
+    return(image.resize((int(image.width*image_multiplier), int(image.height*image_multiplier)), Image.LANCZOS))
+    
 
 def fillFontFolder(font_folder_dir, font_path, lv_font_conv, ranges_file, cache_file, config:Config):
     font_size = {}
@@ -583,6 +608,10 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
 
     header_icon_padding = 5
     clock_padding = 5
+
+    font_list_padding = 5
+
+    glyph_width = 20
     
     # Set up default colours that should be the same everywhere
     replacementStringMap["default"]["{accent_hex}"] = accent_hex
@@ -668,8 +697,8 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["default"]["{selected_font_hex}"] = accent_hex
     replacementStringMap["default"]["{deselected_font_hex}"] = blend_hex
     replacementStringMap["default"]["{list_text_alpha}"] = 255
-    replacementStringMap["default"]["{font_list_pad_left}"] = 5
-    replacementStringMap["default"]["{font_list_pad_right}"] = 5
+    replacementStringMap["default"]["{font_list_pad_left}"] = font_list_padding
+    replacementStringMap["default"]["{font_list_pad_right}"] = font_list_padding
 
     # Glyph Settings
     replacementStringMap["default"]["{list_glyph_alpha}"] = 0
@@ -720,10 +749,13 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
 
 
     replacementStringMap["muxgov"] = {}
+    replacementStringMap["muxgov"]["{font_list_pad_left}"] = int(font_list_padding*2+glyph_width)
+    replacementStringMap["muxgov"]["{list_glyph_alpha}"] = 255
+    replacementStringMap["muxgov"]["{glyph_padding_left}"] = int(font_list_padding+(glyph_width/2))
 
-    replacementStringMap["muassign"] = {}
+    replacementStringMap["muxassign"] = replacementStringMap["muxgov"].copy()
 
-    replacementStringMap["muxsearch"] = {}
+    replacementStringMap["muxsearch"] = replacementStringMap["muxgov"].copy()
         
     for fileName in replacementStringMap.keys():
         shutil.copy2(template_scheme_file_path,os.path.join(scheme_files_dir,f"{fileName}.txt"))
@@ -1166,6 +1198,11 @@ def main():
         "--template_scheme_path",
         help="Path of the template scheme file for themes (required if mode includes 'theme')."
     )
+    
+    parser.add_argument(
+        "--glyph_assets_dir",
+        help="Path of the glyph assets directory for themes (required if mode includes 'theme')."
+    )
 
     parser.add_argument(
         "--lv_font_conv_path",
@@ -1222,6 +1259,8 @@ def main():
         parser.error("--theme_name is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.template_scheme_path:
         parser.error("--template_scheme_path is required when mode is 'theme' or 'both'.")
+    if args.mode in ["theme", "both"] and not args.glyph_assets_dir:
+        parser.error("--glyph_assets_dir is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.lv_font_conv_path:
         parser.error("--lv_font_conv_path is required when mode is 'theme' or 'both'.")
     if args.mode in ["theme", "both"] and not args.font_ranges_path:
@@ -1271,6 +1310,7 @@ def main():
     theme_validations = [
         validate_directory(args.theme_output_dir, "Themes Directory", logger),
         validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger),
+        validate_directory(args.glyph_assets_dir, "Glyph Assets Directory", logger),
         validate_file(args.template_scheme_path, "Template Scheme File", logger),
         validate_file(args.font_ranges_path, "Font Ranges File", logger),
         validate_file(args.font_cache_path, "Font Cache File", logger)
@@ -1307,7 +1347,7 @@ def main():
             shutil.rmtree(temp_theme_folder)
         shutil.copytree(args.theme_shell_dir, temp_theme_folder)
         
-        fillTempThemeFolder(temp_theme_folder, args.template_scheme_path, args.lv_font_conv_path, args.font_ranges_path, args.font_cache_path, config)
+        fillTempThemeFolder(temp_theme_folder, args.glyph_assets_dir, args.template_scheme_path, args.lv_font_conv_path, args.font_ranges_path, args.font_cache_path, config)
         
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
