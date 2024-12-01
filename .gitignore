@@ -174,3 +174,4 @@ AM-Builds/*
 ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/AutoArtBookNext
 
 .DS_Store
+build_and_package_ssh_config.sh
