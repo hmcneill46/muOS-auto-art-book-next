@@ -56,7 +56,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --screen_width $SCREEN_WIDTH \
         --panels_dir "$PANELS_DIR" \
         --working_dir "$WORKING_DIR" \
-        --stylish_font_path "$STYLISH_STYLISH_FONT_PATH" \
+        --stylish_font_path "$STYLISH_FONT_PATH" \
         --roms_dir "$SD1_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
         --logos_dir "$LOGOS_DIR" \
@@ -92,7 +92,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --screen_width $SCREEN_WIDTH \
         --panels_dir "$PANELS_DIR" \
         --working_dir "$WORKING_DIR" \
-        --stylish_font_path "$STYLISH_STYLISH_FONT_PATH" \
+        --stylish_font_path "$STYLISH_FONT_PATH" \
         --roms_dir "$SD2_ROMS_DIR" \
         --box_art_dir "$BOX_ART_DIR" \
         --logos_dir "$LOGOS_DIR" \

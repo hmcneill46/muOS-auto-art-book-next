@@ -1164,7 +1164,7 @@ def main():
     parser.add_argument("--screen_width", type=int, required=True, help="Screen width in pixels")
     parser.add_argument("--panels_dir", required=True, help="Path to the system image panels directory")
     parser.add_argument("--working_dir", required=True, help="Path to the folder where your the script will use to store temporary files and folders")
-    parser.add_argument("--stylish_font_path", required=True, help="Path to the font file")
+    parser.add_argument("--stylish_font_path", required=True, help="Path to the stylish font file")
 
     parser.add_argument(
         "--roms_dir",
@@ -1313,7 +1313,8 @@ def main():
     # Validate directories
     required_validations = [
         validate_directory(args.panels_dir, "System Image Panels Directory", logger),
-        validate_directory(args.working_dir, "Log File Output Directory", logger)
+        validate_directory(args.working_dir, "Log File Output Directory", logger),
+        validate_file(args.stylish_font_path, "Stylish Font File", logger)
     ]
 
     if args.mode in ["box_art", "both"]:
@@ -1323,8 +1324,7 @@ def main():
             validate_directory(args.logos_dir, "System Image Logos Directory", logger),
             validate_directory(args.core_info_dir, "Folder Core Association Directory", logger),
             validate_file(args.system_map_path, "System Map File", logger),
-            validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger),
-            validate_file(args.stylish_font_path, "Stylish Font File", logger),
+            validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger)
         ]
     else:
         box_art_validations = [True]
