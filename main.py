@@ -366,12 +366,48 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
                    cache_file,
                    config)
     footer_height = int((55/480)*config.screen_height)
+    header_height = int((60/480)*config.screen_height)
     output_glyph_folder = os.path.join(theme_folder_dir,"glyph")
-    fillGlyphFolder(footer_height, glyph_assets_folder, output_glyph_folder, config)
+    footer_glyph_bbox_map_640p = {
+        'a.png':[1000,16],
+        'b.png':[1000,16],
+        'x.png':[1000,16],
+        'y.png':[1000,16],
+        'menu.png':[1000,16],
+    }
 
-def fillGlyphFolder(footer_height, glyph_folder_5x, output_glyph_folder, config:Config):
+    header_glyph_bbox_map_640p = {
+        'capacity_0.png':[1000,20],
+        'capacity_10.png':[1000,20],
+        'capacity_20.png':[1000,20],
+        'capacity_30.png':[1000,20],
+        'capacity_40.png':[1000,20],
+        'capacity_50.png':[1000,20],
+        'capacity_60.png':[1000,20],
+        'capacity_70.png':[1000,20],
+        'capacity_80.png':[1000,20],
+        'capacity_90.png':[1000,20],
+        'capacity_100.png':[1000,20],
+        'charging_capacity_0.png':[1000,20],
+        'charging_capacity_10.png':[1000,20],
+        'charging_capacity_20.png':[1000,20],
+        'charging_capacity_30.png':[1000,20],
+        'charging_capacity_40.png':[1000,20],
+        'charging_capacity_50.png':[1000,20],
+        'charging_capacity_60.png':[1000,20],
+        'charging_capacity_70.png':[1000,20],
+        'charging_capacity_80.png':[1000,20],
+        'charging_capacity_90.png':[1000,20],
+        'charging_capacity_100.png':[1000,20],
+        'network_active.png':[1000,16],
+        'network_normal.png':[1000,16]
+    }
+    fillGlyphFolder(footer_height, header_height, glyph_assets_folder, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config)
+
+def fillGlyphFolder(footer_height, header_height, glyph_folder_5x, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config:Config):
     glyph_folders = os.listdir(glyph_folder_5x)
     valid_folders = ["header", "footer"]
+    glyphs = []
     for folder in glyph_folders:
         if not os.path.isdir(os.path.join(glyph_folder_5x, folder)):
             continue
@@ -382,9 +418,21 @@ def fillGlyphFolder(footer_height, glyph_folder_5x, output_glyph_folder, config:
             if not glyph[-4:] == ".png":
                 continue
             glyph_image = Image.open(os.path.join(glyph_folder_5x, folder, glyph))
-            glyph_image = resize_fit_bbox(glyph_image, footer_height*0.5, footer_height*0.35)
+            glyphs.append(glyph)
+            if folder == "footer":
+                current_bbox = footer_glyph_bbox_map_640p.get(glyph, [20,20])
+                scaled_bbox = current_bbox[0]*footer_height/55, current_bbox[1]*footer_height/55
+            elif folder == "header":
+                current_bbox = header_glyph_bbox_map_640p.get(glyph, [20,20])
+                scaled_bbox = current_bbox[0]*header_height/60, current_bbox[1]*header_height/60
+            else:
+                raise ValueError
+            
+            print("Scaled_bbox = ", scaled_bbox)
+            glyph_image = resize_fit_bbox(glyph_image, scaled_bbox[0], scaled_bbox[1])
             os.makedirs(os.path.join(output_glyph_folder, folder), exist_ok=True)
             glyph_image.save(os.path.join(output_glyph_folder, folder, glyph))
+    print(sorted(glyphs))
 
 def resize_fit_bbox(image:Image, max_width, max_height):
     image_multiplier = min(max_width/image.width, max_height/image.height)
