@@ -454,11 +454,11 @@ def generateFontBinary(font_path, lv_font_conv, font_size, output_path, ranges_f
         "--no-prefilter",
         "-o", output_path,
     ]
-    print(f"Generating binary for size {font_size} -> {output_path}")
+    print(f"Generating font binary for size {font_size} -> {output_path}")
     try:
         subprocess.run(command, check=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error generating binary for size {font_size}: {e}")
+        print(f"Error generating font binary for size {font_size}: {e}")
 
 def parse_ranges_file(file_path):
     """Parse ranges.txt and return a dictionary of ranges and block names."""
@@ -1297,25 +1297,31 @@ def main():
         validate_directory(args.working_dir, "Log File Output Directory", logger)
     ]
 
-    box_art_validations = [
-        validate_directory(args.roms_dir, "ROMs Directory", logger),
-        validate_directory(args.box_art_dir, "Box Art Directory", logger),
-        validate_directory(args.logos_dir, "System Image Logos Directory", logger),
-        validate_directory(args.core_info_dir, "Folder Core Association Directory", logger),
-        validate_file(args.system_map_path, "System Map File", logger),
-        validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger),
-        validate_file(args.font_path, "Font File", logger),
-    ]
+    if args.mode in ["box_art", "both"]:
+        box_art_validations = [
+            validate_directory(args.roms_dir, "ROMs Directory", logger),
+            validate_directory(args.box_art_dir, "Box Art Directory", logger),
+            validate_directory(args.logos_dir, "System Image Logos Directory", logger),
+            validate_directory(args.core_info_dir, "Folder Core Association Directory", logger),
+            validate_file(args.system_map_path, "System Map File", logger),
+            validate_file(args.valid_muos_system_names_path, "Valid muOS System Names File", logger),
+            validate_file(args.font_path, "Font File", logger),
+        ]
+    else:
+        box_art_validations = [True]
 
-    theme_validations = [
-        validate_directory(args.theme_output_dir, "Themes Directory", logger),
-        validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger),
-        validate_directory(args.glyph_assets_dir, "Glyph Assets Directory", logger),
-        validate_file(args.template_scheme_path, "Template Scheme File", logger),
-        validate_file(args.font_ranges_path, "Font Ranges File", logger),
-        validate_file(args.font_cache_path, "Font Cache File", logger)
-    ]
-
+    if args.mode in ["theme", "both"]:
+        theme_validations = [
+            validate_directory(args.theme_output_dir, "Themes Directory", logger),
+            validate_directory(args.theme_shell_dir, "Theme Shell Directory", logger),
+            validate_directory(args.glyph_assets_dir, "Glyph Assets Directory", logger),
+            validate_file(args.template_scheme_path, "Template Scheme File", logger),
+            validate_file(args.font_ranges_path, "Font Ranges File", logger),
+            validate_file(args.font_cache_path, "Font Cache File", logger)
+        ]
+    else:
+        theme_validations = [True]
+    
     if not all(required_validations):
         logger.error("One or more required directories are invalid. Please check the paths and try again.")
         sys.exit(1)
@@ -1327,7 +1333,7 @@ def main():
     if not all(theme_validations) and args.mode in ["theme", "both"]:
         logger.error("One or more rquired directories for theme generation are invalid. Please check the paths and try again.")
         sys.exit(1)
-    if not check_lv_font_conv(args.lv_font_conv_path):
+    if not check_lv_font_conv(args.lv_font_conv_path) and args.mode in ["theme", "both"]:
         logger.error("lv_font_conv is not installed or the path is incorrect.")
         sys.exit(1)
 
