@@ -61,7 +61,7 @@ mv -f "$FINAL_DIR" "$BUILD_DIR/$BINARY_NAME"
 # Step 6: Transfer ZIP to device (if possible)
 
 ZIP_PATH="$BUILD_DIR/$ZIP_NAME"
-ADB_DESTINATION="/mnt/sdcard/ARCHIVE/"
+ADB_DESTINATION="/mnt/mmc/ARCHIVE/"
 
 echo "Attempting to transfer the ZIP file to the connected device..."
 
@@ -77,22 +77,12 @@ else
     echo "No ADB device detected."
 fi
 
-if command -v mtp-sendfile &> /dev/null; then
-    echo "Checking for MTP connection..."
-    mtp-detect &> /dev/null
-    if [ $? -eq 0 ]; then
-        echo "MTP device detected. Transferring ZIP file..."
-        mtp-sendfile "$ZIP_PATH" "sd2/ARCHIVE/"
-        if [ $? -eq 0 ]; then
-            echo "File successfully transferred via MTP to sd2/ARCHIVE/."
-        else
-            echo "MTP transfer failed."
-        fi
-    else
-        echo "No MTP device detected."
-    fi
+MTP_MOUNT=$(ls -d /run/user/$(id -u)/gvfs/mtp:* 2>/dev/null | head -n 1)
+if [ -n "$MTP_MOUNT" ]; then
+    echo "MTP device found at $MTP_MOUNT"
+    cp /path/to/source/file "${MTP_MOUNT}/SD1/ARCHIVE/"
 else
-    echo "mtp-sendfile command not found. Install the mtp-tools package for MTP support."
+    echo "MTP device not mounted."
 fi
 
 # Step 7: Clean up
