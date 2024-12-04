@@ -272,7 +272,7 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
 
     return(image.resize((config.screen_width, config.screen_height), Image.LANCZOS))
 
-def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_file_path, lv_font_conv, ranges_file, cache_file, config:Config):
+def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_file_path, lv_font_conv, ranges_file, cache_file, help_off, config:Config):
     """
     Generate a folder image for the given folder name. In the style of Art Book Next.
     :param folder_name: Name of the folder.
@@ -406,7 +406,7 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
     }
     fillGlyphFolder(footer_height, header_height, glyph_assets_folder, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config)
 
-    fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, config)
+    fillSchemeFiles(os.path.join(theme_folder_dir, "scheme"), template_scheme_file_path, help_off, config)
 
 def fillGlyphFolder(footer_height, header_height, glyph_folder_5x, output_glyph_folder, footer_glyph_bbox_map_640p, header_glyph_bbox_map_640p, config:Config):
     glyph_folders = os.listdir(glyph_folder_5x)
@@ -646,7 +646,7 @@ def round_to_nearest_odd(number):
     low_odd = high_odd - 2
     return int(high_odd) if abs(number - high_odd) < abs(number-low_odd) else int(low_odd)
 
-def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
+def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, help_off, config:Config):
     os.makedirs(scheme_files_dir, exist_ok=True)
 
     stringsToReplace = []
@@ -818,6 +818,8 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["muxlaunch"]["{navigation_type}"] = 1
     replacementStringMap["muxlaunch"]["{content_size_to_content}"] = 1
     replacementStringMap["muxlaunch"]["{content_alignment}"] = content_alignment_map["Centre"]
+    if help_off:
+        replacementStringMap["muxlaunch"]["{footer_alpha}"] = 0
 
     replacementStringMap["muxplore"] = {}
     replacementStringMap["muxplore"]["{grid_navigation_type}"] = 2
@@ -834,6 +836,8 @@ def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, config:Config):
     replacementStringMap["muxplore"]["{grid_cell_focus_image_alpha}"] = 0
     replacementStringMap["muxplore"]["{grid_cell_default_image_alpha}"] = 0
     replacementStringMap["muxplore"]["{grid_cell_focus_background_alpha}"] = 0
+    if help_off:
+        replacementStringMap["muxplore"]["{footer_alpha}"] = 0
 
 
     replacementStringMap["muxgov"] = {}
@@ -1312,6 +1316,11 @@ def main():
         "--font_path",
         help="Path to a non stylish font file (required if mode includes 'theme')"
     )
+    parser.add_argument(
+        "--help_off",
+        action="store_true",
+        help="If set, disables help footer in muxlaunch and muxplore. Defaults to False."
+    )
 
     # Optional arguments with defaults
     parser.add_argument(
@@ -1453,7 +1462,7 @@ def main():
             shutil.rmtree(temp_theme_folder)
         shutil.copytree(args.theme_shell_dir, temp_theme_folder)
         
-        fillTempThemeFolder(temp_theme_folder, args.glyph_assets_dir, args.template_scheme_path, args.lv_font_conv_path, args.font_ranges_path, args.font_cache_path, config)
+        fillTempThemeFolder(temp_theme_folder, args.glyph_assets_dir, args.template_scheme_path, args.lv_font_conv_path, args.font_ranges_path, args.font_cache_path, args.help_off, config)
         
         theme_output_dir = args.theme_output_dir
         os.makedirs(theme_output_dir, exist_ok=True)
