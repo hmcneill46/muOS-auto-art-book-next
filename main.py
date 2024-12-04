@@ -54,9 +54,12 @@ class Config(object):
         self.panels_dir = args.panels_dir
         self.logos_dir = args.logos_dir
         self.core_info_dir = args.core_info_dir
-        self.system_map_path = args.system_map_path
-        with open(self.system_map_path, "r") as file:
-            self.system_map = json.load(file)
+        if args.mode in ["box_art", "both"]:
+            self.system_map_path = args.system_map_path
+            with open(self.system_map_path, "r") as file:
+                self.system_map = json.load(file)
+            self.folders = get_folders(self.roms_dir)
+            self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
         self.valid_muos_system_names_path = args.valid_muos_system_names_path
         self.stylish_font_path = args.stylish_font_path
         self.font_path = args.font_path
@@ -73,8 +76,6 @@ class Config(object):
         self.shadow_strength = args.shadow_strength
         self.gradient_intensity = args.gradient_intensity
 
-        self.folders = get_folders(self.roms_dir)
-        self.folder_console_associations = get_folder_core_associations(self.folders, self.core_info_dir)
         self.example_panel_image = Image.open(os.path.join(self.panels_dir, f"_default.png")).convert("RGBA")
         self.panel_height = self.example_panel_image.height
         self.panel_width = self.example_panel_image.width
