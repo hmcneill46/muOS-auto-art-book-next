@@ -647,6 +647,10 @@ def round_to_nearest_odd(number):
     low_odd = high_odd - 2
     return int(high_odd) if abs(number - high_odd) < abs(number-low_odd) else int(low_odd)
 
+def is_dir_empty(directory):
+    with os.scandir(directory) as entries:
+        return not any(entries)  # Returns False if there's at least one entry
+
 def fillSchemeFiles(scheme_files_dir, template_scheme_file_path, help_off, config:Config):
     os.makedirs(scheme_files_dir, exist_ok=True)
 
@@ -1108,7 +1112,10 @@ def get_folders(roms_dir):
         for folder in output:
             folder_path = os.path.join(roms_dir, folder)
             if os.path.isdir(folder_path) and not folder.startswith(('.', '_')):
-                folders.append(folder)
+                if is_dir_empty(folder_path):
+                    print(f"Skipping empty folder: {folder}")
+                else:
+                    folders.append(folder)
     except subprocess.CalledProcessError as e:
         print(f"Error while listing directory: {e}")
     return folders
