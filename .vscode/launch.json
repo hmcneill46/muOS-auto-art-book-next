@@ -42,7 +42,8 @@
                 "--gap_between_panels","5",
                 "--icon_height_percent","0.5",
                 "--icon_width_percent", "0.7",
-                "--deselected_brightness", "0.5",
+                "--deselected_brightness", "0.43",
+                "--selected_brightness", "0.8667",
                 "--shadow_strength","0",
                 "--gradient_intensity","0"
             ]

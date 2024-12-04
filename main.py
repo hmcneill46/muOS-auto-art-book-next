@@ -69,6 +69,7 @@ class Config(object):
         self.max_icon_height = (self.screen_height * self.icon_height_percent)
         self.max_icon_width = (self.screen_width * self.icon_width_percent) 
         self.deselected_brightness = args.deselected_brightness
+        self.selected_brightness = args.selected_brightness
         self.shadow_strength = args.shadow_strength
         self.gradient_intensity = args.gradient_intensity
 
@@ -204,7 +205,8 @@ def generateFolderImage(folder_name:str, config:Config):
                                                   config.panels_dir,
                                                   config.panel_width,
                                                   config.panel_height,
-                                                  config.deselected_brightness)
+                                                  config.deselected_brightness,
+                                                  config.selected_brightness)
     image.alpha_composite(combinedPanelImage, (0,0))
     
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
@@ -261,7 +263,8 @@ def generateMenuImage(index, menu_names, es_system_images, config:Config):
                                                   config.panels_dir,
                                                   config.panel_width,
                                                   config.panel_height,
-                                                  config.deselected_brightness)
+                                                  config.deselected_brightness,
+                                                  config.selected_brightness)
     image.alpha_composite(combinedPanelImage, (0,0))
     
     gradient = config.get_gradient_overlay_image(image.width,image.height,(0,0,0,config.gradient_intensity),(0,0,0,0),0.75)
@@ -858,7 +861,8 @@ def generateArtBookNextImage(current_index,
                              panels_dir,
                              panel_width,
                              panel_height,
-                             deselected_brightness):
+                             deselected_brightness,
+                             selected_brightness):
     image = Image.new("RGBA", (rendered_image_width, rendered_image_height), (0,0,0,0))
 
     change_in_x = int(real_panel_width+(gap_between_panels*(rendered_image_multiplier)))
@@ -867,6 +871,9 @@ def generateArtBookNextImage(current_index,
 
     current_es_item_name = all_es_item_names[current_index]
     panel_image = Image.open(os.path.join(panels_dir, f"{current_es_item_name}")).resize((panel_width, panel_height), Image.LANCZOS)
+
+    enhancer = ImageEnhance.Brightness(panel_image)
+    panel_image = enhancer.enhance(selected_brightness)
 
     image_middle_x = int((rendered_image_width - panel_image.width) / 2)
     image.alpha_composite(panel_image, (image_middle_x, 0))
@@ -1324,8 +1331,12 @@ def main():
         help="Max icon width as a percentage of screen width (default is 70%%: 0.7)"
     )
     parser.add_argument(
-        "--deselected_brightness", type=float, default=0.4,
-        help="How close to full brightness are the deselected folders (default is 40%%: 0.4)"
+        "--selected_brightness", type=float, default=0.8667,
+        help="How close to full brightness are the selected folders (default is 87%%: 0.87)"
+    )
+    parser.add_argument(
+        "--deselected_brightness", type=float, default=0.43,
+        help="How close to full brightness are the deselected folders (default is 43%%: 0.43)"
     )
     parser.add_argument(
         "--shadow_strength", type=int, default=1,

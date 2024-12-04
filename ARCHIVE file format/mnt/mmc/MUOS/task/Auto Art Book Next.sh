@@ -39,7 +39,8 @@ BACKGROUND_HEX="#202020"
 GAP_BETWEEN_PANELS=5
 ICON_HEIGHT_PERCENT=0.5
 ICON_WIDTH_PERCENT=0.7
-DESELECTED_BRIGHTNESS=0.5
+DESELECTED_BRIGHTNESS=0.43
+SELECTED_BRIGHTNESS=0.86667
 SHADOW_STRENGTH=0
 GRADIENT_INTENSITY=0
 
@@ -77,6 +78,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --icon_height_percent $ICON_HEIGHT_PERCENT \
         --icon_width_percent $ICON_WIDTH_PERCENT \
         --deselected_brightness $DESELECTED_BRIGHTNESS \
+        --selected_brightness $SELECTED_BRIGHTNESS \
         --shadow_strength $SHADOW_STRENGTH \
         --gradient_intensity $GRADIENT_INTENSITY
 else
@@ -104,6 +106,7 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --icon_height_percent $ICON_HEIGHT_PERCENT \
         --icon_width_percent $ICON_WIDTH_PERCENT \
         --deselected_brightness $DESELECTED_BRIGHTNESS \
+        --selected_brightness $SELECTED_BRIGHTNESS \
         --shadow_strength $SHADOW_STRENGTH \
         --gradient_intensity $GRADIENT_INTENSITY
 else
