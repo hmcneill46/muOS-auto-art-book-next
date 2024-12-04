@@ -286,10 +286,10 @@ def fillTempThemeFolder(theme_folder_dir, glyph_assets_folder, template_scheme_f
             "favourite": "auto-favorites.png",
             "history": "auto-lastplayed.png",
             "apps": "library.png",
-            "info": "apfm1000.png",
+            "info": "pyxel.png",
             "config": "tools.png",
-            "reboot": "auto-simulation.png",
-            "shutdown": "sufami.png"
+            "reboot": "sufami.png",
+            "shutdown": "completed.png"
         }
     muxlaunch_image_dir = os.path.join(theme_folder_dir, "image", "static", "muxlaunch")
     os.makedirs(muxlaunch_image_dir, exist_ok=True)
