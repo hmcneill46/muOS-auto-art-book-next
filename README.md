@@ -94,3 +94,15 @@ To build the package yourself, run the `build_and_package.sh` script in an **aar
 ```
 
 This will generate the `.zip` file for installation on your device, and try to send the file to your device via ADB or MTP.
+
+## **Credits and Inspiration** ✨
+
+This project, **muOS Auto Art Book Next**, is heavily inspired by the amazing work done in [**art-book-next-es**](https://github.com/anthonycaccese/art-book-next-es) by [**Anthony Caccese**](https://github.com/anthonycaccese). 
+
+The original design and assets for the **art-book-next-es** theme served as the foundation for this project. The goal of this project is to recreate the design of **art-book-next-es** for the muOS theme engine, staying true to its visual style and user experience.
+
+### Special Thanks
+- **[Anthony Caccese](https://github.com/anthonycaccese)** - For the design and inspiration behind this project.
+- **[art-book-next-es](https://github.com/anthonycaccese/art-book-next-es)** - The original EmulationStation theme that inspired this muOS implementation.
+
+Without this brilliant work as a reference, this project wouldn't exist.
