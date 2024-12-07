@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Theme Generation**: Generates a new theme in the style of Art Book Next for your device.
 - **Box Art Generation**: Automatically Generates folder box art to match the Art Book Next style.
@@ -12,7 +12,7 @@
 
 ---
 
-## 📥 Using Precompiled Releases
+## Using Precompiled Releases
 
 ### On-Device Instructions
 
@@ -38,7 +38,7 @@
 
 ---
 
-## 🛠️ Running the Python Script
+## Running the Python Script
 
 To manually execute the script, ensure you have Python 3 installed and follow the steps below.
 
@@ -86,7 +86,7 @@ python3 main.py [args]
 
 ---
 
-## 🏗️ Building the Package
+## Building the Package
 
 To build the package yourself, run the `build_and_package.sh` script in an **aarch64 Linux environment**:  
 ```bash
