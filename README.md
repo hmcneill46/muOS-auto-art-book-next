@@ -95,7 +95,7 @@ To build the package yourself, run the `build_and_package.sh` script in an **aar
 
 This will generate the `.zip` file for installation on your device, and try to send the file to your device via ADB or MTP.
 
-## **Credits and Inspiration** ✨
+## **Credits and Inspiration**
 
 This project, **muOS Auto Art Book Next**, is heavily inspired by the amazing work done in [**art-book-next-es**](https://github.com/anthonycaccese/art-book-next-es) by [**Anthony Caccese**](https://github.com/anthonycaccese). 
 
