@@ -102,7 +102,6 @@ This project, **muOS Auto Art Book Next**, is heavily inspired by the amazing wo
 The original design and assets for the **art-book-next-es** theme served as the foundation for this project. The goal of this project is to recreate the design of **art-book-next-es** for the muOS theme engine, staying true to its visual style and user experience.
 
 ### Special Thanks
-- **[Anthony Caccese](https://github.com/anthonycaccese)** - For the design and inspiration behind this project.
-- **[art-book-next-es](https://github.com/anthonycaccese/art-book-next-es)** - The original EmulationStation theme that inspired this muOS implementation.
+- **[Anthony Caccese](https://github.com/anthonycaccese)** - For the designing **[art-book-next-es](https://github.com/anthonycaccese/art-book-next-es)** - The original EmulationStation theme that inspired this muOS implementation.
 
 Without this brilliant work as a reference, this project wouldn't exist.
