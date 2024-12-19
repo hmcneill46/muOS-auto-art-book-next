@@ -63,8 +63,8 @@ $SCRIPT \
     --deselected_brightness $DESELECTED_BRIGHTNESS \
     --selected_brightness $SELECTED_BRIGHTNESS \
     --shadow_strength $SHADOW_STRENGTH \
-    --gradient_intensity $GRADIENT_INTENSITY
-    # --help_off
+    --gradient_intensity $GRADIENT_INTENSITY \
+    --help_off
 
 ######################
 # If you wish to hide the help in the footer for muxplore and muxlaunch, you can change the following lines above this comment:

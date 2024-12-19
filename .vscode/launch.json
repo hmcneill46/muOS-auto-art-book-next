@@ -37,6 +37,7 @@
                 "--font_cache_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/lv_font_conv/font_ranges_cache.json",
                 "--glyph_assets_dir", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/glyph[5x]",
                 "--font_path", "ARCHIVE file format/mnt/mmc/MUOS/task/.AutoArtBookNext/FallingSkyBd.otf",
+                "--help_off",
 
                 "--background_hex","#202020",
                 "--gap_between_panels","5",

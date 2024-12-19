@@ -7,6 +7,7 @@ import logging
 import re
 import shutil
 import hashlib
+from natsort import natsorted
 from PIL import Image, ImageDraw, ImageEnhance, ImageOps, ImageFilter, ImageFont
 
 def ceil(n):
@@ -54,6 +55,9 @@ class Config(object):
         self.panels_dir = args.panels_dir
         self.logos_dir = args.logos_dir
         self.core_info_dir = args.core_info_dir
+        self.folders = []
+        self.folder_console_associations = {}
+        self.system_map_path = ""
         if args.mode in ["box_art", "both"]:
             self.system_map_path = args.system_map_path
             with open(self.system_map_path, "r") as file:
@@ -87,6 +91,40 @@ class Config(object):
         self.gradient_overlay_image = None
         self.special_cases = {r'^ngp$': 'es_systems/ngp',
                               r'neo.*?geo.*?pocket(?!.*?colou?r)': 'es_systems/ngp'}
+
+        self.arcade_cases = {
+            # CPS1-specific matches
+            r'(^|[^a-z])cps1([^a-z]|$)': 'es_systems/cps1',
+            r'capcom.*play.*system.*1': 'es_systems/cps1',
+            
+            # CPS2-specific matches
+            r'(^|[^a-z])cps2([^a-z]|$)': 'es_systems/cps2',
+            r'capcom.*play.*system.*2': 'es_systems/cps2',
+            
+            # CPS3-specific matches
+            r'(^|[^a-z])cps3([^a-z]|$)': 'es_systems/cps3',
+            r'capcom.*play.*system.*3': 'es_systems/cps3',
+            
+            # FinalBurn Neo (or variants)
+            r'(^|[^a-z])(fbn|fbneo)([^a-z]|$)': 'es_systems/fbneo',
+            r'final.*?burn.*?neo': 'es_systems/fbneo',
+            r'final.*?burn': 'es_systems/fbneo',
+            
+            # MAME-specific matches
+            r'mame': 'es_systems/mame',
+        }
+
+        self.pce_cases = {
+        # PCE (PC Engine) - matches only PCE and similar
+        r'(^|[^a-z])pce([^a-z]|$)(?!.*?cd)': 'es_systems/pce',
+        r'pc.*?engine(?!.*?cd)': 'es_systems/pce',  # Ensures CD is not in the name
+        
+        # PCECD (PC Engine CD) - matches only PCE systems with "cd" in the name
+        r'(^|[^a-z])pcecd([^a-z]|$)': 'es_systems/pcecd',
+        r'pc.*?engine.*?cd': 'es_systems/pcecd',  # Explicitly requires "cd" in the name
+    }
+
+
     def log_config(self):
         # Log directories
         self.logger.info("=" * 50)  # Divider line
@@ -97,6 +135,9 @@ class Config(object):
         self.logger.info(f"System Image Panels Directory: {self.panels_dir}")
         self.logger.info(f"System Image Logos Directory: {self.logos_dir}")
         self.logger.info(f"Folder Core Association Directory: {self.core_info_dir}")
+
+        self.logger.info(f"Folders to process: {self.folders}")
+        self.logger.info(f"Folder Console Associations: {self.folder_console_associations}")
 
         self.logger.info("=" * 50)  # Divider line
         self.logger.info("Device Settings:")
@@ -1098,7 +1139,7 @@ def generateLogoImage(folder_name:str,
     return image
 
 
-def get_folders(roms_dir):
+def old_get_folders(roms_dir):
     """
     Get all folders in the ROMs directory, retaining the ordering of the `ls` command.
 
@@ -1118,6 +1159,32 @@ def get_folders(roms_dir):
                     folders.append(folder)
     except subprocess.CalledProcessError as e:
         print(f"Error while listing directory: {e}")
+    return folders
+
+def get_folders(roms_dir):
+    """
+    Get all folders in the ROMs directory, sorted naturally and case-insensitively.
+
+    :param roms_dir: Path to the ROMs directory.
+    :return: List of folders.
+    """
+    folders = []
+    try:
+        # List directory contents
+        contents = os.listdir(roms_dir)
+        # Filter and sort folders naturally (case-insensitive)
+        sorted_folders = natsorted(
+            [folder for folder in contents if os.path.isdir(os.path.join(roms_dir, folder)) and not folder.startswith((".", "_"))],
+            key=str.casefold
+        )
+        for folder in sorted_folders:
+            folder_path = os.path.join(roms_dir, folder)
+            if is_dir_empty(folder_path):
+                print(f"Skipping empty folder: {folder}")
+            else:
+                folders.append(folder)
+    except OSError as e:
+        print(f"Error while accessing directory: {e}")
     return folders
 
 def get_folder_core_associations(folders, core_info_dir):

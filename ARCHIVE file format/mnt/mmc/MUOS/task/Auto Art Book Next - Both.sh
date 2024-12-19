@@ -81,6 +81,7 @@ if [ -d "$SD1_ROMS_DIR" ]; then
         --selected_brightness $SELECTED_BRIGHTNESS \
         --shadow_strength $SHADOW_STRENGTH \
         --gradient_intensity $GRADIENT_INTENSITY
+        # --help_off
 else
     echo "Skipping SD1: $SD1_ROMS_DIR does not exist."
 fi
@@ -109,7 +110,6 @@ if [ -d "$SD2_ROMS_DIR" ]; then
         --selected_brightness $SELECTED_BRIGHTNESS \
         --shadow_strength $SHADOW_STRENGTH \
         --gradient_intensity $GRADIENT_INTENSITY
-        # --hide_help_footer
 else
     echo "Skipping SD2: $SD2_ROMS_DIR does not exist."
 fi
@@ -119,7 +119,7 @@ fi
 # If you wish to hide the help in the footer for muxplore and muxlaunch, you can change the following lines above this comment:
 #
 # --gradient_intensity $GRADIENT_INTENSITY -> --gradient_intensity $GRADIENT_INTENSITY \
-# # --hide_help_footer -> --hide_help_footer
+# # --help_off -> --help_off
 ######################
 
 echo "Sync Filesystem"
