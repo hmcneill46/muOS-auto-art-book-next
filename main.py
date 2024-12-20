@@ -512,7 +512,7 @@ def fillFontFolder(font_folder_dir, stylish_font_path, font_path, lv_font_conv, 
     font_size["footer"] = {}
     font_size["panel"] = {}
 
-    font_size["header"]["default"] = 21
+    font_size["header"]["default"] = int(21*config.screen_height/480)
     font_size["footer"]["default"] = 21
     font_size["panel"]["default"] = 27
 
